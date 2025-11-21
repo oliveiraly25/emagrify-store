@@ -14,7 +14,6 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  // 🔹 Carrega o usuário logado e o perfil
   useEffect(() => {
     async function load() {
       const { data: userData } = await supabase.auth.getUser();
@@ -45,7 +44,6 @@ export default function ProfilePage() {
     load();
   }, [router]);
 
-  // 🔹 Atualizar perfil (nome, telefone, bio, foto)
   async function updateProfile() {
     const { error } = await supabase
       .from("profiles")
@@ -65,7 +63,6 @@ export default function ProfilePage() {
     alert("Perfil atualizado com sucesso!");
   }
 
-  // 🔹 Botão de sair da conta
   async function logout() {
     await supabase.auth.signOut();
     router.push("/login");
@@ -80,42 +77,4 @@ export default function ProfilePage() {
         Meu Perfil
       </h1>
 
-      {/* FOTO DE PERFIL */}
-      <div className="flex flex-col items-center mb-6">
-        <img
-          src={
-            avatar ||
-            "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-          }
-          className="w-28 h-28 rounded-full object-cover border shadow"
-        />
-        <input
-          type="text"
-          placeholder="URL da foto de perfil"
-          className="w-full border p-2 mt-3 rounded"
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-        />
-      </div>
-
-      <div className="space-y-4">
-
-        {/* Nome */}
-        <div>
-          <p className="text-sm text-gray-600">Nome completo:</p>
-          <input
-            className="w-full border p-2 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        {/* Telefone */}
-        <div>
-          <p className="text-sm text-gray-600">Telefone:</p>
-          <input
-            className="w-full border p-2 rounded"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-       </div>
+      {/* FOTO DE PERFIL*
