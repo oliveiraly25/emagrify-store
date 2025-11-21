@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginAuth() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -14,6 +15,14 @@ export default function LoginAuth() {
 
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
+
+  // Preenche o email vindo da tela anterior
+  useEffect(() => {
+    const emailFromUrl = searchParams.get("email");
+    if (emailFromUrl) {
+      setEmail(emailFromUrl);
+    }
+  }, [searchParams]);
 
   async function handleLogin(e: any) {
     e.preventDefault();
@@ -51,7 +60,7 @@ export default function LoginAuth() {
           className="border p-3 rounded-lg"
         />
 
-        {/* CAMPO DE SENHA COM MOSTRAR/OCULTAR */}
+        {/* Campo de senha com mostrar/ocultar */}
         <div className="relative">
           <input
             type={showSenha ? "text" : "password"}
