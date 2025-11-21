@@ -3,175 +3,140 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
+import { ChevronRight, ShoppingCart, Heart, User, Truck, CreditCard, Headphones, Bell } from "lucide-react";
 
-type ProfileRow = {
-  id: string;
-  full_name: string | null;
-  phone: string | null;
-  email?: string | null;
-  points?: number | null;
-  created_at?: string | null;
-};
-
-export default function ProfilePage() {
+export default function ProfileDashboard() {
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<ProfileRow | null>(null);
-
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    const load = async () => {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-
-      if (userError || !userData.user) {
+    async function loadUser() {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
         router.push("/login");
         return;
       }
-
-      const id = userData.user.id;
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        setError("Erro ao carregar perfil.");
-        setLoading(false);
-        return;
-      }
-
-      const p = data as ProfileRow;
-      if (!p.email) {
-        p.email = userData.user.email ?? "";
-      }
-
-      setProfile(p);
-      setName(p.full_name ?? "");
-      setPhone(p.phone ?? "");
+      setUser(auth.user);
       setLoading(false);
-    };
-
-    load();
-  }, [router]);
-
-  const handleUpdate = async () => {
-    if (!profile) return;
-    setError("");
-
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        full_name: name,
-        phone: phone,
-      })
-      .eq("id", profile.id);
-
-    if (error) {
-      setError("Erro ao atualizar perfil.");
-      return;
     }
-
-    setProfile({
-      ...profile,
-      full_name: name,
-      phone,
-    });
-
-    alert("Perfil atualizado com sucesso!");
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
+    loadUser();
+  }, [router]);
 
   if (loading) {
     return <p className="text-center mt-10">Carregando...</p>;
   }
 
-  if (!profile) {
-    return <p className="text-center mt-10">Perfil não encontrado.</p>;
-  }
-
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-6 shadow-xl rounded-2xl">
-      <h1 className="text-3xl font-bold text-center mb-6">Meu Perfil</h1>
+    <div className="max-w-3xl mx-auto p-6 mt-6">
+      
+      <h1 className="text-3xl font-bold mb-2">Sua conta</h1>
 
-      {error && (
-        <p className="text-red-600 text-sm mb-4">{error}</p>
-      )}
+      <p className="text-gray-600 mb-6">
+        Olá {user.email}. Navegue e gerencie conforme desejar.
+      </p>
 
-      <div className="space-y-4">
-
-        <div>
-          <p className="text-sm text-gray-600">Nome completo</p>
-          <input
-            className="w-full border p-2 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <p className="text-sm text-gray-600">Telefone</p>
-          <input
-            className="w-full border p-2 rounded"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <p className="text-sm text-gray-600">Email</p>
-          <p className="font-semibold bg-gray-100 p-2 rounded">
-            {profile.email ?? ""}
-          </p>
-        </div>
-
-        <div>
-          <p className="text-sm text-gray-600">Pontos acumulados</p>
-          <p className="font-bold text-pink-600 text-xl">
-            {profile.points ?? 0}
-          </p>
-        </div>
-
-        <div>
-          <p className="text-sm text-gray-600">Conta criada em</p>
-          <p className="font-semibold">
-            {profile.created_at
-              ? new Date(profile.created_at).toLocaleDateString("pt-BR")
-              : "-"}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-6 space-y-3">
-        <button
-          onClick={handleUpdate}
-          className="w-full bg-pink-600 text-white py-3 rounded font-semibold"
-        >
-          Salvar alterações
-        </button>
-
-        <button
-          onClick={handleLogout}
-          className="w-full bg-gray-300 text-gray-800 py-3 rounded font-semibold"
-        >
-          Sair da conta
-        </button>
-
+      {/* ============================= */}
+      {/*     PEDIDOS                  */}
+      {/* ============================= */}
+      <h2 className="text-lg font-semibold mb-3">Pedidos</h2>
+      <div className="bg-white rounded-lg overflow-hidden shadow">
+        
         <button
           onClick={() => router.push("/pedidos")}
-          className="w-full bg-purple-600 text-white py-3 rounded font-semibold"
+          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
         >
-          Meus pedidos
+          <div className="flex items-center gap-3">
+            <ShoppingCart size={20} />
+            <span>Meus pedidos</span>
+          </div>
+          <ChevronRight />
         </button>
+
+        <button
+          onClick={() => router.push("/favoritos")}
+          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <Heart size={20} />
+            <span>Favoritos</span>
+          </div>
+          <ChevronRight />
+        </button>
+
       </div>
+
+      {/* ============================= */}
+      {/*     SEUS DADOS               */}
+      {/* ============================= */}
+      <h2 className="text-lg font-semibold mt-8 mb-3">Seus Dados</h2>
+      <div className="bg-white rounded-lg overflow-hidden shadow">
+        
+        <button
+          onClick={() => router.push("/dados-pessoais")}
+          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <User size={20} />
+            <span>Dados pessoais</span>
+          </div>
+          <ChevronRight />
+        </button>
+
+        <button
+          onClick={() => router.push("/enderecos")}
+          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <Truck size={20} />
+            <span>Endereços de entrega</span>
+          </div>
+          <ChevronRight />
+        </button>
+
+        <button
+          onClick={() => router.push("/pagamentos")}
+          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <CreditCard size={20} />
+            <span>Formas de pagamento</span>
+          </div>
+          <ChevronRight />
+        </button>
+
+      </div>
+
+      {/* ============================= */}
+      {/*     COMUNICAÇÃO              */}
+      {/* ============================= */}
+      <h2 className="text-lg font-semibold mt-8 mb-3">Comunicação</h2>
+      <div className="bg-white rounded-lg overflow-hidden shadow">
+
+        <button
+          onClick={() => router.push("/suporte")}
+          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <Headphones size={20} />
+            <span>Central de atendimento</span>
+          </div>
+          <ChevronRight />
+        </button>
+
+        <button
+          onClick={() => router.push("/notificacoes")}
+          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
+        >
+          <div className="flex items-center gap-3">
+            <Bell size={20} />
+            <span>Configuração de notificação</span>
+          </div>
+          <ChevronRight />
+        </button>
+
+      </div>
+
     </div>
   );
 }
