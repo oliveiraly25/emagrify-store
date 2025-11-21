@@ -39,7 +39,8 @@ export default function LoginRegister() {
 
     // Se já existe → login
     if (existingUser) {
-      window.location.href = "/login-real";
+window.location.href = "/login";
+
       return;
     }
 
