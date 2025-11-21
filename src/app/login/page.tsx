@@ -6,10 +6,10 @@ import supabase from "@/lib/supabaseClient";
 export default function LoginRegister() {
   const [step, setStep] = useState<1 | 2>(1);
 
-  // Etapa 1
+  // Etapa 1 – Identificação
   const [identifier, setIdentifier] = useState("");
 
-  // Etapa 2
+  // Etapa 2 – Cadastro
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [idade, setIdade] = useState("");
@@ -23,6 +23,7 @@ export default function LoginRegister() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+  // 🔍 Etapa 1 — Verifica se o email já possui conta
   async function handleIdentifierCheck(e: any) {
     e.preventDefault();
     setErro("");
@@ -30,26 +31,25 @@ export default function LoginRegister() {
 
     let inputEmail = identifier.toLowerCase().trim();
 
-    // verifica se já existe
     const { data: existingUser } = await supabase
       .from("profiles")
       .select("id")
       .eq("email", inputEmail)
       .maybeSingle();
 
-    // Se já existe → login
+    // Se já existe → vai para login
     if (existingUser) {
-window.location.href = "/login";
-
+      window.location.href = "/login";
       return;
     }
 
-    // Se não existe → ir para etapa 2
+    // Se não existe → etapa 2
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
   }
 
+  // 🧾 Cadastrar usuário
   async function handleRegister(e: any) {
     e.preventDefault();
     setErro("");
@@ -67,6 +67,7 @@ window.location.href = "/login";
       return;
     }
 
+    // Cria usuário no Supabase
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -78,11 +79,11 @@ window.location.href = "/login";
       return;
     }
 
-    // salva dados no perfil
+    // Cria perfil
     await supabase.from("profiles").insert({
       id: data.user?.id,
       full_name: `${nome} ${sobrenome}`,
-      email: email,
+      email,
       phone: telefone,
       age: idade,
       gender: genero,
@@ -90,7 +91,9 @@ window.location.href = "/login";
     });
 
     alert("Conta criada com sucesso!");
-    window.location.href = "/login-real";
+
+    // Redireciona corretamente para login
+    window.location.href = "/login";
   }
 
   return (
@@ -98,7 +101,7 @@ window.location.href = "/login";
       <h1 className="text-2xl font-bold mb-3">Já Sou Cliente/Registrar</h1>
       <p className="text-green-700 text-xs mb-6">🔒 Seus dados estão protegidos.</p>
 
-      {/* ETAPA 1 */}
+      {/* ETAPA 1 - Verificação */}
       {step === 1 && (
         <form
           onSubmit={handleIdentifierCheck}
@@ -126,7 +129,7 @@ window.location.href = "/login";
         </form>
       )}
 
-      {/* ETAPA 2 */}
+      {/* ETAPA 2 - Cadastro */}
       {step === 2 && (
         <form
           onSubmit={handleRegister}
