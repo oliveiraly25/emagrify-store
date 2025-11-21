@@ -64,34 +64,31 @@ export default function ProfilePage() {
     load();
   }, [router]);
 
-  const handleUpdate = async () => {
-    if (!profile) return;
-    setError("");
+const handleUpdate = async () => {
+  if (!profile) return;
+  setError("");
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        name,
-        phone,
-        bio,
-        avatar_url: avatar,
-      })
-      .eq("id", profile.id);
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: name,
+      phone: phone,
+    })
+    .eq("id", profile.id);
 
-    if (error) {
-      setError("Erro ao atualizar perfil.");
-      return;
-    }
+  if (error) {
+    setError("Erro ao atualizar perfil.");
+    return;
+  }
 
-    setProfile({
-      ...profile,
-      name,
-      phone,
-      bio,
-      avatar_url: avatar,
-    });
-    alert("Perfil atualizado com sucesso!");
-  };
+  setProfile({
+    ...profile,
+    full_name: name,
+    phone,
+  });
+
+  alert("Perfil atualizado com sucesso!");
+};
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
