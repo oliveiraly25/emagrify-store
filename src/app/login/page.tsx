@@ -27,7 +27,7 @@ export default function LoginRegister() {
   const [carregando, setCarregando] = useState(false);
 
   // ===================================================
-  // ETAPA 1 → Verificar se já existe conta com esse email
+  // ETAPA 1 → Verificar SE JÁ EXISTE CONTA
   // ===================================================
 
   async function handleIdentifierCheck(e: any) {
@@ -37,21 +37,21 @@ export default function LoginRegister() {
 
     const inputEmail = identifier.toLowerCase().trim();
 
-    // 🔍 Verifica na TABELA PROFILES se esse email já existe
+    // 🔍 Verifica na tabela PROFILES se o email já existe
     const { data, error } = await supabase
       .from("profiles")
       .select("id")
       .eq("email", inputEmail)
       .maybeSingle();
 
-    // Se já existe perfil com esse email → vai para tela de login real
+    // Se encontrou usuário → vai para login-auth
     if (data && !error) {
       setCarregando(false);
       router.push(`/login-auth?email=${encodeURIComponent(inputEmail)}`);
       return;
     }
 
-    // Se NÃO existe → vai para etapa 2 (cadastro)
+    // Senão → ir para etapa 2 (cadastro)
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
