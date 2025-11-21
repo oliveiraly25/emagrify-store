@@ -9,10 +9,8 @@ export default function LoginRegister() {
 
   const [step, setStep] = useState<1 | 2>(1);
 
-  // Campo da primeira etapa
   const [identifier, setIdentifier] = useState("");
 
-  // Campos de cadastro
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [idade, setIdade] = useState("");
@@ -26,10 +24,9 @@ export default function LoginRegister() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  // ===================================================
-  // ETAPA 1 → Verificar SE JÁ EXISTE CONTA
-  // ===================================================
-
+  // ================================
+  // ETAPA 1 → Verifica se já existe conta
+  // ================================
   async function handleIdentifierCheck(e: any) {
     e.preventDefault();
     setErro("");
@@ -37,30 +34,28 @@ export default function LoginRegister() {
 
     const inputEmail = identifier.toLowerCase().trim();
 
-    // 🔍 Verifica na tabela PROFILES se o email já existe
-    const { data, error } = await supabase
+    // Procura perfil com esse email
+    const { data: profile, error } = await supabase
       .from("profiles")
       .select("id")
       .eq("email", inputEmail)
       .maybeSingle();
 
-    // Se encontrou usuário → vai para login-auth
-    if (data && !error) {
-      setCarregando(false);
+    // Se EXISTE → ir para login-auth
+    if (profile) {
       router.push(`/login-auth?email=${encodeURIComponent(inputEmail)}`);
       return;
     }
 
-    // Senão → ir para etapa 2 (cadastro)
+    // Se NÃO existe → ir para cadastro
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
   }
 
-  // ===================================================
+  // ================================
   // ETAPA 2 → Criar conta
-  // ===================================================
-
+  // ================================
   async function handleRegister(e: any) {
     e.preventDefault();
     setErro("");
@@ -78,7 +73,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Cria usuário no Auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -90,7 +84,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Cria perfil
     await supabase.from("profiles").insert({
       id: data.user?.id,
       full_name: `${nome} ${sobrenome}`,
@@ -101,7 +94,6 @@ export default function LoginRegister() {
       role: "user",
     });
 
-    // Login automático
     await supabase.auth.signInWithPassword({
       email,
       password: senha,
@@ -112,19 +104,13 @@ export default function LoginRegister() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-      {/* 🚀 Título novo */}
       <h1 className="text-2xl font-bold mb-3">
         Seja bem-vindo(a) à Loja do Emagrify
       </h1>
 
-      <p className="text-green-700 text-xs mb-6">
-        🔒 Seus dados estão protegidos.
-      </p>
+      <p className="text-green-700 text-xs mb-6">🔒 Seus dados estão protegidos.</p>
 
-      {/* ====================================== */}
-      {/* ETAPA 1 — IDENTIFICAR EMAIL/TELEFONE   */}
-      {/* ====================================== */}
-
+      {/* ETAPA 1 */}
       {step === 1 && (
         <form
           onSubmit={handleIdentifierCheck}
@@ -145,10 +131,7 @@ export default function LoginRegister() {
         </form>
       )}
 
-      {/* ====================================== */}
-      {/* ETAPA 2 — CADASTRO                     */}
-      {/* ====================================== */}
-
+      {/* ETAPA 2 */}
       {step === 2 && (
         <form
           onSubmit={handleRegister}
