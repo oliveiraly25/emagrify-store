@@ -77,4 +77,5 @@ export default function ProfilePage() {
         Meu Perfil
       </h1>
 
-      {/* FOTO DE PERFIL*
+{/* FOTO DE PERFIL */}
+
