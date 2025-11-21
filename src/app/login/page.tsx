@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 
 export default function LoginRegister() {
+  const router = useRouter();
+
   const [step, setStep] = useState<1 | 2>(1);
 
-  // Etapa 1 – Identificação
   const [identifier, setIdentifier] = useState("");
 
-  // Etapa 2 – Cadastro
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [idade, setIdade] = useState("");
@@ -23,13 +24,12 @@ export default function LoginRegister() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  // 🔍 Etapa 1 — Verifica se o email já possui conta
   async function handleIdentifierCheck(e: any) {
     e.preventDefault();
     setErro("");
     setCarregando(true);
 
-    let inputEmail = identifier.toLowerCase().trim();
+    const inputEmail = identifier.toLowerCase().trim();
 
     const { data: existingUser } = await supabase
       .from("profiles")
@@ -37,19 +37,17 @@ export default function LoginRegister() {
       .eq("email", inputEmail)
       .maybeSingle();
 
-    // Se já existe → vai para login
     if (existingUser) {
-      window.location.href = "/login";
+      // Vai para tela de login REAL
+      router.push("/login-auth");
       return;
     }
 
-    // Se não existe → etapa 2
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
   }
 
-  // 🧾 Cadastrar usuário
   async function handleRegister(e: any) {
     e.preventDefault();
     setErro("");
@@ -67,7 +65,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Cria usuário no Supabase
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -79,7 +76,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Cria perfil
     await supabase.from("profiles").insert({
       id: data.user?.id,
       full_name: `${nome} ${sobrenome}`,
@@ -90,36 +86,19 @@ export default function LoginRegister() {
       role: "user",
     });
 
-   // salva dados no perfil
-await supabase.from("profiles").insert({
-  id: data.user?.id,
-  full_name: `${nome} ${sobrenome}`,
-  email: email,
-  phone: telefone,
-  age: idade,
-  gender: genero,
-  role: "user",
-});
+    await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
 
-alert("Conta criada com sucesso!");
-
-// 🔥 Login automático após registrar
-await supabase.auth.signInWithPassword({
-  email,
-  password: senha,
-});
-
-// 🔥 Redireciona para HOME logado
-window.location.href = "/";
-
+    router.push("/");
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-      <h1 className="text-2xl font-bold mb-3">Já Sou Cliente/Registrar</h1>
+      <h1 className="text-2xl font-bold mb-3">Já Sou Cliente / Registrar</h1>
       <p className="text-green-700 text-xs mb-6">🔒 Seus dados estão protegidos.</p>
 
-      {/* ETAPA 1 - Verificação */}
       {step === 1 && (
         <form
           onSubmit={handleIdentifierCheck}
@@ -137,17 +116,9 @@ window.location.href = "/";
           <button className="bg-black text-white py-3 rounded-lg font-semibold">
             {carregando ? "Verificando..." : "CONTINUAR"}
           </button>
-
-          <p className="text-center text-xs text-gray-600 mt-8">
-            Ao continuar, você concorda com nossa{" "}
-            <span className="underline cursor-pointer">Política de Privacidade</span>{" "}
-            e{" "}
-            <span className="underline cursor-pointer">Termos e Condições</span>.
-          </p>
         </form>
       )}
 
-      {/* ETAPA 2 - Cadastro */}
       {step === 2 && (
         <form
           onSubmit={handleRegister}
