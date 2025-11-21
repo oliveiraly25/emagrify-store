@@ -1,0 +1,76 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import supabase from "@/lib/supabaseClient";
+
+export default function LoginAuth() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+
+  async function handleLogin(e: any) {
+    e.preventDefault();
+    setErro("");
+    setCarregando(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
+
+    if (error) {
+      setErro("Email ou senha incorretos.");
+      setCarregando(false);
+      return;
+    }
+
+    // sucesso
+    router.push("/");
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <form
+        onSubmit={handleLogin}
+        className="w-full max-w-sm bg-white border border-gray-200 shadow-md px-8 py-10 rounded-xl flex flex-col gap-4"
+      >
+        <h1 className="text-2xl font-bold mb-4 text-center">Entrar</h1>
+
+        <input
+          type="email"
+          placeholder="Seu e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="border p-3 rounded-lg"
+        />
+
+        <input
+          type="password"
+          placeholder="Sua senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+          className="border p-3 rounded-lg"
+        />
+
+        {erro && <p className="text-red-500 text-sm text-center">{erro}</p>}
+
+        <button className="bg-[#63783D] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
+          {carregando ? "Entrando..." : "Entrar"}
+        </button>
+
+        <p className="text-center text-sm mt-4">
+          Esqueceu a senha?{" "}
+          <span className="text-green-700 underline cursor-pointer">
+            Recuperar acesso
+          </span>
+        </p>
+      </form>
+    </div>
+  );
+}
