@@ -24,6 +24,10 @@ export default function LoginRegister() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+  // ===================================================
+  // ETAPA 1 → Identificar se o email já possui conta
+  // ===================================================
+
   async function handleIdentifierCheck(e: any) {
     e.preventDefault();
     setErro("");
@@ -31,22 +35,33 @@ export default function LoginRegister() {
 
     const inputEmail = identifier.toLowerCase().trim();
 
-    const { data: existingUser } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("email", inputEmail)
-      .maybeSingle();
+    // 🔍 Lista usuários do Auth (método recomendado)
+    const { data: users, error: usersError } =
+      await supabase.auth.admin.listUsers();
 
+    if (usersError) {
+      console.error(usersError);
+    }
+
+    const existingUser = users?.users.find(
+      (u: any) => u.email?.toLowerCase() === inputEmail
+    );
+
+    // Se já existe → ir para login autenticado
     if (existingUser) {
-      // Vai para tela de login REAL
       router.push("/login-auth");
       return;
     }
 
+    // Senão → ir para criar conta
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
   }
+
+  // ===================================================
+  // ETAPA 2 → Criar conta
+  // ===================================================
 
   async function handleRegister(e: any) {
     e.preventDefault();
@@ -65,6 +80,7 @@ export default function LoginRegister() {
       return;
     }
 
+    // Cria usuário no Auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -76,6 +92,7 @@ export default function LoginRegister() {
       return;
     }
 
+    // Cria perfil
     await supabase.from("profiles").insert({
       id: data.user?.id,
       full_name: `${nome} ${sobrenome}`,
@@ -86,6 +103,7 @@ export default function LoginRegister() {
       role: "user",
     });
 
+    // Login automático
     await supabase.auth.signInWithPassword({
       email,
       password: senha,
@@ -96,8 +114,17 @@ export default function LoginRegister() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-      <h1 className="text-2xl font-bold mb-3">Já Sou Cliente / Registrar</h1>
-      <p className="text-green-700 text-xs mb-6">🔒 Seus dados estão protegidos.</p>
+
+      {/* 🚀 TÍTULO NOVO */}
+      <h1 className="text-2xl font-bold mb-3">Seja bem-vindo(a) à Loja do Emagrify</h1>
+
+      <p className="text-green-700 text-xs mb-6">
+        🔒 Seus dados estão protegidos.
+      </p>
+
+      {/* ====================================== */}
+      {/* ETAPA 1 — IDENTIFICAR EMAIL/TELEFONE */}
+      {/* ====================================== */}
 
       {step === 1 && (
         <form
@@ -118,6 +145,10 @@ export default function LoginRegister() {
           </button>
         </form>
       )}
+
+      {/* ====================================== */}
+      {/* ETAPA 2 — CADASTRO */}
+      {/* ====================================== */}
 
       {step === 2 && (
         <form
