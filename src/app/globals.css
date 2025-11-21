@@ -107,3 +107,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================= */
+/*     CORES PERSONALIZADAS      */
+/* ============================= */
+
+:root {
+  /* Cor da barra superior e botoes */
+  --header-top-bg: #99CD85;
+
+  /* Cor do fundo geral do site */
+  --site-background: #7FA653;
+}
+
+/* Aplica o fundo padrão do site */
+body {
+  background-color: var(--site-background) !important;
+}
+
+/* Aplica a cor da barra superior (aquela parte destacada na imagem) */
+.top-banner,
+header .bg-gradient-to-r {
+  background-color: var(--header-top-bg) !important;
+  background-image: none !important;
+}
