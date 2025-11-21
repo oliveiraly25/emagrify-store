@@ -1,104 +1,113 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { User, ShoppingCart, Heart, Menu, X } from "lucide-react";
-import supabase from "@/lib/supabaseClient";
+import Link from 'next/link';
+import { Search, ShoppingCart, User, Heart, Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { CATEGORIES } from '@/lib/constants';
+import supabase from '@/lib/supabaseClient';
+
+type UserRole = 'admin' | 'user' | null;
 
 export default function Header() {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const [openMenu, setOpenMenu] = useState(false);
+  const router = useRouter();
 
-  // 🔥 Carregar usuário + perfil automaticamente
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [role, setRole] = useState<UserRole>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
   useEffect(() => {
-    async function loadUser() {
-      const { data: auth } = await supabase.auth.getUser();
-      if (auth?.user) {
-        setUser(auth.user);
+    async function loadAuth() {
+      // pega usuário logado
+      const { data: authData } = await supabase.auth.getUser();
 
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", auth.user.id)
+      if (authData?.user) {
+        
+        // busca o perfil
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authData.user.id)
           .maybeSingle();
 
-        setProfile(profileData);
+        if (profile?.role === 'admin') {
+          setRole('admin');
+        } else {
+          setRole('user'); // usuário comum
+        }
+      } else {
+        setRole(null);
       }
+
+      setAuthChecked(true);
     }
 
-    // Primeiro carregamento
-    loadUser();
-
-    // Atualiza automaticamente quando login/logout acontecer
-    supabase.auth.onAuthStateChange(() => {
-      loadUser();
-    });
+    loadAuth();
   }, []);
 
-  // 🔥 Logout
-  async function logout() {
+  const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    window.location.href = "/";
-  }
+    setRole(null);
+    router.push('/');
+  };
 
   return (
-    <header className="w-full bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header className="sticky top-0 z-50 bg-white shadow-md">
+      
+      {/* tudo igual daqui pra baixo */}
+      
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between gap-4">
 
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center font-bold">
-            E
-          </div>
-          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">
-            Emagrify Store
-          </span>
-        </Link>
-
-        {/* ÍCONES */}
-        <div className="flex items-center gap-4">
-
-          {/* FAVORITOS */}
-          <Heart className="w-6 h-6 cursor-pointer text-gray-700" />
-
-          {/* CARRINHO */}
-          <ShoppingCart className="w-6 h-6 cursor-pointer text-gray-700" />
-
-          {/* 🔥 SE ESTIVER LOGADO → MOSTRA MENU DO USUÁRIO */}
-          {user && profile ? (
-            <div className="relative group">
-              <button className="flex items-center gap-2 bg-[#63783D] text-white px-4 py-2 rounded-full">
-                <User className="w-4 h-4" />
-                {profile.full_name?.split(" ")[0] ?? "Conta"}
-              </button>
-
-              {/* Dropdown */}
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-xl p-4 w-48 hidden group-hover:block">
-                <p className="font-semibold mb-2">{profile.full_name}</p>
-
-                <Link href="/profile" className="block py-1 hover:text-pink-600">Minha conta</Link>
-                <Link href="/pedidos" className="block py-1 hover:text-pink-600">Meus pedidos</Link>
-                <Link href="/pontos" className="block py-1 hover:text-pink-600">Meus pontos</Link>
-
-                <button
-                  onClick={logout}
-                  className="mt-3 w-full text-left text-red-500"
+          {/* Botões de Login / Usuário */}
+          {authChecked && (
+            <>
+              {!role && (
+                <Link
+                  href="/login"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2 bg-[#63783D] text-white rounded-full hover:scale-105 transition-transform"
                 >
-                  Sair
-                </button>
-              </div>
-            </div>
-          ) : (
-            /* 🔥 SE NÃO ESTIVER LOGADO → BOTÃO ENTRAR/REGISTRAR */
-            <Link
-              href="/login"
-              className="bg-[#63783D] text-white px-4 py-2 rounded-full hover:opacity-90"
-            >
-              Entrar / Registrar
-            </Link>
+                  <User className="w-4 h-4" />
+                  <span className="text-sm font-medium">Entrar / Registrar</span>
+                </Link>
+              )}
+
+              {role === 'user' && (
+                <>
+                  <Link
+                    href="/profile"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full hover:scale-105 transition-transform"
+                  >
+                    <User className="w-4 h-4" />
+                    Minha Conta
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full hover:scale-105 transition-transform"
+                  >
+                    Sair
+                  </button>
+                </>
+              )}
+
+              {role === 'admin' && (
+                <>
+                  <Link
+                    href="/admin"
+                    className="hidden sm:flex px-4 py-2 bg-blue-600 text-white rounded-full hover:scale-105 transition-transform"
+                  >
+                    Painel Admin
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="hidden sm:flex px-4 py-2 bg-red-500 text-white rounded-full hover:scale-105 transition-transform"
+                  >
+                    Sair
+                  </button>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
