@@ -114,7 +114,7 @@
 
 :root {
   /* Cor da barra superior e botoes */
-  --header-top-bg: #99CD85;
+  --header-top-bg: #000000;
 
   /* Cor do fundo geral do site */
   --site-background: #CFE0BC;
