@@ -9,23 +9,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [allowed, setAllowed] = useState<boolean | null>(null);
 
   useEffect(() => {
-    async function checkAdmin() {
-      // 1. Verifica usuário logado
-      const { data: userData } = await supabase.auth.getUser();
+    async function validate() {
+      // Verifica usuário logado
+      const { data: session } = await supabase.auth.getUser();
 
-      if (!userData?.user) {
+      if (!session?.user) {
         router.push("/login");
         return;
       }
 
-      // 2. Busca o perfil no Supabase
+      const userId = session.user.id;
+
+      // Busca perfil
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("id", userData.user.id)
+        .eq("id", userId)
         .single();
 
-      // 3. Bloqueia se não for admin
+      // Bloqueia se não for admin
       if (!profile || profile.role !== "admin") {
         router.push("/");
         return;
@@ -34,14 +36,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setAllowed(true);
     }
 
-    checkAdmin();
+    validate();
   }, [router]);
 
   if (allowed === null) {
     return (
-      <p className="text-center mt-10 text-gray-600">
-        Verificando permissões...
-      </p>
+      <div className="w-full h-screen flex items-center justify-center text-white">
+        Verificando permissão...
+      </div>
     );
   }
 
