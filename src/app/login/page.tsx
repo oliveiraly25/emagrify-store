@@ -71,9 +71,10 @@ export default function LoginPage() {
         {/* 🔥 AQUI ESTÁ O BOTÃO DE REGISTRAR */}
         <p className="text-center text-sm mt-4">
           Não tem conta?{' '}
-          <a href="/login/register" className="text-pink-600 hover:underline">
-            Criar conta
-          </a>
+         <a href="/register" className="text-pink-600 hover:underline">
+  Criar conta
+</a>
+
         </p>
       </form>
     </div>
