@@ -131,3 +131,7 @@ header .bg-gradient-to-r {
   background-color: var(--header-top-bg) !important;
   background-image: none !important;
 }
+/* Torna o fundo do header preto */
+header {
+  background-color: #000000 !important;
+}
