@@ -34,15 +34,17 @@ export default function Header() {
 
     load();
 
-    // escuta login / logout (SEM LOOP INFINITO)
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-        setProfile(null);
+    // escuta login / logout
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+          setProfile(null);
+        }
       }
-    });
+    );
 
     return () => {
       listener.subscription.unsubscribe();
@@ -105,7 +107,7 @@ export default function Header() {
               {/* SE NÃO ESTIVER LOGADO */}
               {!user && (
                 <Link
-                  href="/login"
+                  href="/login-auth"
                   className="px-4 py-2 rounded-full bg-[#63783D] text-white font-medium hidden sm:block"
                 >
                   Entrar / Registrar
@@ -139,7 +141,10 @@ export default function Header() {
                     </Link>
 
                     {profile?.role === "admin" && (
-                      <Link href="/admin" className="block py-1 text-blue-600 font-semibold">
+                      <Link
+                        href="/admin"
+                        className="block py-1 text-blue-600 font-semibold"
+                      >
                         Painel Admin
                       </Link>
                     )}
