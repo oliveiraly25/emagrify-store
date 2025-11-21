@@ -3,42 +3,63 @@
 import Link from 'next/link';
 import { Search, ShoppingCart, User, Heart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { CATEGORIES } from '@/lib/constants';
+import supabase from '@/lib/supabaseClient';
 
-// Função para ler cookie no navegador
-function getCookie(name: string) {
-  if (typeof document === "undefined") return null;
-
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift();
-  return null;
-}
+type UserRole = 'admin' | 'user' | null;
 
 export default function Header() {
+  const router = useRouter();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [role, setRole] = useState<UserRole>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
-  // Detecta automaticamente se está logado como admin
+  // 🔍 Carrega usuário logado + role no Supabase
   useEffect(() => {
-    const token = getCookie("admintoken");
-    if (token === "admin-autorizado") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
+    async function loadAuth() {
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+
+        if (!userData?.user) {
+          setRole(null);
+          setAuthChecked(true);
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', userData.user.id)
+          .maybeSingle();
+
+        if (profile?.role === 'admin') {
+          setRole('admin');
+        } else {
+          setRole('user');
+        }
+      } catch (err) {
+        console.error('Erro ao carregar autenticação:', err);
+        setRole(null);
+      } finally {
+        setAuthChecked(true);
+      }
     }
+
+    loadAuth();
   }, []);
 
-  // Função de logout
-  const handleLogout = () => {
-    document.cookie = "admintoken=; Max-Age=0; path=/;";
-    window.location.reload();
+  // 🚪 Logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setRole(null);
+    router.push('/');
   };
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
-
       {/* Top Bar - Promoção */}
       <div className="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 text-white py-2">
         <div className="container mx-auto px-4 text-center text-sm font-medium">
@@ -49,7 +70,6 @@ export default function Header() {
       {/* Main Header */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
-
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
@@ -78,64 +98,79 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-3 sm:gap-4">
-
             {/* Mobile Search */}
             <button className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors">
               <Search className="w-5 h-5 text-gray-700" />
             </button>
 
             {/* Wishlist */}
-            <a
-              href="#"
-              className="hidden sm:flex p-2 hover:bg-gray-100 rounded-full transition-colors relative"
-            >
+            <button className="hidden sm:flex p-2 hover:bg-gray-100 rounded-full transition-colors relative">
               <Heart className="w-5 h-5 text-gray-700" />
               <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 3
               </span>
-            </a>
+            </button>
 
             {/* Cart */}
-            <a
-              href="#"
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
-            >
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
               <ShoppingCart className="w-5 h-5 text-gray-700" />
               <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 2
               </span>
-            </a>
+            </button>
 
-            {/* ---------------------------- */}
-            {/* BOTÕES AUTOMÁTICOS AQUI */}
-            {/* ---------------------------- */}
-
-            {!isAdmin && (
-              <Link
-                href="/login"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white rounded-full hover:scale-105 transition-transform"
-              >
-                <User className="w-4 h-4" />
-                <span className="text-sm font-medium">Entrar</span>
-              </Link>
-            )}
-
-            {isAdmin && (
+            {/* --------- BOTÕES DE LOGIN / CONTA / ADMIN --------- */}
+            {/* Enquanto não terminou de checar, mostra nada pra não piscar */}
+            {authChecked && (
               <>
-                <Link
-                  href="/admin"
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:scale-105 transition-transform"
-                >
-                  <User className="w-4 h-4" />
-                  <span className="text-sm font-medium">Painel Admin</span>
-                </Link>
+                {/* Não logado → Entrar / Registrar (tela única) */}
+                {!role && (
+                  <Link
+                    href="/login"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white rounded-full hover:scale-105 transition-transform"
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium">Entrar / Registrar</span>
+                  </Link>
+                )}
 
-                <button
-                  onClick={handleLogout}
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full hover:scale-105 transition-transform"
-                >
-                  <span className="text-sm font-medium">Sair</span>
-                </button>
+                {/* Usuário comum logado */}
+                {role === 'user' && (
+                  <>
+                    <Link
+                      href="/profile"
+                      className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full hover:scale-105 transition-transform"
+                    >
+                      <User className="w-4 h-4" />
+                      <span className="text-sm font-medium">Minha conta</span>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full hover:scale-105 transition-transform"
+                    >
+                      <span className="text-sm font-medium">Sair</span>
+                    </button>
+                  </>
+                )}
+
+                {/* Admin logado */}
+                {role === 'admin' && (
+                  <>
+                    <Link
+                      href="/admin"
+                      className="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:scale-105 transition-transform"
+                    >
+                      <User className="w-4 h-4" />
+                      <span className="text-sm font-medium">Painel Admin</span>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full hover:scale-105 transition-transform"
+                    >
+                      <span className="text-sm font-medium">Sair</span>
+                    </button>
+                  </>
+                )}
               </>
             )}
 
@@ -150,7 +185,6 @@ export default function Header() {
                 <Menu className="w-6 h-6 text-gray-700" />
               )}
             </button>
-
           </div>
         </div>
 
@@ -196,7 +230,6 @@ export default function Header() {
           </ul>
         </div>
       </nav>
-
     </header>
   );
 }
