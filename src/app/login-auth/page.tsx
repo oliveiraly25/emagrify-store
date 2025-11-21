@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginAuth() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [showSenha, setShowSenha] = useState(false);
+
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -28,7 +31,6 @@ export default function LoginAuth() {
       return;
     }
 
-    // sucesso
     router.push("/");
   }
 
@@ -49,14 +51,25 @@ export default function LoginAuth() {
           className="border p-3 rounded-lg"
         />
 
-        <input
-          type="password"
-          placeholder="Sua senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-          className="border p-3 rounded-lg"
-        />
+        {/* CAMPO DE SENHA COM MOSTRAR/OCULTAR */}
+        <div className="relative">
+          <input
+            type={showSenha ? "text" : "password"}
+            placeholder="Sua senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+            className="border p-3 rounded-lg w-full"
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowSenha(!showSenha)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
+          >
+            {showSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
 
         {erro && <p className="text-red-500 text-sm text-center">{erro}</p>}
 
