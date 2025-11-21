@@ -107,24 +107,6 @@ const handleUpdate = async () => {
     <div className="max-w-xl mx-auto mt-10 bg-white p-6 shadow-xl rounded-2xl">
       <h1 className="text-3xl font-bold text-center mb-6">Meu Perfil</h1>
 
-      <div className="flex flex-col items-center mb-6">
-        <img
-          src={
-            avatar ||
-            "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-          }
-          alt="Foto de perfil"
-          className="w-28 h-28 rounded-full object-cover border shadow"
-        />
-        <input
-          type="text"
-          placeholder="URL da foto de perfil"
-          className="w-full border p-2 mt-3 rounded"
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-        />
-      </div>
-
       {error && (
         <p className="text-red-600 text-sm mb-4">{error}</p>
       )}
