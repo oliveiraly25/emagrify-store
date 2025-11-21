@@ -7,11 +7,7 @@ export const metadata: Metadata = {
   description: "Loja oficial Emagrify",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <body>{children}</body>
