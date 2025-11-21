@@ -1,3 +1,4 @@
+// src/app/admin/layout.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     async function checkRole() {
-      // 1. Verifica usuário logado
+      // Verifica login
       const { data: userData } = await supabase.auth.getUser();
 
       if (!userData?.user) {
@@ -18,22 +19,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return;
       }
 
-      const userId = userData.user.id;
-
-      // 2. Busca o perfil no Supabase
+      // Busca role do usuário
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("id", userId)
+        .eq("id", userData.user.id)
         .single();
 
-      // 3. Se o perfil não existir, nega acesso
-      if (!profile) {
+      // Se não existir perfil → bloqueia
+      if (!profile?.role) {
         router.push("/");
         return;
       }
 
-      // 4. Somente ADMIN entra
+      // Se não for admin → bloqueia
       if (profile.role !== "admin") {
         router.push("/");
         return;
@@ -44,14 +43,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     checkRole();
-  }, [router]);
+  }, []);
 
   if (allowed === null) {
-    return (
-      <div className="w-full text-center mt-10 text-gray-600">
-        Verificando permissões...
-      </div>
-    );
+    return <div style={{ padding: 20 }}>Carregando permissões...</div>;
   }
 
   return <>{children}</>;
