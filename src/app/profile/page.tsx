@@ -118,4 +118,4 @@ export default function ProfilePage() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-        </di
+       </div>
