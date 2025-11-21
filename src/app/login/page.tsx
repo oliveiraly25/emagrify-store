@@ -1,72 +1,80 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import supabase from '@/lib/supabaseClient';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
 
-  async function handleLogin(e) {
+  async function handleLogin(e: any) {
     e.preventDefault();
-    setErro("");
+    setErro('');
+    setCarregando(true);
 
-    const resposta = await fetch("/api/admin-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
     });
 
-    const data = await resposta.json();
-
-    if (data.ok) {
-      window.location.href = "/admin";
-    } else {
-      setErro("Email ou senha incorretos");
+    if (error) {
+      setErro(error.message);
+      setCarregando(false);
+      return;
     }
+
+    router.push('/admin');
   }
 
   return (
-    <div style={{ maxWidth: "400px", margin: "80px auto", padding: "20px" }}>
-      <h1 style={{ fontSize: "28px", marginBottom: "20px" }}>Entrar</h1>
+    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center">Entrar</h1>
 
       <form onSubmit={handleLogin}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 15 }}
-        />
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+            required
+          />
+        </div>
 
-        <label>Senha:</label>
-        <input
-          type="password"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 15 }}
-        />
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Senha:</label>
+          <input
+            type="password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+            required
+          />
+        </div>
 
         {erro && (
-          <p style={{ color: "red", marginBottom: 10 }}>{erro}</p>
+          <p className="text-red-600 text-sm mb-2">{erro}</p>
         )}
 
         <button
           type="submit"
-          style={{
-            width: "100%",
-            padding: 12,
-            background:
-              "linear-gradient(to right, var(--gradient-start), var(--gradient-end))",
-            color: "#fff",
-            border: "none",
-            fontSize: "16px",
-            cursor: "pointer",
-            borderRadius: "6px",
-          }}
+          className="w-full bg-gradient-to-r from-pink-300 to-blue-300 py-3 rounded font-semibold"
         >
-          Entrar
+          {carregando ? 'Entrando...' : 'Entrar'}
         </button>
+
+        {/* 🔥 AQUI ESTÁ O BOTÃO DE REGISTRAR */}
+        <p className="text-center text-sm mt-4">
+          Não tem conta?{' '}
+          <a href="/login/register" className="text-pink-600 hover:underline">
+            Criar conta
+          </a>
+        </p>
       </form>
     </div>
   );
