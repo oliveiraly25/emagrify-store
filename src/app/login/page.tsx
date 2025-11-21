@@ -90,10 +90,28 @@ export default function LoginRegister() {
       role: "user",
     });
 
-    alert("Conta criada com sucesso!");
+   // salva dados no perfil
+await supabase.from("profiles").insert({
+  id: data.user?.id,
+  full_name: `${nome} ${sobrenome}`,
+  email: email,
+  phone: telefone,
+  age: idade,
+  gender: genero,
+  role: "user",
+});
 
-    // Redireciona corretamente para login
-    window.location.href = "/login";
+alert("Conta criada com sucesso!");
+
+// 🔥 Login automático após registrar
+await supabase.auth.signInWithPassword({
+  email,
+  password: senha,
+});
+
+// 🔥 Redireciona para HOME logado
+window.location.href = "/";
+
   }
 
   return (
