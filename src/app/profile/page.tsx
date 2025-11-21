@@ -6,10 +6,8 @@ import supabase from "@/lib/supabaseClient";
 
 type ProfileRow = {
   id: string;
-  name: string | null;
+  full_name: string | null;
   phone: string | null;
-  bio: string | null;
-  avatar_url: string | null;
   email?: string | null;
   points?: number | null;
   created_at?: string | null;
@@ -19,10 +17,9 @@ export default function ProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<ProfileRow | null>(null);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [bio, setBio] = useState("");
-  const [avatar, setAvatar] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -54,41 +51,39 @@ export default function ProfilePage() {
       }
 
       setProfile(p);
-      setName(p.name ?? "");
+      setName(p.full_name ?? "");
       setPhone(p.phone ?? "");
-      setBio(p.bio ?? "");
-      setAvatar(p.avatar_url ?? "");
       setLoading(false);
     };
 
     load();
   }, [router]);
 
-const handleUpdate = async () => {
-  if (!profile) return;
-  setError("");
+  const handleUpdate = async () => {
+    if (!profile) return;
+    setError("");
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        full_name: name,
+        phone: phone,
+      })
+      .eq("id", profile.id);
+
+    if (error) {
+      setError("Erro ao atualizar perfil.");
+      return;
+    }
+
+    setProfile({
+      ...profile,
       full_name: name,
-      phone: phone,
-    })
-    .eq("id", profile.id);
+      phone,
+    });
 
-  if (error) {
-    setError("Erro ao atualizar perfil.");
-    return;
-  }
-
-  setProfile({
-    ...profile,
-    full_name: name,
-    phone,
-  });
-
-  alert("Perfil atualizado com sucesso!");
-};
+    alert("Perfil atualizado com sucesso!");
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -112,6 +107,7 @@ const handleUpdate = async () => {
       )}
 
       <div className="space-y-4">
+
         <div>
           <p className="text-sm text-gray-600">Nome completo</p>
           <input
@@ -127,16 +123,6 @@ const handleUpdate = async () => {
             className="w-full border p-2 rounded"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <p className="text-sm text-gray-600">Bio</p>
-          <textarea
-            className="w-full border p-2 rounded"
-            rows={3}
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
           />
         </div>
 
