@@ -9,8 +9,10 @@ export default function LoginRegister() {
 
   const [step, setStep] = useState<1 | 2>(1);
 
+  // Campo da primeira etapa
   const [identifier, setIdentifier] = useState("");
 
+  // Campos de cadastro
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [idade, setIdade] = useState("");
@@ -25,7 +27,7 @@ export default function LoginRegister() {
   const [carregando, setCarregando] = useState(false);
 
   // ===================================================
-  // ETAPA 1 → Identificar se o email já possui conta
+  // ETAPA 1 → Verificar se já existe conta com esse email
   // ===================================================
 
   async function handleIdentifierCheck(e: any) {
@@ -35,25 +37,21 @@ export default function LoginRegister() {
 
     const inputEmail = identifier.toLowerCase().trim();
 
-    // 🔍 Lista usuários do Auth (método recomendado)
-    const { data: users, error: usersError } =
-      await supabase.auth.admin.listUsers();
+    // 🔍 Verifica na TABELA PROFILES se esse email já existe
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("email", inputEmail)
+      .maybeSingle();
 
-    if (usersError) {
-      console.error(usersError);
-    }
-
-    const existingUser = users?.users.find(
-      (u: any) => u.email?.toLowerCase() === inputEmail
-    );
-
-    // Se já existe → ir para login autenticado
-    if (existingUser) {
-      router.push("/login-auth");
+    // Se já existe perfil com esse email → vai para tela de login real
+    if (data && !error) {
+      setCarregando(false);
+      router.push(`/login-auth?email=${encodeURIComponent(inputEmail)}`);
       return;
     }
 
-    // Senão → ir para criar conta
+    // Se NÃO existe → vai para etapa 2 (cadastro)
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
@@ -114,16 +112,17 @@ export default function LoginRegister() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-
-      {/* 🚀 TÍTULO NOVO */}
-      <h1 className="text-2xl font-bold mb-3">Seja bem-vindo(a) à Loja do Emagrify</h1>
+      {/* 🚀 Título novo */}
+      <h1 className="text-2xl font-bold mb-3">
+        Seja bem-vindo(a) à Loja do Emagrify
+      </h1>
 
       <p className="text-green-700 text-xs mb-6">
         🔒 Seus dados estão protegidos.
       </p>
 
       {/* ====================================== */}
-      {/* ETAPA 1 — IDENTIFICAR EMAIL/TELEFONE */}
+      {/* ETAPA 1 — IDENTIFICAR EMAIL/TELEFONE   */}
       {/* ====================================== */}
 
       {step === 1 && (
@@ -147,7 +146,7 @@ export default function LoginRegister() {
       )}
 
       {/* ====================================== */}
-      {/* ETAPA 2 — CADASTRO */}
+      {/* ETAPA 2 — CADASTRO                     */}
       {/* ====================================== */}
 
       {step === 2 && (
