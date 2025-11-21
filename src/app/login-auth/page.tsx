@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function LoginAuth() {
+function LoginAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -115,5 +115,13 @@ export default function LoginAuth() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function LoginAuth() {
+  return (
+    <Suspense fallback={<p className="text-center mt-10">Carregando...</p>}>
+      <LoginAuthContent />
+    </Suspense>
   );
 }
