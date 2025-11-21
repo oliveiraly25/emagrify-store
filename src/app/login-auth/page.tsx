@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function LoginAuth() {
+function LoginAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -16,7 +16,7 @@ export default function LoginAuth() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  // Preenche o email vindo da tela anterior
+  // Preenche o email vindo da URL
   useEffect(() => {
     const emailFromUrl = searchParams.get("email");
     if (emailFromUrl) {
@@ -94,5 +94,13 @@ export default function LoginAuth() {
         </p>
       </form>
     </div>
+  );
+}
+
+export default function LoginAuthPage() {
+  return (
+    <Suspense fallback={<div className="text-center mt-10">Carregando...</div>}>
+      <LoginAuthContent />
+    </Suspense>
   );
 }
