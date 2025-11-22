@@ -18,7 +18,7 @@ export default function Home() {
         <HeroBanner />
       </section>
 
-      {/* Features (AGORA PRETO COM TEXTO BRANCO) */}
+      {/* Features */}
       <section className="bg-gradient-to-r from-[#CFE0BC] to-[#CFE0BC] text-black py-8 sm:py-12 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
@@ -71,7 +71,6 @@ export default function Home() {
                   {category.id === 'acessorios' && '⌚'}
                   {category.id === 'calcados' && '👟'}
                   {category.id === 'suplementos' && '💪'}
-
                 </span>
               </div>
               <h3 className="font-semibold text-gray-900 text-xs sm:text-sm group-hover:text-pink-600 transition-colors">
@@ -82,14 +81,13 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Featured Products */}
       <section className="container mx-auto px-4 py-8 sm:py-12">
         <div className="flex items-center justify-between mb-6">
-<h3 className="font-semibold text-white text-sm mb-1">
-<p className="text-xs text-white/80">
+          <h2 className="text-2xl sm:text-3xl font-bold text-black">
             Produtos em Destaque
           </h2>
+
           <Link
             href="/produtos"
             className="text-black hover:text-black font-medium text-sm sm:text-base"
@@ -97,6 +95,7 @@ export default function Home() {
             Ver Todos →
           </Link>
         </div>
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -105,7 +104,7 @@ export default function Home() {
       </section>
 
       {/* New Arrivals */}
-<section className="bg-[#CFE0BC] py-8 sm:py-12">
+      <section className="bg-[#CFE0BC] py-8 sm:py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -118,6 +117,7 @@ export default function Home() {
               Ver Todas →
             </Link>
           </div>
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {newProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -128,14 +128,15 @@ export default function Home() {
 
       {/* Points Banner */}
       <section className="container mx-auto px-4 py-8 sm:py-12">
-<div className="bg-gradient-to-r from-[#CFE0BC] to-[#CFE0BC] rounded-3xl p-8 sm:p-12 text-center text-black font-bold shadow-2xl">
+        <div className="bg-gradient-to-r from-[#CFE0BC] to-[#CFE0BC] rounded-3xl p-8 sm:p-12 text-center text-black font-bold shadow-2xl">
           <Gift className="w-16 h-16 mx-auto mb-4" />
+
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Programa de Pontos Emagrify
           </h2>
+
           <p className="text-lg sm:text-xl mb-6 max-w-2xl mx-auto">
-            Ganhe pontos a cada compra e troque por descontos incríveis!
-            <br />
+            Ganhe pontos a cada compra e troque por descontos incríveis! <br />
             <span className="font-semibold">
               100 pontos = R$ 10,00 de desconto
             </span>
@@ -149,6 +150,7 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-8">
             O Que Nossos Clientes Dizem
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
@@ -186,10 +188,12 @@ export default function Home() {
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
+
                   <div>
                     <h4 className="font-semibold text-gray-900">
                       {testimonial.name}
                     </h4>
+
                     <div className="flex gap-1">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <span key={i} className="text-yellow-400">
@@ -199,6 +203,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
                 <p className="text-gray-600">{testimonial.comment}</p>
               </div>
             ))}
@@ -209,5 +214,3 @@ export default function Home() {
     </div>
   );
 }
-
-      
