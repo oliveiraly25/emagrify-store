@@ -136,10 +136,10 @@ export default function Header() {
               {user && (
                 <div className="relative" ref={menuRef}>
                   <div
-                    className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer"
+                    className="w-10 h-10 bg-black rounded-full flex items-center justify-center cursor-pointer"
                     onClick={() => setMenuOpen(!menuOpen)}
                   >
-                    <User className="text-black" />
+                    <User className="text-white" />
                   </div>
 
                   {/* MENU */}
