@@ -83,7 +83,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3">
           <span
             className="text-5xl tracking-wide"
-            style={{ fontFamily: "bold", color: "#000000", fontWeight: 700 }}
+            style={{ fontFamily: "arialbold", color: "#000000", fontWeight: 700 }}
           >
             Emagrify
           </span>
@@ -96,11 +96,7 @@ export default function Header() {
     <input
       type="text"
       placeholder="Buscar produtos, marcas e muito mais..."
-      className="
-        w-full px-4 py-3 pr-12 rounded-full
-        bg-black dark:bg-black
-        text-white placeholder-white
-        font-semibold
+     className="px-4 py-2 rounded-full bg-white text-black border border-black font-medium hidden sm:block"
       "
     />
 
