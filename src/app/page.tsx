@@ -53,7 +53,7 @@ export default function Home() {
           </h2>
           <Link
             href="/categorias"
-            className="text-pink-600 hover:text-pink-700 font-medium text-sm sm:text-base"
+            className="text-black hover:text-black font-medium text-sm sm:text-base"
           >
             Ver Todas →
           </Link>
@@ -113,7 +113,7 @@ export default function Home() {
             </h2>
             <Link
               href="/novidades"
-              className="text-pink-600 hover:text-pink-700 font-medium text-sm sm:text-base"
+              className="text-black hover:text-black font-medium text-sm sm:text-base"
             >
               Ver Todas →
             </Link>
