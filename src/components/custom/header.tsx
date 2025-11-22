@@ -71,7 +71,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-black dark:bg-[#111] shadow-md transition-all">
       {/* Top Banner */}
-      <div className="bg-black dark:bg-[#111] text-white py-2 text-center text-sm font-semibold">
+      <div className="bg-grey dark:bg-grey text-black py-2 text-center text-sm font-semibold">
         Envios para todo o Brasil • Ganhe 100 pontos no primeiro pedido!
       </div>
 
@@ -93,7 +93,7 @@ export default function Header() {
             <input
               type="text"
               placeholder="Buscar produtos, marcas e muito mais..."
-              className="w-full px-4 py-3 pr-12 rounded-full bg-black dark:bg-black text-black font-semibold"
+              className="w-full px-4 py-3 pr-12 rounded-full bg-white dark:bg-white text-white font-semibold"
             />
             <button className="absolute right-3 top-1/2 -translate-y-1/2 text-white dark:text-white">
               <Search />
@@ -138,7 +138,7 @@ export default function Header() {
 
                       {/* SAUDAÇÃO */}
                       <div className="mb-4">
-                        <p className="text-lg font-bold">
+                        <p className="text-black font-bold">
                           Olá, {profile?.first_name}
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-300">
