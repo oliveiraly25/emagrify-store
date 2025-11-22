@@ -135,3 +135,23 @@ header .bg-gradient-to-r {
 header {
   background-color: #000000 !important;
 }
+@font-face {
+  font-family: "Canela";
+  src: url("/fonts/canela_roman.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Canela";
+  src: url("/fonts/canela_light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Canela";
+  src: url("/fonts/canela_bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
