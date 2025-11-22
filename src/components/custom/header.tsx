@@ -94,23 +94,23 @@ export default function Header() {
   <div className="
     relative w-full 
     rounded-full 
-    bg-black dark:bg-black
+    bg-white dark:bg-black
     border border-white
     transition-all
   ">
     <input
       type="text"
-      placeholder="Buscar produtos"
+      placeholder="Buque por produtos em todo o site"
       className="
         w-full px-4 py-3 pr-12 
         rounded-full 
-        bg-black dark:bg-black
-        text-white 
+        bg-[#222] dark:bg-white
+        text-black 
         placeholder-white
         font-semibold
       "
     />
-    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-white">
+    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#222] dark:text-white">
       <Search />
     </button>
   </div>
