@@ -56,7 +56,6 @@ export default function Header() {
     window.location.href = "/";
   }
 
-  // Fechar menu ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -73,12 +72,11 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-black dark:bg-[#111] shadow-md transition-all">
       {/* Top Banner */}
       <div className="bg-black dark:bg-[#111] text-white py-2 text-center text-sm font-semibold">
-        Envio para todo o Brasil • Ganhe 100 pontos no primeiro pedido!
+        Envios para todo o Brasil • Ganhe 100 pontos no primeiro pedido!
       </div>
 
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-3">
           <span
@@ -151,37 +149,37 @@ export default function Header() {
                       {/* Meus Pedidos */}
                       <Link
                         href="/pedidos"
-                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-[#63783D]"
+                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 text-black hover:text-green-600"
                       >
-                        <span>Meus pedidos</span>
-                        <ShoppingCart className="w-5 h-5" />
+                        <span className="text-black hover:text-green-600">Meus pedidos</span>
+                        <ShoppingCart className="w-5 h-5 text-black hover:text-green-600" />
                       </Link>
 
                       {/* Dados Pessoais */}
                       <Link
                         href="/profile"
-                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-[#63783D]"
+                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 text-black hover:text-green-600"
                       >
-                        <span>Dados pessoais</span>
-                        <User className="w-5 h-5" />
+                        <span className="text-black hover:text-green-600">Dados pessoais</span>
+                        <User className="w-5 h-5 text-black hover:text-green-600" />
                       </Link>
 
                       {/* Notificações */}
                       <Link
                         href="/notificacoes"
-                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-[#63783D]"
+                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 text-black hover:text-green-600"
                       >
-                        <span>Notificações</span>
-                        <Bell className="w-5 h-5" />
+                        <span className="text-black hover:text-green-600">Notificações</span>
+                        <Bell className="w-5 h-5 text-black hover:text-green-600" />
                       </Link>
 
                       {/* Meus Pontos */}
                       <Link
                         href="/pontos"
-                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-[#63783D]"
+                        className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 text-black hover:text-green-600"
                       >
-                        <span>Meus pontos</span>
-                        <span className="font-bold text-black dark:text-white">
+                        <span className="text-black hover:text-green-600">Meus pontos</span>
+                        <span className="font-bold text-black hover:text-green-600">
                           {profile?.points ?? 0}
                         </span>
                       </Link>
@@ -190,10 +188,10 @@ export default function Header() {
                       {profile?.role === "admin" && (
                         <Link
                           href="/admin"
-                          className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
+                          className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 text-black hover:text-green-600"
                         >
-                          <span>Painel Admin</span>
-                          <span className="font-bold text-black dark:text-white">★</span>
+                          <span className="text-black hover:text-green-600">Painel Admin</span>
+                          <span className="font-bold text-black hover:text-green-600">★</span>
                         </Link>
                       )}
 
