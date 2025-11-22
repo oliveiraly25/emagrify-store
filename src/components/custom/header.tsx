@@ -80,9 +80,13 @@ export default function Header() {
 
    {/* LOGO */}
 <Link href="/" className="flex items-center gap-3">
-  <span className="text-4xl font-extrabold tracking-wide" style={{ color: "#FFFFFF" }}>
-    Emagrify
-  </span>
+<span
+  className="text-4xl tracking-wide"
+  style={{ fontFamily: "Canela", color: "#FFFFFF", fontWeight: 700 }}
+>
+  Emagrify
+</span>
+
 </Link>
 
 
