@@ -78,18 +78,19 @@ export default function Header() {
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
 
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-3">
-          <span className="text-4xl font-extrabold tracking-wide text-#63783D">
-            Emagrify
-          </span>
-        </Link>
+   {/* LOGO */}
+<Link href="/" className="flex items-center gap-3">
+  <span className="text-4xl font-extrabold tracking-wide" style={{ color: "#FFFFFF" }}>
+    Emagrify
+  </span>
+</Link>
+
 
         {/* SEARCH */}
         <div className="hidden md:flex flex-1 max-w-xl mx-6">
           <div
             className="relative w-full rounded-full"
-            style={{ backgroundColor: "#BDBABB" }}
+            style={{ backgroundColor: "white" }}
           >
             <input
               type="text"
@@ -97,7 +98,7 @@ export default function Header() {
               className="w-full px-4 py-3 pr-12 rounded-full"
               style={{
                 backgroundColor: "black",
-                color: "#63783D",
+                color: "white",
                 fontWeight: "600",
               }}
             />
@@ -118,14 +119,15 @@ export default function Header() {
             <span className="text-sm text-gray-300">Carregando...</span>
           ) : (
             <>
-              {!user && (
-                <Link
-                  href="/login-auth"
-                  className="px-4 py-2 rounded-full bg-[#63783D] text-white font-medium hidden sm:block"
-                >
-                  Entrar / Registrar
-                </Link>
-              )}
+{!user && (
+  <Link
+    href="/login-auth"
+    className="px-4 py-2 rounded-full bg-black text-white font-medium hidden sm:block"
+  >
+    Entrar / Registrar
+  </Link>
+)}
+
 
               {user && (
                 <div className="relative" ref={menuRef}>
