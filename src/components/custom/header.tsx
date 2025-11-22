@@ -91,26 +91,34 @@ export default function Header() {
 
      {/* SEARCH */}
 <div className="hidden md:flex flex-1 max-w-xl mx-6">
-  <div className="
-    relative w-full 
-    rounded-full 
-    bg-white dark:bg-black
-    border border-white
-    transition-all
-  ">
+  <div
+    className="
+      relative w-full 
+      rounded-full 
+      bg-black dark:bg-white
+      border border-white dark:border-black
+      transition-all
+    "
+  >
     <input
       type="text"
-      placeholder="Buque por produtos em todo o site"
+      placeholder="Busque por produtos em todo o site"
       className="
         w-full px-4 py-3 pr-12 
         rounded-full 
         bg-[#222] dark:bg-white
-        text-black 
-        placeholder-white
+        text-black dark:text-white
+        placeholder-white dark:placeholder-black
         font-semibold
       "
     />
-    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#222] dark:text-white">
+
+    <button
+      className="
+        absolute right-3 top-1/2 -translate-y-1/2 
+        text-white dark:text-[#222]
+      "
+    >
       <Search />
     </button>
   </div>
