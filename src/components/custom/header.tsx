@@ -69,10 +69,10 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-black dark:bg-[#111] shadow-md transition-all">
+    <header className="sticky top-0 z-50 bg-white dark:bg-[#111] shadow-md transition-all">
       {/* Top Banner */}
-      <div className="bg-grey dark:bg-grey text-black py-2 text-center text-sm font-semibold">
-        Envios para todo o Brasil • Ganhe 100 pontos no primeiro pedido!
+      <div className="bg-grey dark:bg-grey text-black py-4 text-center text-sm font-semibold">
+               Ganhe 100 pontos no primeiro pedido!    •
       </div>
 
       {/* Main */}
@@ -80,10 +80,10 @@ export default function Header() {
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-3">
           <span
-            className="text-4xl tracking-wide"
-            style={{ fontFamily: "Canela", color: "#FFFFFF", fontWeight: 700 }}
+            className="text-7xl tracking-wide"
+            style={{ fontFamily: "bold", color: "#FFFFFF", fontWeight: 700 }}
           >
-            Emagrify
+            EMAGRIFY
           </span>
         </Link>
 
