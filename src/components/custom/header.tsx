@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingCart, Heart, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Search, ShoppingCart, Heart, User, Bell } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 import supabase from "@/lib/supabaseClient";
 
 export default function Header() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function load() {
@@ -52,6 +55,19 @@ export default function Header() {
     window.location.href = "/";
   }
 
+  // Fechar menu ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+
+    if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
   return (
     <header className="sticky top-0 z-50 bg-black shadow-md">
       {/* Top Banner */}
@@ -62,16 +78,14 @@ export default function Header() {
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
 
-        {/* LOGO — Agora bem grande */}
+        {/* LOGO */}
         <Link href="/" className="flex items-center gap-3">
-
-          {/* TEXTO EMAGRIFY BEM GRANDE */}
-          <span className="text-4xl font-extrabold tracking-wide text-white">
+          <span className="text-4xl font-extrabold tracking-wide text-#63783D">
             Emagrify
           </span>
         </Link>
 
-        {/* SEARCH — fundo #BDBABB com texto preto */}
+        {/* SEARCH */}
         <div className="hidden md:flex flex-1 max-w-xl mx-6">
           <div
             className="relative w-full rounded-full"
@@ -82,13 +96,12 @@ export default function Header() {
               placeholder="Buscar produtos, marcas e muito mais..."
               className="w-full px-4 py-3 pr-12 rounded-full"
               style={{
-                backgroundColor: "#BDBABB",
-                color: "black",
+                backgroundColor: "black",
+                color: "#63783D",
                 fontWeight: "600",
               }}
             />
 
-            {/* Lupa preta */}
             <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
               <Search />
             </button>
@@ -115,44 +128,70 @@ export default function Header() {
               )}
 
               {user && (
-                <div className="relative group">
-                  <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
+                <div className="relative" ref={menuRef}>
+                  {/* Ícone do usuário */}
+                  <div
+                    className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                  >
                     <User className="text-gray-700" />
                   </div>
 
-                  <div className="absolute right-0 mt-2 w-52 bg-white shadow-lg rounded-lg p-4 hidden group-hover:block">
-                    <p className="font-medium mb-3 text-black">
-                      Olá, {profile?.full_name || user.email.split("@")[0]}
-                    </p>
+                  {/* MENU — aparece somente ao clicar */}
+                  {menuOpen && (
+                    <div className="absolute right-0 mt-3 w-64 bg-white shadow-xl rounded-2xl p-4 border">
+                      {/* TÍTULO */}
+                      <p className="text-gray-800 font-semibold mb-4 text-base">
+                        Sua conta
+                      </p>
 
-                    <Link href="/profile" className="block py-1 hover:text-pink-600">
-                      Minha Conta
-                    </Link>
-
-                    <Link href="/pedidos" className="block py-1 hover:text-pink-600">
-                      Meus Pedidos
-                    </Link>
-
-                    <Link href="/pontos" className="block py-1 hover:text-pink-600">
-                      Meus Pontos
-                    </Link>
-
-                    {profile?.role === "admin" && (
+                      {/* Meus Pedidos */}
                       <Link
-                        href="/admin"
-                        className="block py-1 text-blue-600 font-semibold"
+                        href="/pedidos"
+                        className="flex items-center justify-between py-3 border-b text-gray-700 hover:text-pink-600"
                       >
-                        Painel Admin
+                        <span>Meus pedidos</span>
+                        <ShoppingCart className="w-5 h-5" />
                       </Link>
-                    )}
 
-                    <button
-                      onClick={handleLogout}
-                      className="mt-3 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                    >
-                      Sair
-                    </button>
-                  </div>
+                      {/* Dados Pessoais */}
+                      <Link
+                        href="/profile"
+                        className="flex items-center justify-between py-3 border-b text-gray-700 hover:text-pink-600"
+                      >
+                        <span>Dados pessoais</span>
+                        <User className="w-5 h-5" />
+                      </Link>
+
+                      {/* Notificações */}
+                      <Link
+                        href="/notificacoes"
+                        className="flex items-center justify-between py-3 border-b text-gray-700 hover:text-pink-600"
+                      >
+                        <span>Notificações</span>
+                        <Bell className="w-5 h-5" />
+                      </Link>
+
+                      {/* Meus Pontos */}
+                      <Link
+                        href="/pontos"
+                        className="flex items-center justify-between py-3 border-b text-gray-700 hover:text-pink-600"
+                      >
+                        <span>Meus pontos</span>
+                        <span className="font-bold text-pink-600">
+                          {profile?.points ?? 0}
+                        </span>
+                      </Link>
+
+                      {/* Sair */}
+                      <button
+                        onClick={handleLogout}
+                        className="mt-4 w-full py-3 bg-pink-600 text-white rounded-xl font-semibold hover:bg-pink-700 transition"
+                      >
+                        Sair
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </>
