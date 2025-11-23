@@ -48,7 +48,7 @@ export default function LoginPage() {
         "
       >
         {/* TÍTULO */}
-        <h1 className="text-center text-2xl font-bold mb-2 text-black dark:text-black">
+        <h1 className="text-center text-2xl font-bold mb-2 text-black dark:text-white">
           Entrar
         </h1>
 
@@ -104,7 +104,7 @@ export default function LoginPage() {
             className="
               w-full py-3 rounded-lg font-semibold transition
               bg-black text-white
-              dark:bg-[#CFE0BC] dark:text-black
+              dark:bg-[#CFE0BC] dark:text-#0d2417
             "
             type="submit"
           >
@@ -132,7 +132,7 @@ export default function LoginPage() {
           className="
             w-full py-3 rounded-lg font-semibold transition
             bg-black text-white
-            dark:bg-[#CFE0BC] dark:text-black
+            dark:bg-[#CFE0BC] dark:text-#0d2417
           "
         >
           Criar nova conta
