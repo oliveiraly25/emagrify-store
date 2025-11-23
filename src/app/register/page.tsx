@@ -111,19 +111,28 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Gênero */}
-        <label className="block text-sm font-medium mb-1">Gênero</label>
-        <select
-          required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        >
-          <option value="">Selecione...</option>
-          <option value="feminino">Feminino</option>
-          <option value="masculino">Masculino</option>
-          <option value="outro">Outro</option>
-        </select>
+{/* Gênero */}
+<label className="block text-sm font-medium mb-1 text-black dark:text-white">
+  Gênero
+</label>
+
+<select
+  required
+  className="
+    w-full border px-3 py-2 rounded-lg mb-4
+    bg-white text-black
+    dark:bg-[#222] dark:text-white
+    dark:[color-scheme:dark]
+  "
+  value={gender}
+  onChange={(e) => setGender(e.target.value)}
+>
+  <option value="">Selecione...</option>
+  <option value="feminino">Feminino</option>
+  <option value="masculino">Masculino</option>
+  <option value="outro">Outro</option>
+</select>
+
 
         {/* Idade */}
         <label className="block text-sm font-medium mb-1">Idade</label>
