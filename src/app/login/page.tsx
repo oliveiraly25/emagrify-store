@@ -10,7 +10,6 @@ export default function LoginRegister() {
   const [step, setStep] = useState<1 | 2>(1);
   const [identifier, setIdentifier] = useState("");
 
-  // Campos do cadastro
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [idade, setIdade] = useState("");
@@ -24,9 +23,6 @@ export default function LoginRegister() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  // ============================
-  // ETAPA 1 → Verificar e-mail
-  // ============================
   async function handleIdentifierCheck(e: any) {
     e.preventDefault();
     setErro("");
@@ -34,28 +30,22 @@ export default function LoginRegister() {
 
     const inputEmail = identifier.toLowerCase().trim();
 
-    // Verifica se já existe na tabela profiles
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("profiles")
       .select("id")
       .eq("email", inputEmail)
       .maybeSingle();
 
-    // Se JÁ existe conta → mandar para login-auth
-    if (data && !error) {
+    if (data) {
       router.push(`/login-auth?email=${encodeURIComponent(inputEmail)}`);
       return;
     }
 
-    // Se NÃO existe → ir para cadastro
     setEmail(inputEmail);
     setStep(2);
     setCarregando(false);
   }
 
-  // ============================
-  // ETAPA 2 → Criar conta
-  // ============================
   async function handleRegister(e: any) {
     e.preventDefault();
     setErro("");
@@ -73,7 +63,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Criar usuário no AUTH
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -85,7 +74,6 @@ export default function LoginRegister() {
       return;
     }
 
-    // Criar perfil na tabela profiles
     await supabase.from("profiles").insert({
       id: data.user?.id,
       full_name: `${nome} ${sobrenome}`,
@@ -96,7 +84,6 @@ export default function LoginRegister() {
       role: "user",
     });
 
-    // Login automático
     await supabase.auth.signInWithPassword({
       email,
       password: senha,
@@ -106,134 +93,135 @@ export default function LoginRegister() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-      <h1 className="text-2xl font-bold mb-3">
-        Seja bem-vindo(a) à Loja do Emagrify
-      </h1>
+    <div className="min-h-screen flex flex-col items-center justify-center
+    bg-[#F2F2F2] dark:bg-[#111] transition-colors px-4">
 
-      <p className="text-green-700 text-xs mb-6">🔒 Seus dados estão protegidos.</p>
+      <div className="w-full max-w-sm bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
 
-      {/* ===== ETAPA 1 ===== */}
-      {step === 1 && (
-        <form
-          onSubmit={handleIdentifierCheck}
-          className="w-full max-w-sm flex flex-col gap-4"
-        >
-          <input
-            type="text"
-            placeholder="Número de celular ou E-mail"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            className="border p-3 rounded-lg"
-            required
-          />
+        <h1 className="text-2xl font-bold">Seja bem-vindo(a) à Loja Emagrify</h1>
+        <p className="text-xs text-green-700">🔒 Seus dados estão protegidos.</p>
 
-          <button className="bg-black text-white py-3 rounded-lg font-semibold">
-            {carregando ? "Verificando..." : "CONTINUAR"}
-          </button>
-        </form>
-      )}
-
-      {/* ===== ETAPA 2 ===== */}
-      {step === 2 && (
-        <form
-          onSubmit={handleRegister}
-          className="w-full max-w-sm flex flex-col gap-4"
-        >
-          <h2 className="text-xl font-semibold mb-2">Criar Conta</h2>
-
-          <div className="flex gap-2">
+        {step === 1 && (
+          <form onSubmit={handleIdentifierCheck} className="flex flex-col gap-4">
             <input
               type="text"
-              placeholder="Nome"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              placeholder="Número de celular ou E-mail"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black"
               required
-              className="border p-3 rounded-lg w-1/2"
+            />
+
+            <button
+              className="py-3 rounded-lg font-semibold
+              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white transition"
+            >
+              {carregando ? "Verificando..." : "CONTINUAR"}
+            </button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={handleRegister} className="flex flex-col gap-4">
+
+            <h2 className="text-xl font-semibold mb-2">Criar Conta</h2>
+
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Nome"
+                className="border p-3 rounded-lg w-1/2 bg-white text-black"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="Sobrenome"
+                className="border p-3 rounded-lg w-1/2 bg-white text-black"
+                value={sobrenome}
+                onChange={(e) => setSobrenome(e.target.value)}
+                required
+              />
+            </div>
+
+            <input
+              type="number"
+              placeholder="Idade"
+              className="border p-3 rounded-lg bg-white text-black"
+              value={idade}
+              onChange={(e) => setIdade(e.target.value)}
+              required
+            />
+
+            <select
+              className="border p-3 rounded-lg bg-white text-black"
+              value={genero}
+              onChange={(e) => setGenero(e.target.value)}
+              required
+            >
+              <option value="">Selecione o gênero</option>
+              <option value="feminino">Feminino</option>
+              <option value="masculino">Masculino</option>
+              <option value="outro">Outro</option>
+            </select>
+
+            <input
+              type="email"
+              placeholder="E-mail"
+              className="border p-3 rounded-lg bg-gray-100 text-black"
+              value={email}
+              disabled
+            />
+
+            <input
+              type="email"
+              placeholder="Confirmar e-mail"
+              className="border p-3 rounded-lg bg-white text-black"
+              value={emailConfirm}
+              onChange={(e) => setEmailConfirm(e.target.value)}
+              required
             />
 
             <input
               type="text"
-              placeholder="Sobrenome"
-              value={sobrenome}
-              onChange={(e) => setSobrenome(e.target.value)}
+              placeholder="Telefone"
+              className="border p-3 rounded-lg bg-white text-black"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
               required
-              className="border p-3 rounded-lg w-1/2"
             />
-          </div>
 
-          <input
-            type="number"
-            placeholder="Idade"
-            value={idade}
-            onChange={(e) => setIdade(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          />
+            <input
+              type="password"
+              placeholder="Senha"
+              className="border p-3 rounded-lg bg-white text-black"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+            />
 
-          <select
-            value={genero}
-            onChange={(e) => setGenero(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          >
-            <option value="">Selecione o gênero</option>
-            <option value="feminino">Feminino</option>
-            <option value="masculino">Masculino</option>
-            <option value="outro">Outro</option>
-          </select>
+            <input
+              type="password"
+              placeholder="Confirmar senha"
+              className="border p-3 rounded-lg bg-white text-black"
+              value={senhaConfirm}
+              onChange={(e) => setSenhaConfirm(e.target.value)}
+              required
+            />
 
-          <input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            className="border p-3 rounded-lg bg-gray-100"
-            disabled
-          />
+            {erro && <p className="text-red-500 text-sm">{erro}</p>}
 
-          <input
-            type="email"
-            placeholder="Confirmar e-mail"
-            value={emailConfirm}
-            onChange={(e) => setEmailConfirm(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          />
-
-          <input
-            type="text"
-            placeholder="Telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          />
-
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          />
-
-          <input
-            type="password"
-            placeholder="Confirmar senha"
-            value={senhaConfirm}
-            onChange={(e) => setSenhaConfirm(e.target.value)}
-            required
-            className="border p-3 rounded-lg"
-          />
-
-          {erro && <p className="text-red-500 text-sm">{erro}</p>}
-
-          <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-semibold">
-            {carregando ? "Criando conta..." : "Registrar"}
-          </button>
-        </form>
-      )}
+            <button
+              className="py-3 rounded-lg font-semibold
+              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white transition"
+            >
+              {carregando ? "Criando conta..." : "Registrar"}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
