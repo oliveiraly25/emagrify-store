@@ -117,14 +117,17 @@ export default function LoginRegister() {
               placeholder="Número de celular ou E-mail"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              className="border p-3 rounded-lg bg-white text-black
-              dark:text-black dark:bg-white"
+              className="border p-3 rounded-lg bg-white text-black dark:text-black dark:bg-white"
               required
             />
 
+            {/* BOTÃO AJUSTADO */}
             <button
-              className="w-full py-3 rounded-lg font-semibold transition
-              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white"
+              className="
+                w-full py-3 rounded-lg font-semibold transition
+                bg-black text-white
+                dark:bg-[#CFE0BC] dark:text-black
+              "
             >
               {carregando ? "Verificando..." : "CONTINUAR"}
             </button>
@@ -223,9 +226,13 @@ export default function LoginRegister() {
 
             {erro && <p className="text-red-500 text-sm">{erro}</p>}
 
+            {/* BOTÃO AJUSTADO */}
             <button
-              className="w-full py-3 rounded-lg font-semibold transition
-              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white"
+              className="
+                w-full py-3 rounded-lg font-semibold transition
+                bg-black text-white
+                dark:bg-[#CFE0BC] dark:text-black
+              "
             >
               {carregando ? "Criando conta..." : "Registrar"}
             </button>
