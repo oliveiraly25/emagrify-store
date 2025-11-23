@@ -93,10 +93,7 @@ function LoginAuthContent() {
           </button>
         </form>
 
-        {/* Esqueceu a conta */}
-        <p className="text-center text-sm text-[#63783D] cursor-pointer hover:underline">
-          Esqueceu a conta?
-        </p>
+
 
         {/* Divider */}
         <div className="flex items-center my-2">
