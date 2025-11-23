@@ -48,7 +48,7 @@ export default function LoginPage() {
         "
       >
         {/* TÍTULO */}
-        <h1 className="text-center text-2xl font-bold mb-2 text-black dark:text-white">
+        <h1 className="text-center text-2xl font-bold mb-2 text-black dark:text-black">
           Entrar
         </h1>
 
@@ -63,7 +63,7 @@ export default function LoginPage() {
             className="
               border rounded-lg p-3 w-full
               bg-white dark:bg-[#222]
-              text-black dark:text-white
+              text-black dark:text-black
               placeholder-gray-600 dark:placeholder-gray-300
             "
             required
@@ -79,7 +79,7 @@ export default function LoginPage() {
               className="
                 border rounded-lg p-3 w-full
                 bg-white dark:bg-[#222]
-                text-black dark:text-white
+                text-black dark:text-black
                 placeholder-gray-600 dark:placeholder-gray-300
               "
               required
