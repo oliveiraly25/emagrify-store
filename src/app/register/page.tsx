@@ -115,7 +115,7 @@ export default function RegisterPage() {
         <label className="block text-sm font-medium mb-1">Gênero</label>
         <select
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
