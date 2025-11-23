@@ -79,10 +79,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-[#111]">
+    <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-[#111] px-4">
       <form
         onSubmit={handleRegister}
-        className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg"
+        className="bg-white dark:bg-[#1a1a1a] p-8 rounded-xl shadow-md w-full max-w-lg text-black dark:text-white"
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Criar Conta</h1>
 
@@ -202,7 +202,10 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm mt-4 text-black dark:text-white">
           Já tem conta?{" "}
-          <a href="/login-auth" className="text-green-700 dark:text-green-400 hover:underline">
+          <a
+            href="/login-auth"
+            className="text-green-700 dark:text-green-400 hover:underline"
+          >
             Entrar
           </a>
         </p>
