@@ -212,7 +212,7 @@ export default function RegisterPage() {
         <p className="text-center text-sm mt-4 text-black dark:text-white">
           Já tem conta?{" "}
           <a
-            href="/login-auth"
+            href="/login"
             className="text-green-700 dark:text-green-400 hover:underline"
           >
             Entrar
