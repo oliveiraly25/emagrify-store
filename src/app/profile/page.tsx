@@ -33,7 +33,7 @@ export default function ProfileDashboard() {
       <h1 className="text-3xl font-bold mb-2">Sua conta</h1>
 
       <p className="text-gray-600 mb-6">
-        Olá {first.name}. Aqui tem tudo o que você precisa.
+        Olá {email.name}. Aqui tem tudo o que você precisa.
       </p>
 
 {/* ============================= */}
