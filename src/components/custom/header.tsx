@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { Search, ShoppingCart, Heart, User, Bell } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+<<<<<<< HEAD
 import { supabase } from "@/lib/supabaseClient";
+=======
+import supabase from "@/lib/supabaseClient";
+>>>>>>> 04ce066a94e47516ab583aa49fd4905861492113
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
