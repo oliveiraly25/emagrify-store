@@ -113,11 +113,19 @@
 /* ============================= */
 
 :root {
-  /* Cor da barra superior e botoes */
+  /* Cor da barra superior e botoes no modo CLARO */
   --header-top-bg: #000000;
 
-  /* Cor do fundo geral do site */
+  /* Cor do fundo geral do site no modo CLARO */
   --site-background: #CFE0BC;
+}
+
+.dark {
+  /* Cor da barra superior no modo ESCURO */
+  --header-top-bg: #ffffff;
+
+  /* Cor do fundo geral do site no modo ESCURO */
+  --site-background: #99CD85;
 }
 
 /* Aplica o fundo padrão do site */
@@ -125,16 +133,27 @@ body {
   background-color: var(--site-background) !important;
 }
 
-/* Aplica a cor da barra superior (aquela parte destacada na imagem) */
+:root {
+  --header-top-bg: #ffffff; /* Modo claro */
+}
+
+.dark {
+  --header-top-bg: #000000; /* Modo escuro */
+}
+
 .top-banner,
 header .bg-gradient-to-r {
   background-color: var(--header-top-bg) !important;
   background-image: none !important;
 }
-/* Torna o fundo do header branco */
+
 header {
-  background-color: #FFFFFF !important;
+  background-color: #ffffff !important;
 }
+.dark header {
+  background-color: #000000 !important;
+}
+
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_roman.otf") format("opentype");
