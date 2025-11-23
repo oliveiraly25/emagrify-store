@@ -151,10 +151,11 @@ export default function Header() {
           ) : (
             <>
               {!user && (
-                <Link
-                  href="/login-auth"
-                  className="px-4 py-2 rounded-full bg-white text-black border border-black font-medium hidden sm:block"
-                >
+<Link
+  href="/login"
+  className="px-4 py-2 rounded-full bg-white text-black border border-black font-medium hidden sm:block"
+>
+
                   Entrar / Registrar
                 </Link>
               )}
