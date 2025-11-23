@@ -33,109 +33,145 @@ export default function ProfileDashboard() {
       <h1 className="text-3xl font-bold mb-2">Sua conta</h1>
 
       <p className="text-gray-600 mb-6">
-        Olá {user.email}. Navegue e gerencie conforme desejar.
+        Olá {first.name}. Aqui tem tudo o que você precisa.
       </p>
 
-      {/* ============================= */}
-      {/*     PEDIDOS                  */}
-      {/* ============================= */}
-      <h2 className="text-lg font-semibold mb-3">Pedidos</h2>
-      <div className="bg-white rounded-lg overflow-hidden shadow">
-        
-        <button
-          onClick={() => router.push("/pedidos")}
-          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <ShoppingCart size={20} />
-            <span>Meus pedidos</span>
-          </div>
-          <ChevronRight />
-        </button>
+{/* ============================= */}
+{/*     PEDIDOS                  */}
+{/* ============================= */}
+<h2 className="text-lg font-semibold mb-3 text-black dark:text-white">Pedidos</h2>
 
-        <button
-          onClick={() => router.push("/favoritos")}
-          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <Heart size={20} />
-            <span>Favoritos</span>
-          </div>
-          <ChevronRight />
-        </button>
+<div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
 
-      </div>
+  <button
+    onClick={() => router.push("/pedidos")}
+    className="
+      w-full flex justify-between items-center p-4 border-b
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <ShoppingCart size={20} className="text-black dark:text-white" />
+      <span>Meus pedidos</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
 
-      {/* ============================= */}
-      {/*     SEUS DADOS               */}
-      {/* ============================= */}
-      <h2 className="text-lg font-semibold mt-8 mb-3">Seus Dados</h2>
-      <div className="bg-white rounded-lg overflow-hidden shadow">
-        
-        <button
-          onClick={() => router.push("/dados-pessoais")}
-          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <User size={20} />
-            <span>Dados pessoais</span>
-          </div>
-          <ChevronRight />
-        </button>
+  <button
+    onClick={() => router.push("/favoritos")}
+    className="
+      w-full flex justify-between items-center p-4
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <Heart size={20} className="text-black dark:text-white" />
+      <span>Favoritos</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
 
-        <button
-          onClick={() => router.push("/enderecos")}
-          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <Truck size={20} />
-            <span>Endereços de entrega</span>
-          </div>
-          <ChevronRight />
-        </button>
+</div>
 
-        <button
-          onClick={() => router.push("/pagamentos")}
-          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <CreditCard size={20} />
-            <span>Formas de pagamento</span>
-          </div>
-          <ChevronRight />
-        </button>
+{/* ============================= */}
+{/*     SEUS DADOS               */}
+{/* ============================= */}
+<h2 className="text-lg font-semibold mt-8 mb-3 text-black dark:text-white">
+  Seus Dados
+</h2>
 
-      </div>
+<div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
 
-      {/* ============================= */}
-      {/*     COMUNICAÇÃO              */}
-      {/* ============================= */}
-      <h2 className="text-lg font-semibold mt-8 mb-3">Comunicação</h2>
-      <div className="bg-white rounded-lg overflow-hidden shadow">
+  <button
+    onClick={() => router.push("/dados-pessoais")}
+    className="
+      w-full flex justify-between items-center p-4 border-b 
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <User size={20} className="text-black dark:text-white" />
+      <span>Dados pessoais</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
 
-        <button
-          onClick={() => router.push("/suporte")}
-          className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <Headphones size={20} />
-            <span>Central de atendimento</span>
-          </div>
-          <ChevronRight />
-        </button>
+  <button
+    onClick={() => router.push("/enderecos")}
+    className="
+      w-full flex justify-between items-center p-4 border-b
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <Truck size={20} className="text-black dark:text-white" />
+      <span>Endereços de entrega</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
 
-        <button
-          onClick={() => router.push("/notificacoes")}
-          className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
-        >
-          <div className="flex items-center gap-3">
-            <Bell size={20} />
-            <span>Configuração de notificação</span>
-          </div>
-          <ChevronRight />
-        </button>
+  <button
+    onClick={() => router.push("/pagamentos")}
+    className="
+      w-full flex justify-between items-center p-4
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <CreditCard size={20} className="text-black dark:text-white" />
+      <span>Formas de pagamento</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
 
-      </div>
+</div>
+
+{/* ============================= */}
+{/*     COMUNICAÇÃO              */}
+{/* ============================= */}
+<h2 className="text-lg font-semibold mt-8 mb-3 text-black dark:text-white">
+  Comunicação
+</h2>
+
+<div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
+
+  <button
+    onClick={() => router.push("/suporte")}
+    className="
+      w-full flex justify-between items-center p-4 border-b 
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <Headphones size={20} className="text-black dark:text-white" />
+      <span>Central de atendimento</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
+
+  <button
+    onClick={() => router.push("/notificacoes")}
+    className="
+      w-full flex justify-between items-center p-4
+      hover:bg-gray-50 dark:hover:bg-[#222]
+      text-black dark:text-white
+    "
+  >
+    <div className="flex items-center gap-3">
+      <Bell size={20} className="text-black dark:text-white" />
+      <span>Configuração de notificação</span>
+    </div>
+    <ChevronRight className="text-black dark:text-white" />
+  </button>
+
+</div>
+
 
     </div>
   );
