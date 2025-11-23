@@ -3,11 +3,7 @@
 import Link from "next/link";
 import { Search, ShoppingCart, Heart, User, Bell } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-<<<<<<< HEAD
 import { supabase } from "@/lib/supabaseClient";
-=======
-import supabase from "@/lib/supabaseClient";
->>>>>>> 04ce066a94e47516ab583aa49fd4905861492113
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
@@ -74,75 +70,70 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md transition-all">
-      
-{/* Top Banner — invisível */}
-<div className="bg-transparent dark:bg-transparent text-transparent dark:text-transparent py-0 h-0 overflow-hidden">
-  Ganhe 100 pontos no primeiro pedido! •
-</div>
-
+      {/* Top Banner — invisível */}
+      <div className="bg-transparent dark:bg-transparent text-transparent dark:text-transparent py-0 h-0 overflow-hidden">
+        Ganhe 100 pontos no primeiro pedido! •
+      </div>
 
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* LOGO */}
+        <Link href="/" className="flex items-center gap-3">
+          <span
+            className="text-5xl tracking-wide text-black dark:text-white font-bold"
+            style={{ fontFamily: "arialbold" }}
+          >
+            Emagrify
+          </span>
+        </Link>
 
-{/* LOGO */}
-<Link href="/" className="flex items-center gap-3">
-  <span
-    className="text-5xl tracking-wide text-black dark:text-white font-bold"
-    style={{ fontFamily: "arialbold" }}
-  >
-    Emagrify
-  </span>
-</Link>
+        {/* SEARCH */}
+        <div className="hidden md:flex flex-1 max-w-xl mx-6">
+          <div
+            className="
+              relative w-full 
+              rounded-full 
+              bg-black dark:bg-white
+              border border-white dark:border-black
+              transition-all
+            "
+          >
+            <input
+              type="text"
+              placeholder="Busque por produtos em todo o site"
+              className="
+                w-full px-4 py-3 pr-12 
+                rounded-full 
+                bg-black dark:bg-white
+                text-white dark:text-black
+                placeholder-white dark:placeholder-black
+                font-semibold
+              "
+            />
 
-
-     {/* SEARCH */}
-<div className="hidden md:flex flex-1 max-w-xl mx-6">
-  <div
-    className="
-      relative w-full 
-      rounded-full 
-      bg-black dark:bg-white
-      border border-white dark:border-black
-      transition-all
-    "
-  >
-    <input
-      type="text"
-      placeholder="Busque por produtos em todo o site"
-      className="
-        w-full px-4 py-3 pr-12 
-        rounded-full 
-        bg-black dark:bg-white
-        text-white dark:text-black
-        placeholder-white dark:placeholder-black
-        font-semibold
-      "
-    />
-
-    <button
-      className="
-        absolute right-3 top-1/2 -translate-y-1/2 
-        text-white dark:text-black
-      "
-    >
-      <Search />
-    </button>
-  </div>
-</div>
+            <button
+              className="
+                absolute right-3 top-1/2 -translate-y-1/2 
+                text-white dark:text-black
+              "
+            >
+              <Search />
+            </button>
+          </div>
+        </div>
 
         {/* ICONS */}
         <div className="flex items-center gap-4 text-black dark:text-white">
-          
-          <Heart 
+          <Heart
             className="
               cursor-pointer 
               transition-colors 
               hover:text-[#63783D] 
               dark:hover:text-[#63783D]
-            " 
+            "
           />
 
-          <ShoppingCart 
+          <ShoppingCart
             className="
               cursor-pointer 
               transition-colors 
@@ -180,7 +171,6 @@ export default function Header() {
                   {/* MENU */}
                   {menuOpen && (
                     <div className="absolute right-0 mt-3 w-64 bg-white text-black shadow-xl rounded-2xl p-4 border border-gray-300">
-
                       {/* SAUDAÇÃO */}
                       <div className="mb-4">
                         <p className="text-black font-bold">
@@ -247,7 +237,6 @@ export default function Header() {
                       >
                         Sair
                       </button>
-
                     </div>
                   )}
                 </div>
@@ -255,7 +244,6 @@ export default function Header() {
             </>
           )}
         </div>
-
       </div>
     </header>
   );
