@@ -63,7 +63,7 @@ export default function LoginPage() {
             className="
               border rounded-lg p-3 w-full
               bg-white dark:bg-[#222]
-              text-black dark:text-black
+              text-black dark:text-white
               placeholder-gray-600 dark:placeholder-gray-300
             "
             required
@@ -79,7 +79,7 @@ export default function LoginPage() {
               className="
                 border rounded-lg p-3 w-full
                 bg-white dark:bg-[#222]
-                text-black dark:text-black
+                text-black dark:text-white
                 placeholder-gray-600 dark:placeholder-gray-300
               "
               required
@@ -103,8 +103,8 @@ export default function LoginPage() {
           <button
             className="
               w-full py-3 rounded-lg font-semibold transition
-              bg-black text-white
-              dark:bg-[#CFE0BC] dark:text-#0d2417
+            bg-#0d2417 text-white
+            dark:bg-[#CFE0BC] dark:text-black
             "
             type="submit"
           >
@@ -131,8 +131,8 @@ export default function LoginPage() {
           onClick={() => router.push("/register")}
           className="
             w-full py-3 rounded-lg font-semibold transition
-            bg-black text-white
-            dark:bg-[#CFE0BC] dark:text-#0d2417
+            bg-#0d2417 text-white
+            dark:bg-[#CFE0BC] dark:text-black
           "
         >
           Criar nova conta
