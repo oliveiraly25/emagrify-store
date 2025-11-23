@@ -89,9 +89,7 @@ export default function LoginAuthContent() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-black cursor-pointer hover:underline">
-          Esqueceu a conta?
-        </p>
+
 
         <div className="flex items-center my-2">
           <span className="flex-1 h-px bg-gray-300"></span>
