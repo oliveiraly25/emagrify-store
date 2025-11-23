@@ -201,7 +201,7 @@ export default function RegisterPage() {
           type="submit"
           className="
             w-full py-3 rounded-lg font-semibold transition
-            bg-black text-white
+            bg-[#0d2417] text-white
             dark:bg-[#CFE0BC] dark:text-black
           "
           disabled={loading}
