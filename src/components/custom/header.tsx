@@ -125,9 +125,25 @@ export default function Header() {
 </div>
 
         {/* ICONS */}
-        <div className="flex items-center gap-4 text-black">
-          <Heart className="cursor-pointer text-black" />
-          <ShoppingCart className="cursor-pointer text-black" />
+        <div className="flex items-center gap-4 text-black dark:text-white">
+          
+          <Heart 
+            className="
+              cursor-pointer 
+              transition-colors 
+              hover:text-[#63783D] 
+              dark:hover:text-[#63783D]
+            " 
+          />
+
+          <ShoppingCart 
+            className="
+              cursor-pointer 
+              transition-colors 
+              hover:text-[#63783D] 
+              dark:hover:text-[#63783D]
+            "
+          />
 
           {/* DARK MODE */}
           <ThemeToggle />
