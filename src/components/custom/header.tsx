@@ -79,15 +79,16 @@ export default function Header() {
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
 
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-3">
-          <span
-            className="text-5xl tracking-wide"
-            style={{ fontFamily: "arialbold", color: "#000000", fontWeight: 700 }}
-          >
-            Emagrify
-          </span>
-        </Link>
+{/* LOGO */}
+<Link href="/" className="flex items-center gap-3">
+  <span
+    className="text-5xl tracking-wide text-black dark:text-white font-bold"
+    style={{ fontFamily: "arialbold" }}
+  >
+    Emagrify
+  </span>
+</Link>
+
 
      {/* SEARCH */}
 <div className="hidden md:flex flex-1 max-w-xl mx-6">
