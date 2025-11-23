@@ -61,10 +61,10 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="
-              border rounded-lg p-3 w-full 
+              border rounded-lg p-3 w-full
               bg-white dark:bg-[#222]
               text-black dark:text-white
-              placeholder-gray-500 dark:placeholder-gray-300
+              placeholder-gray-600 dark:placeholder-gray-300
             "
             required
           />
@@ -77,10 +77,10 @@ export default function LoginPage() {
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               className="
-                border rounded-lg p-3 w-full 
+                border rounded-lg p-3 w-full
                 bg-white dark:bg-[#222]
                 text-black dark:text-white
-                placeholder-gray-500 dark:placeholder-gray-300
+                placeholder-gray-600 dark:placeholder-gray-300
               "
               required
             />
@@ -99,11 +99,11 @@ export default function LoginPage() {
             <p className="text-red-500 text-center text-sm">{erro}</p>
           )}
 
-          {/* BOTÃO ENTRAR — cores invertidas */}
+          {/* BOTÃO ENTRAR — COR INVERTIDA */}
           <button
             className="
               w-full py-3 rounded-lg font-semibold transition
-              bg-black text-white 
+              bg-black text-white
               dark:bg-[#CFE0BC] dark:text-black
             "
             type="submit"
@@ -112,6 +112,7 @@ export default function LoginPage() {
           </button>
         </form>
 
+        {/* ESQUECEU A CONTA */}
         <p className="text-center text-sm text-black dark:text-white cursor-pointer hover:underline">
           Esqueceu a conta?
         </p>
@@ -119,16 +120,18 @@ export default function LoginPage() {
         {/* DIVISOR */}
         <div className="flex items-center my-2">
           <span className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></span>
-          <span className="px-3 text-gray-500 dark:text-gray-300 text-sm">ou</span>
+          <span className="px-3 text-gray-500 dark:text-gray-300 text-sm">
+            ou
+          </span>
           <span className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></span>
         </div>
 
-        {/* BOTÃO CRIAR NOVA CONTA */}
+        {/* BOTÃO CRIAR CONTA — COR INVERTIDA */}
         <button
           onClick={() => router.push("/register")}
           className="
             w-full py-3 rounded-lg font-semibold transition
-            bg-black text-white 
+            bg-black text-white
             dark:bg-[#CFE0BC] dark:text-black
           "
         >
