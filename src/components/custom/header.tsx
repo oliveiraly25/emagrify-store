@@ -71,10 +71,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md transition-all">
       
-      {/* Top Banner */}
-      <div className="bg-white text-black py-4 text-center text-sm font-semibold">
-        Ganhe 100 pontos no primeiro pedido! •
-      </div>
+{/* Top Banner — invisível */}
+<div className="bg-transparent dark:bg-transparent text-transparent dark:text-transparent py-0 h-0 overflow-hidden">
+  Ganhe 100 pontos no primeiro pedido! •
+</div>
+
 
       {/* Main */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -107,8 +108,8 @@ export default function Header() {
       className="
         w-full px-4 py-3 pr-12 
         rounded-full 
-        bg-[#222] dark:bg-white
-        text-black dark:text-white
+        bg-black dark:bg-white
+        text-white dark:text-black
         placeholder-white dark:placeholder-black
         font-semibold
       "
@@ -117,7 +118,7 @@ export default function Header() {
     <button
       className="
         absolute right-3 top-1/2 -translate-y-1/2 
-        text-white dark:text-[#222]
+        text-white dark:text-black
       "
     >
       <Search />
