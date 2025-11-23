@@ -93,14 +93,23 @@ export default function LoginRegister() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center
-    bg-[#F2F2F2] dark:bg-[#111] transition-colors px-4">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 transition-colors
+      bg-[#F2F2F2] dark:bg-[#111]"
+    >
+      <div
+        className="w-full max-w-sm bg-white rounded-xl shadow-xl p-6 flex flex-col gap-4
+        transition-all duration-300"
+      >
+        <h1 className="text-2xl font-bold text-center">
+          Seja bem-vindo(a) à Loja Emagrify
+        </h1>
 
-      <div className="w-full max-w-sm bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
+        <p className="text-xs text-green-700 text-center">
+          🔒 Seus dados estão protegidos.
+        </p>
 
-        <h1 className="text-2xl font-bold">Seja bem-vindo(a) à Loja Emagrify</h1>
-        <p className="text-xs text-green-700">🔒 Seus dados estão protegidos.</p>
-
+        {/* ===================== ETAPA 1 ===================== */}
         {step === 1 && (
           <form onSubmit={handleIdentifierCheck} className="flex flex-col gap-4">
             <input
@@ -108,40 +117,41 @@ export default function LoginRegister() {
               placeholder="Número de celular ou E-mail"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              className="border p-3 rounded-lg bg-white text-black"
+              className="border p-3 rounded-lg bg-white text-black
+              dark:text-black dark:bg-white"
               required
             />
 
             <button
-              className="py-3 rounded-lg font-semibold
-              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white transition"
+              className="w-full py-3 rounded-lg font-semibold transition
+              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white"
             >
               {carregando ? "Verificando..." : "CONTINUAR"}
             </button>
           </form>
         )}
 
+        {/* ===================== ETAPA 2 ===================== */}
         {step === 2 && (
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
-
-            <h2 className="text-xl font-semibold mb-2">Criar Conta</h2>
+            <h2 className="text-xl font-semibold">Criar Conta</h2>
 
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="Nome"
-                className="border p-3 rounded-lg w-1/2 bg-white text-black"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
+                className="border p-3 rounded-lg w-1/2 bg-white text-black dark:bg-white dark:text-black"
                 required
               />
 
               <input
                 type="text"
                 placeholder="Sobrenome"
-                className="border p-3 rounded-lg w-1/2 bg-white text-black"
                 value={sobrenome}
                 onChange={(e) => setSobrenome(e.target.value)}
+                className="border p-3 rounded-lg w-1/2 bg-white text-black dark:bg-white dark:text-black"
                 required
               />
             </div>
@@ -149,16 +159,16 @@ export default function LoginRegister() {
             <input
               type="number"
               placeholder="Idade"
-              className="border p-3 rounded-lg bg-white text-black"
               value={idade}
               onChange={(e) => setIdade(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             />
 
             <select
-              className="border p-3 rounded-lg bg-white text-black"
               value={genero}
               onChange={(e) => setGenero(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             >
               <option value="">Selecione o gênero</option>
@@ -170,52 +180,52 @@ export default function LoginRegister() {
             <input
               type="email"
               placeholder="E-mail"
-              className="border p-3 rounded-lg bg-gray-100 text-black"
               value={email}
               disabled
+              className="border p-3 rounded-lg bg-gray-200 text-black dark:bg-gray-300"
             />
 
             <input
               type="email"
               placeholder="Confirmar e-mail"
-              className="border p-3 rounded-lg bg-white text-black"
               value={emailConfirm}
               onChange={(e) => setEmailConfirm(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             />
 
             <input
               type="text"
               placeholder="Telefone"
-              className="border p-3 rounded-lg bg-white text-black"
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             />
 
             <input
               type="password"
               placeholder="Senha"
-              className="border p-3 rounded-lg bg-white text-black"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             />
 
             <input
               type="password"
               placeholder="Confirmar senha"
-              className="border p-3 rounded-lg bg-white text-black"
               value={senhaConfirm}
               onChange={(e) => setSenhaConfirm(e.target.value)}
+              className="border p-3 rounded-lg bg-white text-black dark:bg-white dark:text-black"
               required
             />
 
             {erro && <p className="text-red-500 text-sm">{erro}</p>}
 
             <button
-              className="py-3 rounded-lg font-semibold
-              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white transition"
+              className="w-full py-3 rounded-lg font-semibold transition
+              bg-[#CFE0BC] text-black dark:bg-[#0d2417] dark:text-white"
             >
               {carregando ? "Criando conta..." : "Registrar"}
             </button>
