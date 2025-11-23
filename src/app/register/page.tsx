@@ -93,7 +93,7 @@ export default function RegisterPage() {
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+              className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
@@ -104,7 +104,7 @@ export default function RegisterPage() {
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+              className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
@@ -149,7 +149,7 @@ export default function RegisterPage() {
         <input
           type="text"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
@@ -159,7 +159,7 @@ export default function RegisterPage() {
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -169,7 +169,7 @@ export default function RegisterPage() {
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={confirmEmail}
           onChange={(e) => setConfirmEmail(e.target.value)}
         />
@@ -179,7 +179,7 @@ export default function RegisterPage() {
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -189,7 +189,7 @@ export default function RegisterPage() {
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
