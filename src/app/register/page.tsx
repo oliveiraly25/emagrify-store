@@ -139,7 +139,7 @@ export default function RegisterPage() {
         <input
           type="number"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black dark:text-white"
           value={age}
           onChange={(e) => setAge(e.target.value)}
         />
