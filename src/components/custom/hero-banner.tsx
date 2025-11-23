@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 
 export default function HeroBanner() {
   return (
-    <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-[200px] sm:h-[260px] lg:h-[320px] rounded-2xl overflow-hidden shadow-2xl">
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         spaceBetween={0}
