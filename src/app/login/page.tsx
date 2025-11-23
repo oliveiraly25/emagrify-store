@@ -103,7 +103,7 @@ export default function LoginPage() {
           <button
             className="
               w-full py-3 rounded-lg font-semibold transition
-            bg-#0d2417 text-white
+            bg-[#0d2417] text-white
             dark:bg-[#CFE0BC] dark:text-black
             "
             type="submit"
@@ -131,7 +131,7 @@ export default function LoginPage() {
           onClick={() => router.push("/register")}
           className="
             w-full py-3 rounded-lg font-semibold transition
-            bg-#0d2417 text-white
+            bg-[#0d2417] text-white
             dark:bg-[#CFE0BC] dark:text-black
           "
         >
