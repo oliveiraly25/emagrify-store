@@ -27,7 +27,6 @@ export default function RegisterPage() {
     setError("");
     setLoading(true);
 
-    // Validações básicas
     if (email !== confirmEmail) {
       setError("Os emails não coincidem.");
       setLoading(false);
@@ -46,7 +45,6 @@ export default function RegisterPage() {
       return;
     }
 
-    // CREA USER NO SUPABASE
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -60,7 +58,6 @@ export default function RegisterPage() {
 
     const userId = authData.user?.id;
 
-    // SALVA DADOS EXTRAS NA TABELA PROFILES
     const { error: profileError } = await supabase.from("profiles").upsert({
       id: userId,
       first_name: firstName,
@@ -68,7 +65,7 @@ export default function RegisterPage() {
       gender,
       age: Number(age),
       phone,
-      email_confirmed: true, // porque os emails coincidiram manualmente
+      email_confirmed: true,
       role: "user",
     });
 
@@ -78,46 +75,47 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/login");
+    router.push("/login-auth");
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50">
+    <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-[#111]">
       <form
         onSubmit={handleRegister}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg"
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Criar Conta</h1>
 
-        {/* NOME */}
+        {/* Inputs */}
         <div className="flex gap-3">
           <div className="w-1/2">
             <label className="block text-sm font-medium mb-1">Nome</label>
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4"
+              className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
+
           <div className="w-1/2">
             <label className="block text-sm font-medium mb-1">Sobrenome</label>
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4"
+              className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
         </div>
 
-        {/* GÊNERO */}
+        {/* Gênero */}
         <label className="block text-sm font-medium mb-1">Gênero</label>
         <select
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
@@ -127,81 +125,84 @@ export default function RegisterPage() {
           <option value="outro">Outro</option>
         </select>
 
-        {/* IDADE */}
+        {/* Idade */}
         <label className="block text-sm font-medium mb-1">Idade</label>
         <input
           type="number"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={age}
           onChange={(e) => setAge(e.target.value)}
         />
 
-        {/* TELEFONE */}
+        {/* Telefone */}
         <label className="block text-sm font-medium mb-1">Telefone</label>
         <input
           type="text"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        {/* EMAIL */}
+        {/* Email */}
         <label className="block text-sm font-medium mb-1">Email</label>
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        {/* CONFIRMAR EMAIL */}
+        {/* Confirmar Email */}
         <label className="block text-sm font-medium mb-1">Confirmar Email</label>
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={confirmEmail}
           onChange={(e) => setConfirmEmail(e.target.value)}
         />
 
-        {/* SENHA */}
+        {/* Senha */}
         <label className="block text-sm font-medium mb-1">Senha</label>
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {/* CONFIRMAR SENHA */}
+        {/* Confirmar Senha */}
         <label className="block text-sm font-medium mb-1">Confirmar Senha</label>
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4"
+          className="w-full border px-3 py-2 rounded-lg mb-4 text-black"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        {error && (
-          <p className="text-red-500 text-sm mb-4">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
+        {/* BOTÃO REGISTRAR */}
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
+          className="
+            w-full py-3 rounded-lg font-semibold transition
+            bg-black text-white
+            dark:bg-[#CFE0BC] dark:text-black
+          "
           disabled={loading}
         >
           {loading ? "Criando conta..." : "Registrar"}
         </button>
 
-        <p className="text-center text-sm mt-4">
+        <p className="text-center text-sm mt-4 text-black dark:text-white">
           Já tem conta?{" "}
-          <a href="/login" className="text-pink-600 hover:underline">
+          <a href="/login-auth" className="text-green-700 dark:text-green-400 hover:underline">
             Entrar
           </a>
         </p>
