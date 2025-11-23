@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function LoginAuthContent() {
+export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -15,11 +14,6 @@ export default function LoginAuthContent() {
 
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
-
-  useEffect(() => {
-    const emailFromUrl = searchParams.get("email");
-    if (emailFromUrl) setEmail(emailFromUrl);
-  }, [searchParams]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -129,9 +123,9 @@ export default function LoginAuthContent() {
           <span className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></span>
         </div>
 
-        {/* BOTÃO CRIAR NOVA CONTA — cores invertidas */}
+        {/* BOTÃO CRIAR NOVA CONTA */}
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/register")}
           className="
             w-full py-3 rounded-lg font-semibold transition
             bg-black text-white 
