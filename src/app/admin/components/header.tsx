@@ -1,4 +1,4 @@
-// src/app/admin/components/Header.tsx
+// src/app/admin/components/header.tsx
 "use client";
 
 import { Bell, User } from "lucide-react";
