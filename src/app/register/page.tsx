@@ -5,54 +5,47 @@ import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 
 const MONTHS = [
-  { value: "01", label: "Jan" },
-  { value: "02", label: "Fev" },
-  { value: "03", label: "Mar" },
-  { value: "04", label: "Abr" },
-  { value: "05", label: "Mai" },
-  { value: "06", label: "Jun" },
-  { value: "07", label: "Jul" },
-  { value: "08", label: "Ago" },
-  { value: "09", label: "Set" },
-  { value: "10", label: "Out" },
-  { value: "11", label: "Nov" },
-  { value: "12", label: "Dez" },
+  { value: "Jan", label: "Jan" },
+  { value: "Fev", label: "Fev" },
+  { value: "Mar", label: "Mar" },
+  { value: "Abr", label: "Abr" },
+  { value: "Mai", label: "Mai" },
+  { value: "Jun", label: "Jun" },
+  { value: "Jul", label: "Jul" },
+  { value: "Ago", label: "Ago" },
+  { value: "Set", label: "Set" },
+  { value: "Out", label: "Out" },
+  { value: "Nov", label: "Nov" },
+  { value: "Dez", label: "Dez" },
 ];
 
-function calculateAge(year: number, month: number, day: number) {
-  const today = new Date();
-  const birth = new Date(year, month - 1, day);
+function monthStringToIndex(m: string): number {
+  const idx = MONTHS.findIndex((item) => item.value === m);
+  return idx >= 0 ? idx : 0;
+}
 
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+function calculateAgeFromDate(date: Date): number {
+  const today = new Date();
+  let age = today.getFullYear() - date.getFullYear();
+  const m = today.getMonth() - date.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
     age--;
   }
   return age;
 }
 
-function onlyLetters(value: string) {
-  return /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value.trim());
-}
+function applyPhoneMask(value: string): string {
+  let v = value.replace(/\D/g, "");
 
-function onlyDigits(value: string) {
-  return value.replace(/\D/g, "");
-}
-
-function formatPhone(value: string) {
-  const digits = onlyDigits(value);
-
-  if (digits.length <= 10) {
-    return digits
-      .replace(/^(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{4})(\d)/, "$1-$2")
-      .slice(0, 14);
+  if (v.length <= 10) {
+    v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+  } else {
+    v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{5})(\d)/, "$1-$2");
   }
 
-  return digits
-    .replace(/^(\d{2})(\d)/, "($1) $2")
-    .replace(/(\d{5})(\d)/, "$1-$2")
-    .slice(0, 15);
+  return v;
 }
 
 export default function RegisterPage() {
@@ -60,12 +53,12 @@ export default function RegisterPage() {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
 
   const [birthDay, setBirthDay] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthYear, setBirthYear] = useState("");
 
-  const [gender, setGender] = useState("");
   const [phone, setPhone] = useState("");
 
   const [email, setEmail] = useState("");
@@ -77,112 +70,114 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function validateForm() {
-    // Nome / sobrenome
-    if (!onlyLetters(firstName) || !onlyLetters(lastName)) {
-      setError("Nome e sobrenome devem conter apenas letras.");
-      return false;
-    }
-
-    // Emails
-    if (email !== confirmEmail) {
-      setError("Os emails não coincidem.");
-      return false;
-    }
-
-    // Senha
-    if (password !== confirmPassword) {
-      setError("As senhas não coincidem.");
-      return false;
-    }
-
-    // Data de nascimento
-    const day = Number(birthDay);
-    const month = Number(birthMonth);
-    const year = Number(birthYear);
-
-    if (!day || !month || !year) {
-      setError("Informe sua data de nascimento completa.");
-      return false;
-    }
-
-    const birth = new Date(year, month - 1, day);
-    if (
-      birth.getFullYear() !== year ||
-      birth.getMonth() !== month - 1 ||
-      birth.getDate() !== day
-    ) {
-      setError("Data de nascimento inválida.");
-      return false;
-    }
-
-    const age = calculateAge(year, month, day);
-    if (age < 16 || age > 120) {
-      setError("A idade deve estar entre 16 e 120 anos.");
-      return false;
-    }
-
-    // Gênero
-    if (!gender) {
-      setError("Selecione um gênero.");
-      return false;
-    }
-
-    // Telefone
-    const digits = onlyDigits(phone);
-    if (digits.length < 10 || digits.length > 11) {
-      setError("Informe um telefone válido com DDD.");
-      return false;
-    }
-
-    return true;
-  }
-
-  async function handleRegister(e: React.FormEvent) {
+  async function handleRegister(e: any) {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    if (!validateForm()) {
+    const onlyLetters = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+
+    if (!onlyLetters.test(firstName)) {
+      setError("O nome deve conter apenas letras.");
       setLoading(false);
       return;
     }
 
-    const day = Number(birthDay);
-    const month = Number(birthMonth);
-    const year = Number(birthYear);
-    const age = calculateAge(year, month, day);
-    const birthDate = `${year}-${birthMonth}-${birthDay.padStart(2, "0")}`;
+    if (!onlyLetters.test(lastName)) {
+      setError("O sobrenome deve conter apenas letras.");
+      setLoading(false);
+      return;
+    }
 
-    // CREA USER NO SUPABASE
+    if (email !== confirmEmail) {
+      setError("Os emails não coincidem.");
+      setLoading(false);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem.");
+      setLoading(false);
+      return;
+    }
+
+    if (!birthDay || !birthMonth || !birthYear) {
+      setError("Informe sua data de nascimento completa.");
+      setLoading(false);
+      return;
+    }
+
+    const dayNum = Number(birthDay);
+    const yearNum = Number(birthYear);
+    const monthIndex = monthStringToIndex(birthMonth);
+
+    const birthDate = new Date(yearNum, monthIndex, dayNum);
+
+    if (
+      birthDate.getDate() !== dayNum ||
+      birthDate.getMonth() !== monthIndex ||
+      birthDate.getFullYear() !== yearNum
+    ) {
+      setError("Data de nascimento inválida.");
+      setLoading(false);
+      return;
+    }
+
+    const ageCalc = calculateAgeFromDate(birthDate);
+    if (ageCalc < 16 || ageCalc > 120) {
+      setError("A idade deve estar entre 16 e 120 anos.");
+      setLoading(false);
+      return;
+    }
+
+    if (!gender) {
+      setError("Selecione um gênero.");
+      setLoading(false);
+      return;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+      setError("Telefone inválido. Verifique o número digitado.");
+      setLoading(false);
+      return;
+    }
+
+    // ================== SUPABASE AUTH ==================
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (authError) {
-      setError(authError.message);
+      if (authError.message.toLowerCase().includes("already registered")) {
+        setError(
+          "Este email já está cadastrado. Faça login ou use a recuperação de senha."
+        );
+      } else {
+        setError(authError.message);
+      }
       setLoading(false);
       return;
     }
 
     const userId = authData.user?.id;
 
-    // SALVA DADOS EXTRAS NA TABELA PROFILES
+    const birthIso = birthDate.toISOString().slice(0, 10);
+
     const { error: profileError } = await supabase.from("profiles").upsert({
       id: userId,
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
+      first_name: firstName,
+      last_name: lastName,
       gender,
-      birth_date: birthDate, // coluna DATE no Supabase
-      age,
-      phone: onlyDigits(phone),
-      email_confirmed: true, // emails coincidem
+      birth_date: birthIso,
+      age: ageCalc,
+      phone: phoneDigits,
+      email_confirmed: true,
       role: "user",
     });
 
     if (profileError) {
-      console.error(profileError);
       setError("Erro ao salvar dados do perfil.");
       setLoading(false);
       return;
@@ -229,7 +224,6 @@ export default function RegisterPage() {
           Data de nascimento
         </label>
         <div className="flex gap-3 mb-4">
-          {/* Dia */}
           <input
             type="number"
             placeholder="Dia"
@@ -241,10 +235,9 @@ export default function RegisterPage() {
             onChange={(e) => setBirthDay(e.target.value)}
           />
 
-          {/* Mês */}
           <select
             required
-            className="w-1/3 border px-3 py-2 rounded-lg bg-white text-black dark:bg-[#222] dark:text-white dark:[color-scheme:dark]"
+            className="w-1/3 border px-3 py-2 rounded-lg bg-white dark:bg-[#222] text-black dark:text-white"
             value={birthMonth}
             onChange={(e) => setBirthMonth(e.target.value)}
           >
@@ -256,7 +249,6 @@ export default function RegisterPage() {
             ))}
           </select>
 
-          {/* Ano */}
           <input
             type="number"
             placeholder="Ano"
@@ -271,7 +263,7 @@ export default function RegisterPage() {
         <label className="block text-sm font-medium mb-1">Gênero</label>
         <select
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white text-black dark:bg-[#222] dark:text-white dark:[color-scheme:dark]"
+          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
@@ -287,8 +279,8 @@ export default function RegisterPage() {
           type="text"
           required
           className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
-          value={formatPhone(phone)}
-          onChange={(e) => setPhone(onlyDigits(e.target.value))}
+          value={phone}
+          onChange={(e) => setPhone(applyPhoneMask(e.target.value))}
         />
 
         {/* Email */}
@@ -335,7 +327,12 @@ export default function RegisterPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {/* MENSAGEM DE ERRO */}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 dark:bg-red-900 dark:text-red-200">
+            {error}
+          </div>
+        )}
 
         {/* BOTÃO REGISTRAR */}
         <button
