@@ -11,11 +11,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     async function checkRole() {
-      // Verifica login
+      // Verifica se tem usuário logado
       const { data: userData } = await supabase.auth.getUser();
 
       if (!userData?.user) {
-        router.push("/login");
+        router.replace("/login");
         return;
       }
 
@@ -26,15 +26,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         .eq("id", userData.user.id)
         .single();
 
-      // Se não existir perfil → bloqueia
-      if (!profile?.role) {
-        router.push("/");
-        return;
-      }
-
-      // Se não for admin → bloqueia
-      if (profile.role !== "admin") {
-        router.push("/");
+      // Se não tiver role ou não for admin, manda embora
+      if (!profile?.role || profile.role !== "admin") {
+        router.replace("/");
         return;
       }
 
@@ -43,10 +37,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     checkRole();
-  }, []);
+  }, [router]);
 
+  // Tela de carregamento bonitinha enquanto verifica permissões
   if (allowed === null) {
-    return <div style={{ padding: 20 }}>Carregando permissões...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-full border-2 border-emerald-500/70 border-t-transparent animate-spin" />
+          <p className="text-sm text-slate-400">Verificando permissões…</p>
+        </div>
+      </div>
+    );
   }
 
   return <>{children}</>;
