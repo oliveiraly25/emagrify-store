@@ -7,6 +7,7 @@ import { Sidebar } from "./components/sidebar";
 import { Header } from "./components/header";
 import { Card } from "./components/card";
 import { Table } from "./components/table";
+import { DeluxeButton } from "./components/button";
 
 type Section =
   | "dashboard"
@@ -324,8 +325,14 @@ export default function AdminPage() {
     ),
   };
 
+  const inputBase =
+    "px-3 py-2 rounded-lg border text-sm outline-none transition-all " +
+    "bg-[#555] border-[#666] text-black placeholder-black/50 " +
+    "dark:bg-[#111] dark:border-[#333] dark:text-white dark:placeholder-slate-500 " +
+    "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60";
+
   return (
-    <div className="min-h-screen flex bg-slate-950 text-slate-50">
+    <div className="min-h-screen flex bg-[#444] text-black dark:bg-[#222] dark:text-white">
       <Sidebar activeSection={section} onSectionChange={setSection} />
 
       <div className="flex-1 flex flex-col">
@@ -337,7 +344,7 @@ export default function AdminPage() {
         <main className="flex-1">
           <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
             {feedback && (
-              <div className="rounded-xl bg-slate-900/80 border border-slate-700 px-4 py-2 text-sm text-slate-100">
+              <div className="rounded-xl bg-[#555] dark:bg-[#1b1b1b] border border-[#666] dark:border-[#333] px-4 py-2 text-sm">
                 {feedback}
               </div>
             )}
@@ -402,13 +409,13 @@ export default function AdminPage() {
                           key={bar.label}
                           className="flex-1 flex flex-col items-center gap-1"
                         >
-                          <div className="relative w-full rounded-full bg-slate-900/80 h-24 flex items-end overflow-hidden">
+                          <div className="relative w-full rounded-full bg-black/20 dark:bg-slate-900/80 h-24 flex items-end overflow-hidden">
                             <div
                               className="w-full rounded-full bg-gradient-to-t from-emerald-500 to-emerald-300"
                               style={{ height: `${bar.value}%` }}
                             />
                           </div>
-                          <span className="text-[10px] text-slate-400">
+                          <span className="text-[10px] text-black/70 dark:text-slate-400">
                             {bar.label}
                           </span>
                         </div>
@@ -420,7 +427,7 @@ export default function AdminPage() {
                     title="Bem-vinda ao painel da Emagrify Store"
                     description="Use o menu lateral para navegar."
                   >
-                    <p className="text-sm text-slate-300">
+                    <p className="text-sm text-black/80 dark:text-slate-300">
                       Aqui você controla tudo da sua loja em um único lugar. 💅
                     </p>
                   </Card>
@@ -444,7 +451,7 @@ export default function AdminPage() {
                       placeholder="Nome"
                       value={newUserName}
                       onChange={(e) => setNewUserName(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <input
@@ -452,15 +459,12 @@ export default function AdminPage() {
                       placeholder="Email"
                       value={newUserEmail}
                       onChange={(e) => setNewUserEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
-                    <button
-                      disabled={loading}
-                      className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
-                    >
+                    <DeluxeButton disabled={loading}>
                       {loading ? "Salvando..." : "Adicionar usuário"}
-                    </button>
+                    </DeluxeButton>
                   </form>
                 </Card>
 
@@ -472,20 +476,24 @@ export default function AdminPage() {
                     {users.map((u) => (
                       <div
                         key={u.id}
-                        className="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm"
+                        className="flex items-center justify-between bg-[#555] dark:bg-[#111] border border-[#666] dark:border-[#333] rounded-lg px-4 py-2 text-sm"
                       >
                         <div>
                           <p className="font-medium">{u.name}</p>
-                          <p className="text-slate-400 text-xs">{u.email}</p>
+                          <p className="text-xs text-black/70 dark:text-slate-400">
+                            {u.email}
+                          </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[11px] text-slate-400">Pontos</p>
+                          <p className="text-[11px] text-black/70 dark:text-slate-400">
+                            Pontos
+                          </p>
                           <p className="font-semibold">{u.points}</p>
                         </div>
                       </div>
                     ))}
                     {users.length === 0 && (
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-black/70 dark:text-slate-400">
                         Nenhum usuário cadastrado ainda.
                       </p>
                     )}
@@ -510,7 +518,7 @@ export default function AdminPage() {
                       placeholder="Nome do produto"
                       value={newProductName}
                       onChange={(e) => setNewProductName(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <input
@@ -518,7 +526,7 @@ export default function AdminPage() {
                       placeholder="Preço (ex: 99.90)"
                       value={newProductPrice}
                       onChange={(e) => setNewProductPrice(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <input
@@ -526,14 +534,14 @@ export default function AdminPage() {
                       placeholder="Estoque"
                       value={newProductStock}
                       onChange={(e) => setNewProductStock(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                     />
-                    <button
+                    <DeluxeButton
                       disabled={loading}
-                      className="md:col-span-3 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
+                      className="md:col-span-3 justify-center"
                     >
                       {loading ? "Salvando..." : "Adicionar produto"}
-                    </button>
+                    </DeluxeButton>
                   </form>
                 </Card>
 
@@ -545,21 +553,21 @@ export default function AdminPage() {
                     {products.map((p) => (
                       <div
                         key={p.id}
-                        className="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm"
+                        className="flex items-center justify-between bg-[#555] dark:bg-[#111] border border-[#666] dark:border-[#333] rounded-lg px-4 py-2 text-sm"
                       >
                         <div>
                           <p className="font-medium">{p.name}</p>
-                          <p className="text-slate-400 text-xs">
+                          <p className="text-xs text-black/70 dark:text-slate-400">
                             R$ {Number(p.price).toFixed(2)} • Estoque: {p.stock}
                           </p>
                         </div>
-                        <span className="text-[11px] px-2 py-1 rounded-full bg-slate-800 text-slate-200">
+                        <span className="text-[11px] px-2 py-1 rounded-full bg-black/10 dark:bg-slate-800 text-black dark:text-slate-200">
                           {p.active ? "Ativo" : "Inativo"}
                         </span>
                       </div>
                     ))}
                     {products.length === 0 && (
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-black/70 dark:text-slate-400">
                         Nenhum produto cadastrado ainda.
                       </p>
                     )}
@@ -571,29 +579,29 @@ export default function AdminPage() {
             {/* PEDIDOS */}
             {section === "orders" && (
               <div className="space-y-4">
-                <Card
-                  title="Pedidos"
-                  description="Pedidos registrados."
-                >
+                <Card title="Pedidos" description="Pedidos registrados.">
                   {orders.length === 0 ? (
-                    <p className="text-sm text-slate-400 mt-2">
+                    <p className="text-sm text-black/70 dark:text-slate-400 mt-2">
                       Nenhum pedido registrado ainda.
                     </p>
                   ) : (
                     <div className="mt-3">
                       <Table headers={["Pedido", "Total", "Status", "Data"]}>
                         {orders.map((o) => (
-                          <tr key={o.id} className="hover:bg-slate-900/70">
-                            <td className="px-4 py-2 text-sm text-slate-100">
+                          <tr
+                            key={o.id}
+                            className="hover:bg-black/10 dark:hover:bg-slate-900/70"
+                          >
+                            <td className="px-4 py-2 text-sm">
                               #{o.id.slice(0, 8)}
                             </td>
                             <td className="px-4 py-2 text-sm">
                               R$ {Number(o.total).toFixed(2)}
                             </td>
-                            <td className="px-4 py-2 text-sm text-slate-200">
+                            <td className="px-4 py-2 text-sm">
                               {o.status}
                             </td>
-                            <td className="px-4 py-2 text-xs text-slate-400">
+                            <td className="px-4 py-2 text-xs text-black/70 dark:text-slate-400">
                               {new Date(o.created_at).toLocaleString("pt-BR")}
                             </td>
                           </tr>
@@ -621,7 +629,7 @@ export default function AdminPage() {
                       placeholder="Email do usuário"
                       value={pointsUserEmail}
                       onChange={(e) => setPointsUserEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <input
@@ -629,15 +637,12 @@ export default function AdminPage() {
                       placeholder="Quantidade"
                       value={pointsAmount}
                       onChange={(e) => setPointsAmount(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
-                    <button
-                      disabled={loading}
-                      className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
-                    >
+                    <DeluxeButton disabled={loading}>
                       {loading ? "Salvando..." : "Adicionar pontos"}
-                    </button>
+                    </DeluxeButton>
                   </form>
                 </Card>
               </div>
@@ -659,21 +664,20 @@ export default function AdminPage() {
                       placeholder="Título"
                       value={timelineTitle}
                       onChange={(e) => setTimelineTitle(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase + " w-full"}
                       required
                     />
                     <textarea
                       placeholder="Conteúdo (opcional)"
                       value={timelineContent}
                       onChange={(e) => setTimelineContent(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm min-h-[90px]"
+                      className={
+                        inputBase + " w-full min-h-[90px] resize-vertical"
+                      }
                     />
-                    <button
-                      disabled={loading}
-                      className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
-                    >
+                    <DeluxeButton disabled={loading}>
                       {loading ? "Salvando..." : "Postar"}
-                    </button>
+                    </DeluxeButton>
                   </form>
                 </Card>
 
@@ -685,23 +689,23 @@ export default function AdminPage() {
                     {timeline.map((post) => (
                       <div
                         key={post.id}
-                        className="border border-slate-800 rounded-lg bg-slate-950 px-4 py-3"
+                        className="border border-[#666] dark:border-[#333] rounded-lg bg-[#555] dark:bg-[#111] px-4 py-3"
                       >
                         <div className="flex items-center justify-between">
                           <p className="font-medium text-sm">{post.title}</p>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-black/70 dark:text-slate-500">
                             {new Date(post.created_at).toLocaleString("pt-BR")}
                           </span>
                         </div>
                         {post.content && (
-                          <p className="mt-2 text-sm text-slate-300">
+                          <p className="mt-2 text-sm text-black/80 dark:text-slate-300">
                             {post.content}
                           </p>
                         )}
                       </div>
                     ))}
                     {timeline.length === 0 && (
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-black/70 dark:text-slate-400">
                         Nenhum post ainda.
                       </p>
                     )}
@@ -726,7 +730,7 @@ export default function AdminPage() {
                       placeholder="Email"
                       value={supportEmail}
                       onChange={(e) => setSupportEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <input
@@ -734,22 +738,24 @@ export default function AdminPage() {
                       placeholder="Assunto"
                       value={supportSubject}
                       onChange={(e) => setSupportSubject(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
+                      className={inputBase}
                       required
                     />
                     <textarea
                       placeholder="Mensagem"
                       value={supportMessage}
                       onChange={(e) => setSupportMessage(e.target.value)}
-                      className="md:col-span-3 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm min-h-[90px]"
+                      className={
+                        inputBase + " md:col-span-3 min-h-[90px] resize-vertical"
+                      }
                       required
                     />
-                    <button
+                    <DeluxeButton
                       disabled={loading}
-                      className="md:col-span-3 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
+                      className="md:col-span-3 justify-center"
                     >
                       {loading ? "Salvando..." : "Criar ticket"}
-                    </button>
+                    </DeluxeButton>
                   </form>
                 </Card>
 
@@ -761,26 +767,26 @@ export default function AdminPage() {
                     {tickets.map((t) => (
                       <div
                         key={t.id}
-                        className="border border-slate-800 rounded-lg bg-slate-950 px-4 py-3 text-sm"
+                        className="border border-[#666] dark:border-[#333] rounded-lg bg-[#555] dark:bg-[#111] px-4 py-3 text-sm"
                       >
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">{t.subject}</p>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="text-[11px] text-black/70 dark:text-slate-400">
                               {t.user_email}
                             </p>
                           </div>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-black/70 dark:text-slate-500">
                             {new Date(t.created_at).toLocaleString("pt-BR")}
                           </span>
                         </div>
-                        <p className="mt-1 text-xs text-slate-400">
+                        <p className="mt-1 text-xs text-black/70 dark:text-slate-400">
                           Status: {t.status}
                         </p>
                       </div>
                     ))}
                     {tickets.length === 0 && (
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-black/70 dark:text-slate-400">
                         Nenhum ticket registrado ainda.
                       </p>
                     )}
@@ -796,9 +802,9 @@ export default function AdminPage() {
                   title="Configurações do painel"
                   description="Área reservada para ajustes futuros."
                 >
-                  <p className="text-sm text-slate-300">
-                    Aqui você poderá configurar preferências avançadas do painel.
-                    Ainda em desenvolvimento. 💚
+                  <p className="text-sm text-black/80 dark:text-slate-300">
+                    Aqui você poderá configurar preferências avançadas do
+                    painel. Ainda em desenvolvimento. 💚
                   </p>
                 </Card>
               </div>
