@@ -17,8 +17,6 @@ export default function Footer() {
         {/* COLUNA 1 - LOGO E DESCRIÇÃO */}
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <span
-
             Emagrify Store
           </h2>
 
