@@ -18,14 +18,11 @@ import ThemeToggle from "@/components/ThemeToggle";
 export default function Header() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // =====================================
-  // LOAD USER
-  // =====================================
+  // Carregar usuário
   useEffect(() => {
     async function load() {
       const { data: auth } = await supabase.auth.getUser();
@@ -41,8 +38,6 @@ export default function Header() {
 
         if (profileData) setProfile(profileData);
       }
-
-      setLoading(false);
     }
 
     load();
@@ -60,39 +55,31 @@ export default function Header() {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  // =====================================
-  // LOGOUT
-  // =====================================
+  // Logout
   async function handleLogout() {
     await supabase.auth.signOut();
     window.location.href = "/";
   }
 
-  // =====================================
-  // CLOSE MENU ON OUTSIDE CLICK
-  // =====================================
+  // Fechar menu ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     }
-
     if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-300 dark:border-black shadow-sm">
-      <div className="w-full px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="w-full px-6 py-3 flex items-center justify-between">
 
-        {/* ================================
-            ESQUERDA — BARRA DE PESQUISA
-        ================================= */}
+        {/* ESQUERDA — BARRA DE PESQUISA */}
         <div className="hidden md:flex flex-1 justify-start">
           <div className="
-            relative
-            w-[260px]
+            relative w-[230px]
             bg-white dark:bg-black
             border border-black dark:border-white
             rounded-full
@@ -101,59 +88,43 @@ export default function Header() {
               type="text"
               placeholder="Buscar..."
               className="
-                w-full px-4 py-2 pr-10 rounded-full
+                w-full px-4 py-1.5 pr-10 rounded-full
                 bg-white dark:bg-black
                 text-black dark:text-white
                 placeholder-gray-600 dark:placeholder-gray-300
                 text-sm
               "
             />
-            <button
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white"
-            >
-              <Search size={18} />
+            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white">
+              <Search size={16} />
             </button>
           </div>
         </div>
 
-        {/* ================================
-            CENTRO — LOGO
-        ================================= */}
+        {/* CENTRO — LOGO */}
         <div className="flex-1 flex justify-center select-none">
-          {/* LOGO QUE TROCA ENTRE MODO CLARO/ESCURO */}
           <picture>
-            {/* LOGO MODO CLARO */}
-            <source
-              srcSet="/LOGOLIGHT.png"
-              media="(prefers-color-scheme: light)"
+            {/* LIGHT */}
+            <Image
+              src="/LOGOLIGHT.png"
+              alt="Logo Emagrify"
+              width={350}
+              height={110}
+              className="object-contain pointer-events-none dark:hidden"
             />
-            {/* LOGO MODO ESCURO */}
-            <source
-              srcSet="/LOGODARK.png"
-              media="(prefers-color-scheme: dark)"
+
+            {/* DARK */}
+            <Image
+              src="/LOGODARK.png"
+              alt="Logo Emagrify Dark"
+              width={350}
+              height={110}
+              className="object-contain pointer-events-none hidden dark:block"
             />
-<Image
-  src="/LOGOLIGHT.png"
-  alt="Logo Emagrify"
-  width={420}
-  height={130}
-  className="object-contain pointer-events-none dark:hidden"
-/>
-
-<Image
-  src="/LOGODARK.png"
-  alt="Logo Emagrify dark"
-  width={420}
-  height={130}
-  className="object-contain pointer-events-none hidden dark:block"
-/>
-
           </picture>
         </div>
 
-        {/* ================================
-            DIREITA — ÍCONES / LOGIN / MENU
-        ================================= */}
+        {/* DIREITA — ÍCONES */}
         <div className="flex-1 flex items-center justify-end gap-4 text-black dark:text-white">
 
           {user && (
@@ -165,17 +136,17 @@ export default function Header() {
 
           <ThemeToggle />
 
-          {/* MENU USER */}
           <div className="relative" ref={menuRef}>
 
             {!user && (
               <Link
                 href="/login"
                 className="
-                  hidden sm:block px-4 py-2 rounded-full
+                  hidden sm:block px-4 py-1.5 rounded-full
                   bg-black text-white
                   dark:bg-white dark:text-black
                   border border-black dark:border-white
+                  text-sm
                 "
               >
                 Entrar / Registrar
@@ -185,13 +156,13 @@ export default function Header() {
             {user && (
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="hidden sm:flex w-10 h-10 bg-black dark:bg-white rounded-full items-center justify-center"
+                className="hidden sm:flex w-9 h-9 bg-black dark:bg-white rounded-full items-center justify-center"
               >
                 <User className="text-white dark:text-black" />
               </button>
             )}
 
-            {/* 3 pontinhos — MOBILE */}
+            {/* MOBILE */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="
@@ -226,45 +197,41 @@ export default function Header() {
                   </div>
                 ) : (
                   <>
-                    <div className="mb-4">
+                    <div className="mb-3">
                       <p className="font-bold">Olá, {profile?.first_name}</p>
                     </div>
 
                     <Link
                       href="/pedidos"
-                      className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
+                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
                     >
-                      <span>Meus pedidos</span>
-                      <ShoppingCart className="w-5 h-5" />
+                      Meus pedidos <ShoppingCart className="w-5 h-5" />
                     </Link>
 
                     <Link
                       href="/profile"
-                      className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
+                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
                     >
-                      <span>Dados pessoais</span>
-                      <User className="w-5 h-5" />
+                      Dados pessoais <User className="w-5 h-5" />
                     </Link>
 
                     <Link
                       href="/notificacoes"
-                      className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
+                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
                     >
-                      <span>Notificações</span>
-                      <Bell className="w-5 h-5" />
+                      Notificações <Bell className="w-5 h-5" />
                     </Link>
 
                     <Link
                       href="/pontos"
-                      className="flex items-center justify-between py-3 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
+                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
                     >
-                      <span>Meus pontos</span>
-                      <span>{profile?.points ?? 0}</span>
+                      Meus pontos <span>{profile?.points ?? 0}</span>
                     </Link>
 
                     <button
                       onClick={handleLogout}
-                      className="mt-4 w-full py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold"
+                      className="mt-4 w-full py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold"
                     >
                       Sair
                     </button>
