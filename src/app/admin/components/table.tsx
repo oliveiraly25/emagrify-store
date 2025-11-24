@@ -4,40 +4,26 @@
 interface TableProps {
   headers: string[];
   children: React.ReactNode;
-  className?: string;
 }
 
-export function Table({ headers, children, className = "" }: TableProps) {
+export function Table({ headers, children }: TableProps) {
   return (
-    <div
-      className={`
-        overflow-hidden rounded-2xl
-        border border-slate-800/80
-        bg-slate-950/40 backdrop-blur-xl
-        shadow-[0_18px_40px_rgba(15,23,42,0.85)]
-        ${className}
-      `}
-    >
+    <div className="overflow-hidden rounded-2xl border border-[#555] dark:border-[#333] bg-[#555] dark:bg-[#1b1b1b] backdrop-blur shadow-[0_18px_40px_rgba(0,0,0,0.6)]">
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="bg-slate-900/70">
+            <tr className="bg-[#4d4d4d] dark:bg-[#252525]">
               {headers.map((header) => (
                 <th
                   key={header}
-                  className="
-                    px-4 py-2 text-left
-                    text-[11px] font-semibold uppercase tracking-wide
-                    text-slate-400
-                  "
+                  className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-black/80 dark:text-slate-400"
                 >
                   {header}
                 </th>
               ))}
             </tr>
           </thead>
-
-          <tbody className="divide-y divide-slate-800/80">
+          <tbody className="divide-y divide-[#666] dark:divide-[#333]">
             {children}
           </tbody>
         </table>
