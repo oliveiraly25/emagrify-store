@@ -31,17 +31,15 @@ interface SidebarProps {
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <aside className="w-64 bg-slate-950/95 backdrop-blur-xl border-r border-slate-800/70 flex flex-col">
+    <aside className="w-64 bg-[#3b3b3b] text-black dark:bg-[#1b1b1b] dark:text-slate-50 border-r border-[#555] dark:border-[#333] flex flex-col">
       {/* Logo / topo */}
-      <div className="px-6 py-5 border-b border-slate-800/70 flex items-center gap-3">
+      <div className="px-6 py-5 border-b border-[#555] dark:border-[#333] flex items-center gap-3">
         <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.65)]">
           <span className="font-bold text-slate-950 text-lg">E</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-semibold text-slate-50">
-            Emagrify Store
-          </span>
-          <span className="text-[11px] text-slate-400">
+          <span className="text-sm font-semibold">Emagrify Store</span>
+          <span className="text-[11px] text-black/70 dark:text-slate-400">
             Painel administrativo
           </span>
         </div>
@@ -101,7 +99,7 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
         <SidebarItem label="Permissões" icon={<KeyRound className="w-4 h-4" />} disabled />
       </nav>
 
-      <div className="px-6 py-4 border-t border-slate-800/70 text-[11px] text-slate-500">
+      <div className="px-6 py-4 border-t border-[#555] dark:border-[#333] text-[11px] text-black/80 dark:text-slate-500">
         Logada como <span className="font-medium">Admin</span>
       </div>
     </aside>
@@ -128,16 +126,18 @@ function SidebarItem({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`group relative w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-all ${
-        active
-          ? "text-emerald-300"
-          : "text-slate-300 hover:text-slate-50"
-      } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
+      className={`group relative w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-all
+        ${
+          active
+            ? "text-emerald-300"
+            : "text-black dark:text-slate-300 hover:text-black dark:hover:text-slate-50"
+        }
+        ${disabled ? "opacity-40 cursor-not-allowed" : ""}
+      `}
     >
       <span>{icon}</span>
       <span>{label}</span>
 
-      {/* highlight animado */}
       {active && (
         <span className="absolute left-0 top-0 h-full w-[3px] bg-emerald-400 rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
       )}
