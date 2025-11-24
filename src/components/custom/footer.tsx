@@ -1,94 +1,97 @@
 "use client";
 
 import { Mail, Phone, MapPin } from "lucide-react";
-import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-20 bg-[#0B0F14] dark:bg-[#0B0F14] text-gray-300 border-t border-gray-700 pt-14 pb-10">
-      <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer
+      className="
+        w-full mt-20 
+        bg-[#0C1A12] text-white 
+        dark:bg-[#0a0a0a] dark:text-gray-200
+        border-t border-green-900/30 dark:border-gray-800
+      "
+    >
+      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
 
-        {/* COLUNA 1 */}
+        {/* COLUNA 1 - LOGO E DESCRIÇÃO */}
         <div>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-9 h-9 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <span
+              className="
+                text-3xl font-bold 
+                bg-gradient-to-r from-purple-500 to-pink-500 
+                w-10 h-10 rounded-full 
+                flex items-center justify-center text-white
+              "
+            >
               E
-            </div>
-            <h3 className="text-xl font-semibold text-white">Emagrify Store</h3>
-          </div>
+            </span>
+            Emagrify Store
+          </h2>
 
-          <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-            Sua loja online de confiança com os melhores produtos e preços imbatíveis.
+          <p className="mt-3 text-sm text-gray-300 dark:text-gray-400 max-w-xs">
+            Sua loja online de confiança com os melhores produtos e preços
+            imbatíveis.
           </p>
 
-          {/* Ícones SOCIAIS */}
-          <div className="flex gap-4 mt-4 text-gray-400">
-            <i className="fab fa-facebook cursor-pointer hover:text-white"></i>
-            <i className="fab fa-instagram cursor-pointer hover:text-white"></i>
-            <i className="fab fa-twitter cursor-pointer hover:text-white"></i>
-            <i className="fab fa-youtube cursor-pointer hover:text-white"></i>
+          {/* Redes sociais */}
+          <div className="flex mt-4 gap-4 text-xl text-gray-400 dark:text-gray-500">
+            <i className="fab fa-facebook hover:text-white cursor-pointer"></i>
+            <i className="fab fa-instagram hover:text-white cursor-pointer"></i>
+            <i className="fab fa-twitter hover:text-white cursor-pointer"></i>
+            <i className="fab fa-youtube hover:text-white cursor-pointer"></i>
           </div>
         </div>
 
-        {/* COLUNA 2 */}
+        {/* COLUNA 2 - LINKS RÁPIDOS */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Links Rápidos</h3>
-
-          <ul className="space-y-2 text-sm">
-            <li><Link href="#" className="hover:text-white">Sobre Nós</Link></li>
-            <li><Link href="#" className="hover:text-white">Como Comprar</Link></li>
-            <li><Link href="#" className="hover:text-white">Rastrear Pedido</Link></li>
-            <li><Link href="#" className="hover:text-white">Trocas e Devoluções</Link></li>
-            <li><Link href="#" className="hover:text-white">Perguntas Frequentes</Link></li>
+          <h3 className="font-semibold text-lg mb-3">Links Rápidos</h3>
+          <ul className="text-gray-400 dark:text-gray-500 space-y-2 text-sm">
+            <li className="hover:text-white cursor-pointer">Sobre Nós</li>
+            <li className="hover:text-white cursor-pointer">Como Comprar</li>
+            <li className="hover:text-white cursor-pointer">Rastrear Pedido</li>
+            <li className="hover:text-white cursor-pointer">Trocas e Devoluções</li>
+            <li className="hover:text-white cursor-pointer">Perguntas Frequentes</li>
           </ul>
         </div>
 
-        {/* COLUNA 3 */}
+        {/* COLUNA 3 - ATENDIMENTO */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Atendimento</h3>
-
-          <ul className="space-y-2 text-sm">
-            <li><Link href="#" className="hover:text-white">Central de Ajuda</Link></li>
-            <li><Link href="#" className="hover:text-white">Fale Conosco</Link></li>
-            <li><Link href="#" className="hover:text-white">Política de Privacidade</Link></li>
-            <li><Link href="#" className="hover:text-white">Termos de Uso</Link></li>
-            <li><Link href="#" className="hover:text-white">Programa de Pontos</Link></li>
+          <h3 className="font-semibold text-lg mb-3">Atendimento</h3>
+          <ul className="text-gray-400 dark:text-gray-500 space-y-2 text-sm">
+            <li className="hover:text-white cursor-pointer">Central de Ajuda</li>
+            <li className="hover:text-white cursor-pointer">Fale Conosco</li>
+            <li className="hover:text-white cursor-pointer">Política de Privacidade</li>
+            <li className="hover:text-white cursor-pointer">Termos de Uso</li>
+            <li className="hover:text-white cursor-pointer">Programa de Pontos</li>
           </ul>
         </div>
 
-        {/* COLUNA 4 */}
+        {/* COLUNA 4 - CONTATO */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Contato</h3>
+          <h3 className="font-semibold text-lg mb-3">Contato</h3>
 
-          <ul className="space-y-4 text-sm">
+          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
+            <Mail className="w-4 h-4" />
+            contato@emagrifystore.com
+          </div>
 
-            <li className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-purple-400" />
-              <span>
-                contato@emagrifystore.com
-              </span>
-            </li>
+          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
+            <Phone className="w-4 h-4" />
+            (11) 99999-9999
+          </div>
 
-            <li className="flex items-start gap-3">
-              <Phone className="w-5 h-5 text-purple-400" />
-              <span>
-                (11) 99999-9999
-              </span>
-            </li>
-
-            <li className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-purple-400" />
-              <span>
-                São Paulo, SP - Brasil
-              </span>
-            </li>
-
-          </ul>
-
+          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
+            <MapPin className="w-4 h-4" />
+            São Paulo, SP – Brasil
+          </div>
         </div>
+
       </div>
 
-      <div className="text-center text-gray-500 text-xs mt-10">
+      {/* COPY */}
+      <div className="py-4 text-center text-gray-500 text-sm border-t border-green-900/20 dark:border-gray-800">
         © {new Date().getFullYear()} Emagrify Store — Todos os direitos reservados.
       </div>
     </footer>
