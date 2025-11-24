@@ -132,20 +132,22 @@ export default function Header() {
               srcSet="/LOGODARK.png"
               media="(prefers-color-scheme: dark)"
             />
-            <Image
-              src="/LOGOLIGHT.png"
-              alt="Logo Emagrify"
-              width={300}
-              height={90}
-              className="object-contain pointer-events-none dark:hidden"
-            />
-            <Image
-              src="/LOGODARK.png"
-              alt="Logo Emagrify dark"
-              width={300}
-              height={90}
-              className="object-contain pointer-events-none hidden dark:block"
-            />
+<Image
+  src="/LOGOLIGHT.png"
+  alt="Logo Emagrify"
+  width={420}
+  height={130}
+  className="object-contain pointer-events-none dark:hidden"
+/>
+
+<Image
+  src="/LOGODARK.png"
+  alt="Logo Emagrify dark"
+  width={420}
+  height={130}
+  className="object-contain pointer-events-none hidden dark:block"
+/>
+
           </picture>
         </div>
 
