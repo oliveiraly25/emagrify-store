@@ -4,13 +4,15 @@
 interface DeluxeButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  className?: string;
 }
 
-export function DeluxeButton({ children, ...props }: DeluxeButtonProps) {
+export function DeluxeButton({ children, className, ...props }: DeluxeButtonProps) {
   return (
     <button
       {...props}
       className={`
+        inline-flex items-center justify-center
         px-4 py-2 rounded-xl font-medium text-sm
         bg-gradient-to-r from-emerald-600 to-emerald-400
         text-slate-950
@@ -19,6 +21,7 @@ export function DeluxeButton({ children, ...props }: DeluxeButtonProps) {
         hover:brightness-110
         disabled:opacity-50 disabled:cursor-not-allowed
         transition-all duration-200
+        ${className ?? ""}
       `}
     >
       {children}
