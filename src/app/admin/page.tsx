@@ -344,28 +344,116 @@ export default function AdminPage() {
             {/* DASHBOARD */}
             {section === "dashboard" && (
               <div className="space-y-6">
+                {/* Cards principais */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Card title="Usuários" description="Total de clientes registrados.">
-                    <p className="text-2xl font-semibold">
+                  <Card
+                    title="Usuários"
+                    description="Total de clientes registrados."
+                  >
+                    <p className="text-3xl font-semibold">
                       {summary.totalUsers}
                     </p>
+                    <p className="mt-1 text-[11px] text-emerald-300/80">
+                      Crescimento estável 💫
+                    </p>
                   </Card>
-                  <Card title="Produtos" description="Itens cadastrados na loja.">
-                    <p className="text-2xl font-semibold">
+
+                  <Card
+                    title="Produtos"
+                    description="Itens cadastrados na loja."
+                  >
+                    <p className="text-3xl font-semibold">
                       {summary.totalProducts}
                     </p>
-                  </Card>
-                  <Card title="Pedidos" description="Pedidos registrados.">
-                    <p className="text-2xl font-semibold">
-                      {summary.totalOrders}
+                    <p className="mt-1 text-[11px] text-slate-300/80">
+                      Catálogo pronto pra vender
                     </p>
                   </Card>
-                  <Card title="Faturamento total" description="Soma de todos os pedidos.">
+
+                  <Card
+                    title="Pedidos"
+                    description="Pedidos registrados."
+                  >
+                    <p className="text-3xl font-semibold">
+                      {summary.totalOrders}
+                    </p>
+                    <p className="mt-1 text-[11px] text-slate-300/80">
+                      Histórico centralizado
+                    </p>
+                  </Card>
+
+                  <Card
+                    title="Faturamento total"
+                    description="Soma de todos os pedidos."
+                  >
                     <p className="text-2xl font-semibold">
                       R$ {summary.totalRevenue.toFixed(2)}
                     </p>
+                    <p className="mt-1 text-[11px] text-emerald-300/80">
+                      Visão geral financeira
+                    </p>
                   </Card>
                 </div>
+
+                {/* “Gráfico” simples + resumo */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <Card
+                    title="Atividade recente"
+                    description="Visão visual dos últimos dias (exemplo ilustrativo)."
+                    className="lg:col-span-2"
+                  >
+                    <div className="mt-3 flex items-end gap-2 h-32">
+                      {[
+                        { label: "Seg", value: 40 },
+                        { label: "Ter", value: 70 },
+                        { label: "Qua", value: 55 },
+                        { label: "Qui", value: 90 },
+                        { label: "Sex", value: 65 },
+                        { label: "Sáb", value: 30 },
+                        { label: "Dom", value: 45 },
+                      ].map((bar) => (
+                        <div
+                          key={bar.label}
+                          className="flex-1 flex flex-col items-center gap-1"
+                        >
+                          <div className="relative w-full rounded-full bg-slate-900/80 h-24 flex items-end overflow-hidden">
+                            <div
+                              className="w-full rounded-full bg-gradient-to-t from-emerald-500 to-emerald-300 transition-all duration-300 group-hover:from-emerald-400 group-hover:to-emerald-200"
+                              style={{ height: `${bar.value}%` }}
+                            />
+                          </div>
+                          <span className="text-[10px] text-slate-400">
+                            {bar.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-3 text-xs text-slate-400">
+                      Esse gráfico é apenas um exemplo visual. No futuro, a
+                      gente pode ligar isso direto nos dados reais de pedidos,
+                      usuários ou visitas. 💹
+                    </p>
+                  </Card>
+
+                  <Card
+                    title="Bem-vinda ao painel da Emagrify Store"
+                    description="Use o menu lateral para gerenciar cada parte da sua loja."
+                  >
+                    <p className="text-sm text-slate-300">
+                      Aqui você controla usuários, produtos, pedidos, pontos,
+                      timeline interna e suporte — tudo em um único lugar, com o
+                      seu painel darkzinho chique. 💅
+                    </p>
+                    <p className="mt-3 text-xs text-slate-400">
+                      Esse layout já está preparado para crescer junto com a sua
+                      lojinha: dá pra adicionar gráficos, relatórios avançados,
+                      filtros e muito mais.
+                    </p>
+                  </Card>
+                </div>
+              </div>
+            )}
+
 
                 <Card
                   title="Bem-vinda ao painel da Emagrify Store"
