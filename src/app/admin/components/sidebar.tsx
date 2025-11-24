@@ -97,16 +97,8 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
           active={activeSection === "settings"}
           onClick={() => onSectionChange("settings")}
         />
-        <SidebarItem
-          label="Segurança"
-          icon={<Shield className="w-4 h-4" />}
-          disabled
-        />
-        <SidebarItem
-          label="Permissões"
-          icon={<KeyRound className="w-4 h-4" />}
-          disabled
-        />
+        <SidebarItem label="Segurança" icon={<Shield className="w-4 h-4" />} disabled />
+        <SidebarItem label="Permissões" icon={<KeyRound className="w-4 h-4" />} disabled />
       </nav>
 
       <div className="px-6 py-4 border-t border-slate-800/70 text-[11px] text-slate-500">
@@ -140,4 +132,15 @@ function SidebarItem({
         active
           ? "text-emerald-300"
           : "text-slate-300 hover:text-slate-50"
-${disabled ? "opacity-40 cursor-not-allowed" : ""}
+      } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
+    >
+      <span>{icon}</span>
+      <span>{label}</span>
+
+      {/* highlight animado */}
+      {active && (
+        <span className="absolute left-0 top-0 h-full w-[3px] bg-emerald-400 rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+      )}
+    </button>
+  );
+}
