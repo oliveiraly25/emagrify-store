@@ -7,7 +7,11 @@ interface DeluxeButtonProps
   className?: string;
 }
 
-export function DeluxeButton({ children, className, ...props }: DeluxeButtonProps) {
+export function DeluxeButton({
+  children,
+  className,
+  ...props
+}: DeluxeButtonProps) {
   return (
     <button
       {...props}
