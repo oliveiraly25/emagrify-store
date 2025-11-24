@@ -1,4 +1,4 @@
-// src/app/admin/components/Table.tsx
+// src/app/admin/components/table.tsx
 "use client";
 
 interface TableProps {
