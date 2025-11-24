@@ -3,10 +3,10 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import supabase from "@/lib/supabaseClient";
-import { Sidebar } from "./components/Sidebar";
-import { Header } from "./components/Header";
-import { Card } from "./components/Card";
-import { Table } from "./components/Table";
+import { Sidebar } from "./components/sidebar";
+import { Header } from "./components/header";
+import { Card } from "./components/card";
+import { Table } from "./components/table";
 
 type Section =
   | "dashboard"
