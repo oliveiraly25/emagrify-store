@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
   ShoppingCart,
@@ -9,6 +10,7 @@ import {
   Bell,
   MoreVertical,
 } from "lucide-react";
+
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -82,30 +84,34 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-300 dark:border-black shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="w-full px-6 py-4 flex items-center justify-between">
 
         {/* ================================
             ESQUERDA — BARRA DE PESQUISA
         ================================= */}
-        <div className="flex-1 hidden md:flex">
+        <div className="hidden md:flex flex-1 justify-start">
           <div className="
-            relative w-full max-w-sm
+            relative
+            w-[260px]
             bg-white dark:bg-black
             border border-black dark:border-white
             rounded-full
           ">
             <input
               type="text"
-              placeholder="Busque por produtos em todo o site"
+              placeholder="Buscar..."
               className="
-                w-full px-4 py-3 pr-12 rounded-full
+                w-full px-4 py-2 pr-10 rounded-full
                 bg-white dark:bg-black
                 text-black dark:text-white
                 placeholder-gray-600 dark:placeholder-gray-300
+                text-sm
               "
             />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white">
-              <Search />
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white"
+            >
+              <Search size={18} />
             </button>
           </div>
         </div>
@@ -113,14 +119,35 @@ export default function Header() {
         {/* ================================
             CENTRO — LOGO
         ================================= */}
-        <Link href="/" className="flex-1 flex justify-center">
-          <span
-            className="text-4xl font-bold tracking-wide text-black dark:text-white"
-            style={{ fontFamily: "arialbold" }}
-          >
-            Emagrify
-          </span>
-        </Link>
+        <div className="flex-1 flex justify-center select-none">
+          {/* LOGO QUE TROCA ENTRE MODO CLARO/ESCURO */}
+          <picture>
+            {/* LOGO MODO CLARO */}
+            <source
+              srcSet="/LOGOLIGHT.png"
+              media="(prefers-color-scheme: light)"
+            />
+            {/* LOGO MODO ESCURO */}
+            <source
+              srcSet="/LOGODARK.png"
+              media="(prefers-color-scheme: dark)"
+            />
+            <Image
+              src="/LOGOLIGHT.png"
+              alt="Logo Emagrify"
+              width={300}
+              height={90}
+              className="object-contain pointer-events-none dark:hidden"
+            />
+            <Image
+              src="/LOGODARK.png"
+              alt="Logo Emagrify dark"
+              width={300}
+              height={90}
+              className="object-contain pointer-events-none hidden dark:block"
+            />
+          </picture>
+        </div>
 
         {/* ================================
             DIREITA — ÍCONES / LOGIN / MENU
@@ -136,10 +163,9 @@ export default function Header() {
 
           <ThemeToggle />
 
-          {/* MENU */}
+          {/* MENU USER */}
           <div className="relative" ref={menuRef}>
 
-            {/* DESLOGADO — botão normal */}
             {!user && (
               <Link
                 href="/login"
@@ -154,7 +180,6 @@ export default function Header() {
               </Link>
             )}
 
-            {/* LOGADO — avatar */}
             {user && (
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -164,7 +189,7 @@ export default function Header() {
               </button>
             )}
 
-            {/* MOBILE — 3 pontinhos */}
+            {/* 3 pontinhos — MOBILE */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="
