@@ -100,7 +100,6 @@ export default function AdminPage() {
   const [timeline, setTimeline] = useState<TimelinePost[]>([]);
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
-  // Form states
   const [newUserName, setNewUserName] = useState("");
   const [newUserEmail, setNewUserEmail] = useState("");
 
@@ -121,7 +120,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  // Carrega dados de acordo com a seção
   useEffect(() => {
     setFeedback(null);
 
@@ -231,7 +229,7 @@ export default function AdminPage() {
     setLoading(false);
   }
 
-  // Adicionar pontos para um usuário pelo email
+  // Adicionar pontos
   async function handleAddPoints(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -272,7 +270,7 @@ export default function AdminPage() {
     loadUsers();
   }
 
-  // Criar post na timeline
+  // Timeline
   async function handleCreateTimeline(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -285,7 +283,7 @@ export default function AdminPage() {
 
     if (error) setFeedback("Erro ao postar na timeline.");
     else {
-      setFeedback("Post adicionado na timeline!");
+      setFeedback("Post adicionado!");
       setTimelineTitle("");
       setTimelineContent("");
       loadTimeline();
@@ -293,7 +291,7 @@ export default function AdminPage() {
     setLoading(false);
   }
 
-  // Criar ticket de suporte
+  // Suporte
   async function handleCreateTicket(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -305,9 +303,9 @@ export default function AdminPage() {
       message: supportMessage,
     });
 
-    if (error) setFeedback("Erro ao criar ticket de suporte.");
+    if (error) setFeedback("Erro ao criar ticket.");
     else {
-      setFeedback("Ticket de suporte criado!");
+      setFeedback("Ticket criado!");
       setSupportEmail("");
       setSupportSubject("");
       setSupportMessage("");
@@ -320,7 +318,10 @@ export default function AdminPage() {
     totalUsers: users.length,
     totalProducts: products.length,
     totalOrders: orders.length,
-    totalRevenue: orders.reduce((sum, order) => sum + Number(order.total || 0), 0),
+    totalRevenue: orders.reduce(
+      (sum, order) => sum + Number(order.total || 0),
+      0
+    ),
   };
 
   return (
@@ -353,9 +354,6 @@ export default function AdminPage() {
                     <p className="text-3xl font-semibold">
                       {summary.totalUsers}
                     </p>
-                    <p className="mt-1 text-[11px] text-emerald-300/80">
-                      Crescimento estável 💫
-                    </p>
                   </Card>
 
                   <Card
@@ -365,20 +363,11 @@ export default function AdminPage() {
                     <p className="text-3xl font-semibold">
                       {summary.totalProducts}
                     </p>
-                    <p className="mt-1 text-[11px] text-slate-300/80">
-                      Catálogo pronto pra vender
-                    </p>
                   </Card>
 
-                  <Card
-                    title="Pedidos"
-                    description="Pedidos registrados."
-                  >
+                  <Card title="Pedidos" description="Pedidos registrados.">
                     <p className="text-3xl font-semibold">
                       {summary.totalOrders}
-                    </p>
-                    <p className="mt-1 text-[11px] text-slate-300/80">
-                      Histórico centralizado
                     </p>
                   </Card>
 
@@ -389,17 +378,14 @@ export default function AdminPage() {
                     <p className="text-2xl font-semibold">
                       R$ {summary.totalRevenue.toFixed(2)}
                     </p>
-                    <p className="mt-1 text-[11px] text-emerald-300/80">
-                      Visão geral financeira
-                    </p>
                   </Card>
                 </div>
 
-                {/* “Gráfico” simples + resumo */}
+                {/* Gráfico + texto */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   <Card
                     title="Atividade recente"
-                    description="Visão visual dos últimos dias (exemplo ilustrativo)."
+                    description="Exemplo visual ilustrativo."
                     className="lg:col-span-2"
                   >
                     <div className="mt-3 flex items-end gap-2 h-32">
@@ -418,7 +404,7 @@ export default function AdminPage() {
                         >
                           <div className="relative w-full rounded-full bg-slate-900/80 h-24 flex items-end overflow-hidden">
                             <div
-                              className="w-full rounded-full bg-gradient-to-t from-emerald-500 to-emerald-300 transition-all duration-300 group-hover:from-emerald-400 group-hover:to-emerald-200"
+                              className="w-full rounded-full bg-gradient-to-t from-emerald-500 to-emerald-300"
                               style={{ height: `${bar.value}%` }}
                             />
                           </div>
@@ -428,42 +414,17 @@ export default function AdminPage() {
                         </div>
                       ))}
                     </div>
-                    <p className="mt-3 text-xs text-slate-400">
-                      Esse gráfico é apenas um exemplo visual. No futuro, a
-                      gente pode ligar isso direto nos dados reais de pedidos,
-                      usuários ou visitas. 💹
-                    </p>
                   </Card>
 
                   <Card
                     title="Bem-vinda ao painel da Emagrify Store"
-                    description="Use o menu lateral para gerenciar cada parte da sua loja."
+                    description="Use o menu lateral para navegar."
                   >
                     <p className="text-sm text-slate-300">
-                      Aqui você controla usuários, produtos, pedidos, pontos,
-                      timeline interna e suporte — tudo em um único lugar, com o
-                      seu painel darkzinho chique. 💅
-                    </p>
-                    <p className="mt-3 text-xs text-slate-400">
-                      Esse layout já está preparado para crescer junto com a sua
-                      lojinha: dá pra adicionar gráficos, relatórios avançados,
-                      filtros e muito mais.
+                      Aqui você controla tudo da sua loja em um único lugar. 💅
                     </p>
                   </Card>
                 </div>
-              </div>
-            )}
-
-
-                <Card
-                  title="Bem-vinda ao painel da Emagrify Store"
-                  description="Use o menu lateral para gerenciar cada parte da sua loja."
-                >
-                  <p className="text-sm text-slate-300">
-                    Aqui você controla usuários, produtos, pedidos, pontos, timeline interna e suporte —
-                    tudo em um único lugar, com o seu painel darkzinho chique. 💅
-                  </p>
-                </Card>
               </div>
             )}
 
@@ -483,7 +444,7 @@ export default function AdminPage() {
                       placeholder="Nome"
                       value={newUserName}
                       onChange={(e) => setNewUserName(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <input
@@ -491,7 +452,7 @@ export default function AdminPage() {
                       placeholder="Email"
                       value={newUserEmail}
                       onChange={(e) => setNewUserEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <button
@@ -505,7 +466,7 @@ export default function AdminPage() {
 
                 <Card
                   title="Lista de usuários"
-                  description="Todos os usuários cadastrados na tabela store_users."
+                  description="Todos os usuários cadastrados."
                 >
                   <div className="mt-3 space-y-2">
                     {users.map((u) => (
@@ -549,7 +510,7 @@ export default function AdminPage() {
                       placeholder="Nome do produto"
                       value={newProductName}
                       onChange={(e) => setNewProductName(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <input
@@ -557,7 +518,7 @@ export default function AdminPage() {
                       placeholder="Preço (ex: 99.90)"
                       value={newProductPrice}
                       onChange={(e) => setNewProductPrice(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <input
@@ -565,7 +526,7 @@ export default function AdminPage() {
                       placeholder="Estoque"
                       value={newProductStock}
                       onChange={(e) => setNewProductStock(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                     />
                     <button
                       disabled={loading}
@@ -578,7 +539,7 @@ export default function AdminPage() {
 
                 <Card
                   title="Produtos cadastrados"
-                  description="Lista de produtos na tabela products."
+                  description="Lista de produtos na tabela."
                 >
                   <div className="mt-3 space-y-2">
                     {products.map((p) => (
@@ -612,7 +573,7 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <Card
                   title="Pedidos"
-                  description="Pedidos registrados na tabela orders."
+                  description="Pedidos registrados."
                 >
                   {orders.length === 0 ? (
                     <p className="text-sm text-slate-400 mt-2">
@@ -649,7 +610,7 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <Card
                   title="Adicionar pontos"
-                  description="Ajuste manual de pontos para um usuário pelo email."
+                  description="Ajuste manual de pontos para um usuário."
                 >
                   <form
                     onSubmit={handleAddPoints}
@@ -660,15 +621,15 @@ export default function AdminPage() {
                       placeholder="Email do usuário"
                       value={pointsUserEmail}
                       onChange={(e) => setPointsUserEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <input
                       type="number"
-                      placeholder="Quantidade de pontos"
+                      placeholder="Quantidade"
                       value={pointsAmount}
                       onChange={(e) => setPointsAmount(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <button
@@ -678,14 +639,6 @@ export default function AdminPage() {
                       {loading ? "Salvando..." : "Adicionar pontos"}
                     </button>
                   </form>
-
-                  <p className="mt-3 text-xs text-slate-400">
-                    Os pontos são somados no cadastro do usuário e a movimentação é registrada na tabela{" "}
-                    <code className="font-mono text-[11px] bg-slate-900 px-1.5 py-0.5 rounded">
-                      points_transactions
-                    </code>
-                    .
-                  </p>
                 </Card>
               </div>
             )}
@@ -695,7 +648,7 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <Card
                   title="Novo post na timeline"
-                  description="Use a timeline para registrar decisões, mudanças e observações internas."
+                  description="Registre observações internas."
                 >
                   <form
                     onSubmit={handleCreateTimeline}
@@ -703,30 +656,30 @@ export default function AdminPage() {
                   >
                     <input
                       type="text"
-                      placeholder="Título do post"
+                      placeholder="Título"
                       value={timelineTitle}
                       onChange={(e) => setTimelineTitle(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <textarea
                       placeholder="Conteúdo (opcional)"
                       value={timelineContent}
                       onChange={(e) => setTimelineContent(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none min-h-[90px] focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm min-h-[90px]"
                     />
                     <button
                       disabled={loading}
                       className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-sm font-medium transition-colors"
                     >
-                      {loading ? "Salvando..." : "Postar na timeline"}
+                      {loading ? "Salvando..." : "Postar"}
                     </button>
                   </form>
                 </Card>
 
                 <Card
                   title="Histórico da timeline"
-                  description="Posts registrados na tabela admin_timeline."
+                  description="Posts registrados."
                 >
                   <div className="mt-3 space-y-3">
                     {timeline.map((post) => (
@@ -734,10 +687,8 @@ export default function AdminPage() {
                         key={post.id}
                         className="border border-slate-800 rounded-lg bg-slate-950 px-4 py-3"
                       >
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="font-medium text-sm text-slate-50">
-                            {post.title}
-                          </p>
+                        <div className="flex items-center justify-between">
+                          <p className="font-medium text-sm">{post.title}</p>
                           <span className="text-[11px] text-slate-500">
                             {new Date(post.created_at).toLocaleString("pt-BR")}
                           </span>
@@ -751,7 +702,7 @@ export default function AdminPage() {
                     ))}
                     {timeline.length === 0 && (
                       <p className="text-sm text-slate-400">
-                        Nenhum post na timeline ainda.
+                        Nenhum post ainda.
                       </p>
                     )}
                   </div>
@@ -764,7 +715,7 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <Card
                   title="Criar ticket manualmente"
-                  description="Registre uma solicitação de suporte em nome de um usuário."
+                  description="Registre uma solicitação de suporte."
                 >
                   <form
                     onSubmit={handleCreateTicket}
@@ -772,10 +723,10 @@ export default function AdminPage() {
                   >
                     <input
                       type="email"
-                      placeholder="Email do usuário"
+                      placeholder="Email"
                       value={supportEmail}
                       onChange={(e) => setSupportEmail(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <input
@@ -783,14 +734,14 @@ export default function AdminPage() {
                       placeholder="Assunto"
                       value={supportSubject}
                       onChange={(e) => setSupportSubject(e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm"
                       required
                     />
                     <textarea
                       placeholder="Mensagem"
                       value={supportMessage}
                       onChange={(e) => setSupportMessage(e.target.value)}
-                      className="md:col-span-3 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none min-h-[90px] focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60"
+                      className="md:col-span-3 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm min-h-[90px]"
                       required
                     />
                     <button
@@ -804,7 +755,7 @@ export default function AdminPage() {
 
                 <Card
                   title="Tickets de suporte"
-                  description="Lista dos tickets na tabela support_tickets."
+                  description="Lista dos tickets registrados."
                 >
                   <div className="mt-3 space-y-3">
                     {tickets.map((t) => (
@@ -812,11 +763,9 @@ export default function AdminPage() {
                         key={t.id}
                         className="border border-slate-800 rounded-lg bg-slate-950 px-4 py-3 text-sm"
                       >
-                        <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium text-slate-50">
-                              {t.subject}
-                            </p>
+                            <p className="font-medium">{t.subject}</p>
                             <p className="text-[11px] text-slate-400">
                               {t.user_email}
                             </p>
@@ -845,13 +794,11 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <Card
                   title="Configurações do painel"
-                  description="Área reservada para ajustes futuros do painel admin da Emagrify Store."
+                  description="Área reservada para ajustes futuros."
                 >
                   <p className="text-sm text-slate-300">
-                    Aqui você poderá configurar temas, permissões e preferências
-                    avançadas do painel. Por enquanto, esta seção é apenas um
-                    placeholder, mas já deixa o layout pronto para crescer junto
-                    com a sua lojinha. 💚
+                    Aqui você poderá configurar preferências avançadas do painel.
+                    Ainda em desenvolvimento. 💚
                   </p>
                 </Card>
               </div>
