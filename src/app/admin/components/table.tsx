@@ -8,11 +8,11 @@ interface TableProps {
 
 export function Table({ headers, children }: TableProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/70">
+    <div className="overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-xl shadow-[0_18px_40px_rgba(15,23,42,0.85)]">
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="bg-slate-900/80">
+            <tr className="bg-slate-900/70">
               {headers.map((header) => (
                 <th
                   key={header}
