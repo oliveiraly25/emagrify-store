@@ -1,60 +1,63 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 
+type ProfileRow = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  gender: string | null;
+  age: number | null;
+  phone: string | null;
+  birth_date: string | null; // coluna DATE no Supabase (opcional)
+};
+
 const MONTHS = [
-  { value: "01", label: "Jan" },
-  { value: "02", label: "Fev" },
-  { value: "03", label: "Mar" },
-  { value: "04", label: "Abr" },
-  { value: "05", label: "Mai" },
-  { value: "06", label: "Jun" },
-  { value: "07", label: "Jul" },
-  { value: "08", label: "Ago" },
-  { value: "09", label: "Set" },
-  { value: "10", label: "Out" },
-  { value: "11", label: "Nov" },
-  { value: "12", label: "Dez" },
+  { value: "Jan", label: "Jan" },
+  { value: "Fev", label: "Fev" },
+  { value: "Mar", label: "Mar" },
+  { value: "Abr", label: "Abr" },
+  { value: "Mai", label: "Mai" },
+  { value: "Jun", label: "Jun" },
+  { value: "Jul", label: "Jul" },
+  { value: "Ago", label: "Ago" },
+  { value: "Set", label: "Set" },
+  { value: "Out", label: "Out" },
+  { value: "Nov", label: "Nov" },
+  { value: "Dez", label: "Dez" },
 ];
 
-function calculateAge(year: number, month: number, day: number) {
-  const today = new Date();
-  const birth = new Date(year, month - 1, day);
+function monthStringToIndex(m: string): number {
+  const idx = MONTHS.findIndex((item) => item.value === m);
+  return idx >= 0 ? idx : 0;
+}
 
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+function calculateAgeFromDate(date: Date): number {
+  const today = new Date();
+  let age = today.getFullYear() - date.getFullYear();
+  const m = today.getMonth() - date.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
     age--;
   }
   return age;
 }
 
-function onlyLetters(value: string) {
-  return /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value.trim());
-}
+function applyPhoneMask(value: string): string {
+  let v = value.replace(/\D/g, "");
 
-function onlyDigits(value: string) {
-  return value.replace(/\D/g, "");
-}
-
-function formatPhone(value: string) {
-  const digits = onlyDigits(value);
-
-  if (digits.length <= 10) {
-    // (xx) xxxx-xxxx
-    return digits
-      .replace(/^(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{4})(\d)/, "$1-$2")
-      .slice(0, 14);
+  if (v.length <= 10) {
+    // fixo
+    v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+  } else {
+    // celular
+    v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{5})(\d)/, "$1-$2");
   }
 
-  // (xx) xxxxx-xxxx
-  return digits
-    .replace(/^(\d{2})(\d)/, "($1) $2")
-    .replace(/(\d{5})(\d)/, "$1-$2")
-    .slice(0, 15);
+  return v;
 }
 
 export default function DadosPessoaisPage() {
@@ -68,31 +71,15 @@ export default function DadosPessoaisPage() {
   // CAMPOS
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
-  const [birthDay, setBirthDay] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-
+  const [birthDay, setBirthDay] = useState("");   // "11"
+  const [birthMonth, setBirthMonth] = useState(""); // "Jun"
+  const [birthYear, setBirthYear] = useState(""); // "2003"
   const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("");         // com máscara
   const [email, setEmail] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  // idade calculada só para exibição
-  const computedAge = useMemo(() => {
-    if (!birthDay || !birthMonth || !birthYear) return null;
-    const day = Number(birthDay);
-    const month = Number(birthMonth);
-    const year = Number(birthYear);
-    if (!day || !month || !year) return null;
-    try {
-      return calculateAge(year, month, day);
-    } catch {
-      return null;
-    }
-  }, [birthDay, birthMonth, birthYear]);
 
   // =============================
   //   CARREGAR DADOS
@@ -113,27 +100,28 @@ export default function DadosPessoaisPage() {
         .from("profiles")
         .select("*")
         .eq("id", auth.user.id)
-        .maybeSingle();
+        .maybeSingle<ProfileRow>();
 
       if (profileData) {
         setFirstName(profileData.first_name || "");
         setLastName(profileData.last_name || "");
         setGender(profileData.gender || "");
 
-        // tenta ler data de nascimento (birth_date)
-        if (profileData.birth_date) {
-          const [year, month, day] = profileData.birth_date.split("-");
-          setBirthDay(day || "");
-          setBirthMonth(month || "");
-          setBirthYear(year || "");
-        } else if (profileData.age) {
-          // fallback: se só existir age, deixa campos vazios mas não quebra
-          setBirthDay("");
-          setBirthMonth("");
-          setBirthYear("");
+        // Telefone vem salvo só com números → aplicar máscara
+        if (profileData.phone) {
+          setPhone(applyPhoneMask(profileData.phone));
         }
 
-        setPhone(profileData.phone || "");
+        // Data de nascimento
+        if (profileData.birth_date) {
+          const d = new Date(profileData.birth_date);
+          setBirthDay(String(d.getDate()).padStart(2, "0"));
+          setBirthMonth(MONTHS[d.getMonth()].value);
+          setBirthYear(String(d.getFullYear()));
+        } else if (profileData.age) {
+          // fallback se só existir age (raro)
+          setBirthYear("");
+        }
       }
 
       setLoading(false);
@@ -143,98 +131,87 @@ export default function DadosPessoaisPage() {
   }, [router]);
 
   // =============================
-  //   VALIDAÇÃO
-  // =============================
-  function validateForm() {
-    // Nome / sobrenome
-    if (!onlyLetters(firstName) || !onlyLetters(lastName)) {
-      setError("Nome e sobrenome devem conter apenas letras.");
-      return false;
-    }
-
-    // Data de nascimento
-    const day = Number(birthDay);
-    const month = Number(birthMonth);
-    const year = Number(birthYear);
-
-    if (!day || !month || !year) {
-      setError("Informe sua data de nascimento completa.");
-      return false;
-    }
-
-    const birth = new Date(year, month - 1, day);
-    if (
-      birth.getFullYear() !== year ||
-      birth.getMonth() !== month - 1 ||
-      birth.getDate() !== day
-    ) {
-      setError("Data de nascimento inválida.");
-      return false;
-    }
-
-    const age = calculateAge(year, month, day);
-    if (age < 16 || age > 120) {
-      setError("A idade deve estar entre 16 e 120 anos.");
-      return false;
-    }
-
-    // Gênero
-    if (!gender) {
-      setError("Selecione um gênero.");
-      return false;
-    }
-
-    // Telefone
-    const digits = onlyDigits(phone);
-    if (digits.length < 10 || digits.length > 11) {
-      setError("Informe um telefone válido com DDD.");
-      return false;
-    }
-
-    return true;
-  }
-
-  // =============================
   //   SALVAR ALTERAÇÕES
   // =============================
-  async function handleSave(e: React.FormEvent) {
+  async function handleSave(e: any) {
     e.preventDefault();
     setSaving(true);
     setError("");
     setSuccess("");
 
-    if (!userId) {
-      setError("Usuário não encontrado.");
+    // ===== VALIDACOES BÁSICAS =====
+    const onlyLetters = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+
+    if (!onlyLetters.test(firstName)) {
+      setError("O nome deve conter apenas letras.");
+      setSaving(false);
+      return;
+    }
+    if (!onlyLetters.test(lastName)) {
+      setError("O sobrenome deve conter apenas letras.");
       setSaving(false);
       return;
     }
 
-    if (!validateForm()) {
+    if (!birthDay || !birthMonth || !birthYear) {
+      setError("Informe sua data de nascimento completa.");
       setSaving(false);
       return;
     }
 
-    const day = Number(birthDay);
-    const month = Number(birthMonth);
-    const year = Number(birthYear);
-    const age = calculateAge(year, month, day);
-    const birthDate = `${year}-${birthMonth}-${birthDay.padStart(2, "0")}`;
+    const dayNum = Number(birthDay);
+    const yearNum = Number(birthYear);
+    const monthIndex = monthStringToIndex(birthMonth);
+
+    const birthDate = new Date(yearNum, monthIndex, dayNum);
+
+    // validar data real
+    if (
+      birthDate.getDate() !== dayNum ||
+      birthDate.getMonth() !== monthIndex ||
+      birthDate.getFullYear() !== yearNum
+    ) {
+      setError("Data de nascimento inválida.");
+      setSaving(false);
+      return;
+    }
+
+    const ageCalc = calculateAgeFromDate(birthDate);
+    if (ageCalc < 16 || ageCalc > 120) {
+      setError("A idade deve estar entre 16 e 120 anos.");
+      setSaving(false);
+      return;
+    }
+
+    if (!gender) {
+      setError("Selecione um gênero.");
+      setSaving(false);
+      return;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+      setError("Telefone inválido. Verifique o número digitado.");
+      setSaving(false);
+      return;
+    }
+
+    const birthIso = birthDate.toISOString().slice(0, 10); // YYYY-MM-DD
 
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
+        first_name: firstName,
+        last_name: lastName,
         gender,
-        birth_date: birthDate, // coluna DATE no Supabase
-        age,
-        phone: onlyDigits(phone),
+        phone: phoneDigits,
+        birth_date: birthIso,
+        age: ageCalc,
       })
       .eq("id", userId);
 
     if (updateError) {
-      console.error(updateError);
-      setError("Erro ao salvar alterações. Tente novamente.");
+      setError("Erro ao salvar alterações.");
       setSaving(false);
       return;
     }
@@ -245,10 +222,19 @@ export default function DadosPessoaisPage() {
 
   if (loading) return <p className="text-center mt-10">Carregando...</p>;
 
-  const birthDateDisplay =
-    birthDay && birthMonth && birthYear
-      ? `${birthDay.padStart(2, "0")}/${birthMonth}/${birthYear}`
-      : null;
+  // Texto "11/06/2003 (22 anos)"
+  let resumoNascimento = "";
+  if (birthDay && birthMonth && birthYear) {
+    const dayNum = Number(birthDay);
+    const yearNum = Number(birthYear);
+    const monthIndex = monthStringToIndex(birthMonth);
+    const birthDate = new Date(yearNum, monthIndex, dayNum);
+    const age = calculateAgeFromDate(birthDate);
+
+    const dd = String(dayNum).padStart(2, "0");
+    const mm = String(monthIndex + 1).padStart(2, "0");
+    resumoNascimento = `${dd}/${mm}/${yearNum} (${age} anos)`;
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6 mt-6 bg-white dark:bg-[#0f0f0f] rounded-lg shadow">
@@ -257,6 +243,7 @@ export default function DadosPessoaisPage() {
       </h1>
 
       <form onSubmit={handleSave} className="flex flex-col gap-4">
+
         {/* Nome */}
         <div>
           <label className="font-semibold text-black dark:text-white">
@@ -287,11 +274,10 @@ export default function DadosPessoaisPage() {
 
         {/* Data de nascimento */}
         <div>
-          <label className="font-semibold text-black dark:text-white mb-1 block">
+          <label className="font-semibold text-black dark:text-white">
             Data de nascimento
           </label>
-          <div className="flex gap-3">
-            {/* Dia */}
+          <div className="flex gap-3 mt-1">
             <input
               type="number"
               placeholder="Dia"
@@ -303,9 +289,8 @@ export default function DadosPessoaisPage() {
               required
             />
 
-            {/* Mês */}
             <select
-              className="w-1/3 p-3 border rounded-lg bg-white dark:bg-[#1a1a1a] text-black dark:text-white dark:[color-scheme:dark]"
+              className="w-1/3 p-3 border rounded-lg bg-white dark:bg-[#1a1a1a] text-black dark:text-white"
               value={birthMonth}
               onChange={(e) => setBirthMonth(e.target.value)}
               required
@@ -318,7 +303,6 @@ export default function DadosPessoaisPage() {
               ))}
             </select>
 
-            {/* Ano */}
             <input
               type="number"
               placeholder="Ano"
@@ -329,9 +313,9 @@ export default function DadosPessoaisPage() {
             />
           </div>
 
-          {birthDateDisplay && computedAge !== null && (
+          {resumoNascimento && (
             <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-              {birthDateDisplay} ({computedAge} anos)
+              {resumoNascimento}
             </p>
           )}
         </div>
@@ -342,7 +326,7 @@ export default function DadosPessoaisPage() {
             Gênero
           </label>
           <select
-            className="w-full p-3 border rounded-lg bg-white dark:bg-[#1a1a1a] text-black dark:text-white dark:[color-scheme:dark]"
+            className="w-full p-3 border rounded-lg bg-white dark:bg-[#1a1a1a] text-black dark:text-white"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             required
@@ -362,8 +346,8 @@ export default function DadosPessoaisPage() {
           <input
             type="text"
             className="w-full p-3 border rounded-lg bg-white dark:bg-[#1a1a1a] text-black dark:text-white"
-            value={formatPhone(phone)}
-            onChange={(e) => setPhone(onlyDigits(e.target.value))}
+            value={phone}
+            onChange={(e) => setPhone(applyPhoneMask(e.target.value))}
             required
           />
         </div>
@@ -382,8 +366,16 @@ export default function DadosPessoaisPage() {
         </div>
 
         {/* Mensagens */}
-        {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-600">{success}</p>}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-900 dark:text-red-200">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-900 dark:text-green-200">
+            {success}
+          </div>
+        )}
 
         {/* Botão */}
         <button
