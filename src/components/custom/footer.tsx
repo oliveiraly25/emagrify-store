@@ -18,15 +18,7 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
             <span
-              className="
-                text-3xl font-bold 
-                bg-gradient-to-r from-purple-500 to-pink-500 
-                w-10 h-10 rounded-full 
-                flex items-center justify-center text-white
-              "
-            >
-              E
-            </span>
+
             Emagrify Store
           </h2>
 
