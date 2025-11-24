@@ -1,4 +1,4 @@
-// src/app/admin/components/Card.tsx
+// src/app/admin/components/card.tsx
 "use client";
 
 interface CardProps {
