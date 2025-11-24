@@ -1,4 +1,13 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/admin-login/route": "app/api/admin-login/route.js",
   "/icon.svg/route": "app/icon.svg/route.js",
-  "/page": "app/page.js"
+  "/login-auth/page": "app/login-auth/page.js",
+  "/login-real/page": "app/login-real/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/pedidos/page": "app/pedidos/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/register/page": "app/register/page.js",
+  "/admin/page": "app/admin/page.js"
 }
