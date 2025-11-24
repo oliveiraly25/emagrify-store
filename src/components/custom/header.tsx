@@ -21,9 +21,6 @@ export default function Header() {
 
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // ===============================
-  //   LOAD USER
-  // ===============================
   useEffect(() => {
     async function load() {
       const { data: auth } = await supabase.auth.getUser();
@@ -65,7 +62,7 @@ export default function Header() {
     window.location.href = "/";
   }
 
-  // Fechar menu fora do elemento
+  // Fecha menu quando clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -78,38 +75,28 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-black shadow-sm">
+    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-300 dark:border-gray-800 shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* LOGO CENTRALIZADO */}
-        <div className="md:hidden"></div>
+
+        {/* LOGO CENTRALIZADO (DESKTOP) */}
+        <div className="md:hidden" />
 
         <Link href="/" className="hidden md:flex flex-1 justify-center">
           <span
-            className="text-4xl tracking-wide text-black dark:text-white font-bold"
+            className="text-4xl tracking-wide font-bold text-black dark:text-white"
             style={{ fontFamily: "arialbold" }}
           >
             Emagrify
           </span>
         </Link>
 
-        {/* SEARCH (MOBILE) */}
+        {/* SEARCH MOBILE */}
         <div className="md:hidden flex-1">
-          <div
-            className="
-              relative w-full rounded-full
-              bg-gray-100 dark:bg-white
-              border border-gray-300 dark:border-white
-            "
-          >
+          <div className="relative w-full rounded-full bg-gray-100 dark:bg-white border border-gray-300">
             <input
               type="text"
               placeholder="Buscar..."
-              className="
-                w-full px-4 py-2 pr-10
-                bg-gray-100 dark:bg-white
-                text-black
-                rounded-full
-              "
+              className="w-full px-4 py-2 pr-10 bg-gray-100 dark:bg-white text-black rounded-full"
             />
             <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
               <Search />
@@ -117,24 +104,13 @@ export default function Header() {
           </div>
         </div>
 
-        {/* SEARCH DESKTOP (vai para o lado direito igual ao exemplo) */}
+        {/* SEARCH DESKTOP */}
         <div className="hidden md:flex flex-1 justify-end pr-6">
-          <div
-            className="
-              relative w-full max-w-md
-              rounded-full bg-white dark:bg-black
-              border border-black dark:border-white
-            "
-          >
+          <div className="relative w-full max-w-md rounded-full bg-gray-100 dark:bg-black border border-black dark:border-white">
             <input
               type="text"
               placeholder="Busque por produtos em todo o site"
-              className="
-                w-full px-4 py-3 pr-12 rounded-full
-                bg-white dark:bg-black
-                text-black dark:text-white
-                placeholder-gray-600 dark:placeholder-gray-300
-              "
+              className="w-full px-4 py-3 pr-12 rounded-full bg-gray-100 dark:bg-black text-black dark:text-white placeholder-gray-600 dark:placeholder-gray-300"
             />
             <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white">
               <Search />
@@ -145,91 +121,68 @@ export default function Header() {
         {/* ÍCONES */}
         <div className="flex items-center gap-4 text-black dark:text-white">
 
-          {/* MOSTRAR FAVORITOS E CARRINHO APENAS SE LOGADO */}
+          {/* Heart e Cart apenas se logado */}
           {user && (
             <>
-              <Heart className="hidden sm:block cursor-pointer hover:text-[#63783D]" />
-              <ShoppingCart className="hidden sm:block cursor-pointer hover:text-[#63783D]" />
+              <Heart className="hidden sm:block cursor-pointer hover:text-[#63783D] transition" />
+              <ShoppingCart className="hidden sm:block cursor-pointer hover:text-[#63783D] transition" />
             </>
           )}
 
           <ThemeToggle />
 
-          {/* MENU USER + MOBILE */}
+          {/* MENU DO USUÁRIO */}
           <div className="relative" ref={menuRef}>
+
+            {/* Botão Entrar (desktop) */}
             {!user && (
               <Link
                 href="/login"
-                className="
-                  hidden sm:block 
-                  px-4 py-2 rounded-full 
-                  bg-black text-white 
-                  dark:bg-white dark:text-black
-                  border border-black dark:border-white
-                  font-medium
-                "
+                className="hidden sm:block px-4 py-2 rounded-full bg-black text-white dark:bg-white dark:text-black border border-black dark:border-white font-medium"
               >
                 Entrar / Registrar
               </Link>
             )}
 
+            {/* Avatar (desktop) */}
             {user && (
               <button
-                type="button"
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="
-                  hidden sm:flex
-                  w-10 h-10 bg-black dark:bg-white rounded-full 
-                  items-center justify-center cursor-pointer
-                "
+                className="hidden sm:flex w-10 h-10 bg-black dark:bg-white rounded-full items-center justify-center"
               >
                 <User className="text-white dark:text-black" />
               </button>
             )}
 
-            {/* MOBILE - 3 pontinhos */}
+            {/* MOBILE – Ícone 3 pontinhos */}
             <button
-              type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="
-                sm:hidden
-                p-2 rounded-full 
-                border border-black dark:border-white
-                hover:bg-black/10 dark:hover:bg-white/20
-                transition
-              "
+              className="sm:hidden p-2 rounded-full border border-black dark:border-white hover:bg-black/10 dark:hover:bg-white/20 transition"
             >
               <MoreVertical className="w-5 h-5" />
             </button>
 
-            {/* MENU DROP */}
+            {/* MENU DROPDOWN */}
             {menuOpen && (
-              <div
-                className="
-                  absolute right-0 mt-3 w-64 
-                  bg-white dark:bg-black 
-                  text-black dark:text-white
-                  shadow-xl rounded-2xl p-4 border border-gray-200 dark:border-gray-700
-                "
-              >
+              <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-black text-black dark:text-white shadow-xl rounded-2xl p-4 border border-gray-300 dark:border-gray-700">
+
+                {/* Not logged */}
                 {!user && (
                   <div className="flex flex-col gap-3">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Acesse sua conta para ver pedidos e dados pessoais.
                     </p>
+
                     <Link
                       href="/login"
-                      className="
-                        w-full py-2 rounded-xl 
-                        bg-black text-white dark:bg-white dark:text-black
-                        text-center font-semibold
-                      "
+                      className="w-full py-2 rounded-xl bg-black text-white dark:bg-white dark:text-black text-center font-semibold"
                     >
                       Entrar / Registrar
                     </Link>
                   </div>
                 )}
 
+                {/* Logged */}
                 {user && (
                   <>
                     <div className="mb-4">
