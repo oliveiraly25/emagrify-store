@@ -31,10 +31,10 @@ interface SidebarProps {
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <aside className="w-64 bg-slate-950 border-r border-slate-800/70 flex flex-col">
+    <aside className="w-64 bg-slate-950/95 backdrop-blur-xl border-r border-slate-800/70 flex flex-col">
       {/* Logo / topo */}
       <div className="px-6 py-5 border-b border-slate-800/70 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+        <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.65)]">
           <span className="font-bold text-slate-950 text-lg">E</span>
         </div>
         <div className="flex flex-col">
@@ -140,27 +140,4 @@ function SidebarItem({
         active
           ? "text-emerald-300"
           : "text-slate-300 hover:text-slate-50"
-      } ${disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
-    >
-      {/* barrinha lateral animada */}
-      <span
-        className={`absolute left-0 top-1/2 -translate-y-1/2 h-7 w-1 rounded-r-full bg-emerald-500 transition-all ${
-          active
-            ? "opacity-100 scale-y-100"
-            : "opacity-0 scale-y-0 group-hover:opacity-60 group-hover:scale-y-100"
-        }`}
-      />
-
-      <span
-        className={`flex items-center gap-3 rounded-xl px-3 py-2 w-full transition-all ${
-          active
-            ? "bg-emerald-500/10 border border-emerald-500/60 shadow-[0_0_18px_rgba(16,185,129,0.25)]"
-            : "border border-transparent group-hover:bg-slate-800/70 group-hover:border-slate-700/80"
-        }`}
-      >
-        <span className="shrink-0">{icon}</span>
-        <span className="truncate">{label}</span>
-      </span>
-    </button>
-  );
-}
+      } ${disabled ? "opacity-40 cursor
