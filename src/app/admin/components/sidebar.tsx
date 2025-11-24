@@ -141,3 +141,4 @@ function SidebarItem({
           ? "text-emerald-300"
           : "text-slate-300 hover:text-slate-50"
       } ${disabled ? "opacity-40 cursor
+ 
