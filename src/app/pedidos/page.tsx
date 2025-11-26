@@ -18,7 +18,6 @@ export default function OrdersPage() {
         return;
       }
 
-      // Buscar pedidos
       const { data: ordersData } = await supabase
         .from("orders")
         .select("*")
@@ -30,7 +29,6 @@ export default function OrdersPage() {
         return;
       }
 
-      // Buscar itens de cada pedido
       const ordersWithItems = await Promise.all(
         ordersData.map(async (order) => {
           const { data: items } = await supabase
@@ -50,67 +48,85 @@ export default function OrdersPage() {
   }, [router]);
 
   if (loading) {
-    return <p className="text-center mt-10">Carregando pedidos...</p>;
+    return (
+      <p className="text-center mt-10 text-black font-medium">
+        Carregando pedidos...
+      </p>
+    );
   }
 
   if (orders.length === 0) {
     return (
-      <div className="text-center mt-10 text-gray-600">
-        <p className="text-lg">Você ainda não fez nenhum pedido 😔</p>
+      <div className="text-center mt-12 text-gray-600">
+        <p className="text-lg font-semibold">
+          Você ainda não fez nenhum pedido.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-4">
-      <h1 className="text-3xl font-bold text-center mb-6">Meus Pedidos</h1>
+    <div className="max-w-3xl mx-auto mt-10 p-4 text-black">
+      <h1 className="text-3xl font-bold text-center mb-6 tracking-tight">
+        Meus Pedidos
+      </h1>
 
       <div className="space-y-6">
         {orders.map((order) => (
           <div
             key={order.id}
-            className="bg-white rounded-2xl p-5 shadow border"
+            className="
+              bg-white rounded-2xl p-5 
+              border border-gray-200 shadow-sm
+            "
           >
+            {/* Cabeçalho do pedido */}
             <div className="flex justify-between items-center mb-4">
-              <p className="text-sm text-gray-500">
-                Pedido em{" "}
+              <p className="text-sm text-gray-600">
+                Pedido realizado em{" "}
                 <b>
                   {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </b>
               </p>
 
+              {/* Status Premium */}
               <span
-                className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  order.status === "entregue"
-                    ? "bg-green-100 text-green-700"
-                    : order.status === "enviado"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-yellow-100 text-yellow-600"
-                }`}
+                className={`
+                  px-3 py-1 rounded-full text-sm font-semibold capitalize
+                  ${
+                    order.status === "entregue"
+                      ? "bg-[#406945]/10 text-[#406945]"
+                      : order.status === "enviado"
+                      ? "bg-black/10 text-black"
+                      : "bg-gray-200 text-gray-700"
+                  }
+                `}
               >
                 {order.status}
               </span>
             </div>
 
-            <div className="space-y-3">
+            {/* Itens */}
+            <div className="space-y-4">
               {order.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-4 border-b pb-3"
+                  className="
+                    flex items-center gap-4 
+                    border-b border-gray-200 pb-4
+                  "
                 >
                   <img
-                    src={
-                      item.product_image ||
-                      "https://via.placeholder.com/80"
-                    }
-                    className="w-20 h-20 rounded-lg border object-cover"
+                    src={item.product_image || "https://via.placeholder.com/80"}
+                    className="w-20 h-20 rounded-xl border object-cover"
                   />
-                  <div>
-                    <p className="font-medium">{item.product_name}</p>
+
+                  <div className="flex-1">
+                    <p className="font-semibold">{item.product_name}</p>
                     <p className="text-sm text-gray-500">
                       {item.quantity} unidade(s)
                     </p>
-                    <p className="text-pink-600 font-bold">
+                    <p className="text-[#406945] font-bold mt-1">
                       R$ {item.product_price.toFixed(2)}
                     </p>
                   </div>
@@ -118,10 +134,11 @@ export default function OrdersPage() {
               ))}
             </div>
 
-            <div className="flex justify-end mt-4">
+            {/* Total */}
+            <div className="flex justify-end mt-5">
               <p className="text-lg font-semibold">
                 Total:{" "}
-                <span className="text-pink-600">
+                <span className="text-[#406945]">
                   R$ {order.total.toFixed(2)}
                 </span>
               </p>
