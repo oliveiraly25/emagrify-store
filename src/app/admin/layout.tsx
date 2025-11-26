@@ -17,17 +17,20 @@ export default function AdminLayout({
     async function checkRole() {
       const { data: userData } = await supabase.auth.getUser();
 
+      // Se não estiver logado → login
       if (!userData?.user) {
         router.replace("/login");
         return;
       }
 
+      // Buscar role do usuário
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
         .eq("id", userData.user.id)
         .single();
 
+      // Se não for admin → home
       if (!profile?.role || profile.role !== "admin") {
         router.replace("/");
         return;
@@ -39,19 +42,28 @@ export default function AdminLayout({
     checkRole();
   }, [router]);
 
+  // ===============================
+  // LOADING ELEGANTE
+  // ===============================
   if (allowed === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#444] text-black dark:bg-[#222] dark:text-white">
+      <div className="min-h-screen flex items-center justify-center bg-[#F7F7F7] text-black">
+
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 rounded-full border-2 border-emerald-500/70 border-t-transparent animate-spin" />
-          <p className="text-sm opacity-80">Verificando permissões…</p>
+          {/* Spinner verde-escuro */}
+          <div className="w-10 h-10 border-2 border-[#406945] border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-gray-700">Verificando permissões…</p>
         </div>
+
       </div>
     );
   }
 
+  // ===============================
+  // CONTEÚDO DO ADMIN
+  // ===============================
   return (
-    <div className="min-h-screen bg-[#444] text-black dark:bg-[#222] dark:text-white">
+    <div className="min-h-screen bg-[#F7F7F7] text-black">
       {children}
     </div>
   );
