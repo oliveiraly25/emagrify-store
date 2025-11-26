@@ -107,51 +107,31 @@
     @apply bg-background text-foreground;
   }
 }
-
 /* ============================= */
-/*     CORES PERSONALIZADAS      */
+/*  FUNDO REAL DO SITE (CORRETO) */
 /* ============================= */
 
 :root {
-  /* Cor da barra superior e botoes no modo CLARO */
-  --header-top-bg: #CFE0BC;
-
-  /* Cor do fundo geral do site no modo CLARO */
-  --site-background: #000000;
+  /* MODO CLARO */
+  --site-background: #ffffff;   /* Fundo branco */
+  --header-top-bg: #ffffff;     /* Header claro */
 }
 
 .dark {
-  /* Cor da barra superior no modo ESCURO */
-  --header-top-bg: #0d2417;
-
-  /* Cor do fundo geral do site no modo ESCURO */
-  --site-background: #ffffff;
+  /* MODO ESCURO */
+  --site-background: #0b0b0c;   /* Preto elegante */
+  --header-top-bg: #0b0b0c;     /* Header escuro */
 }
 
-/* Aplica o fundo padrão do site */
+/* Aplica o fundo correto SEM !important */
 body {
-  background-color: var(--site-background) !important;
+  background-color: var(--site-background);
+  color: var(--foreground);
 }
 
-:root {
-  --header-top-bg: #ffffff; /* Modo claro */
-}
-
-.dark {
-  --header-top-bg: #000000; /* Modo escuro */
-}
-
-.top-banner,
-header .bg-gradient-to-r {
-  background-color: var(--header-top-bg) !important;
-  background-image: none !important;
-}
-
+/* Header respeita a cor global */
 header {
-  background-color: #ffffff !important;
-}
-.dark header {
-  background-color: #000000 !important;
+  background-color: var(--header-top-bg);
 }
 
 @font-face {
