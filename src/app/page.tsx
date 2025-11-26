@@ -64,9 +64,10 @@ function parsePercentToNumber(value: string): number {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-white text-slate-900 dark:bg-[#0b2618] dark:text-white transition-colors duration-300">
+    <main className="min-h-screen bg-transparent text-slate-900 dark:bg-[#0b0b0c] dark:text-white transition-colors duration-300">
+
       {/* FAIXA DE BENEFÍCIOS */}
-      <section className="bg-slate-50 dark:bg-[#0b2618] pt-6 pb-4 border-b border-slate-200/60 dark:border-white/5">
+      <section className="bg-slate-50 dark:bg-[#111112] pt-6 pb-4 border-b border-slate-200/60 dark:border-white/5">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { title: "Compra Segura", desc: "Proteção total" },
@@ -78,7 +79,7 @@ export default function HomePage() {
               key={item.title}
               className="
                 rounded-2xl px-4 py-3 
-                bg-white/90 dark:bg-[#123021]/80
+                bg-white/90 dark:bg-[#1a1a1c]/80
                 border border-slate-200 dark:border-white/10
                 flex flex-col gap-1
                 shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.45)]
@@ -96,7 +97,7 @@ export default function HomePage() {
       </section>
 
       {/* HERO PRINCIPAL */}
-      <section className="bg-white dark:bg-[#0b2618] pb-8 pt-4">
+      <section className="bg-white dark:bg-[#0b0b0c] pb-8 pt-4">
         <div className="max-w-6xl mx-auto px-4">
           <div
             className="
@@ -139,7 +140,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* LADO DIREITO – ÁREA DE IMAGEM */}
+            {/* LADO DIREITO – IMAGEM */}
             <div className="mt-6 md:mt-0 md:ml-6 w-full md:w-64 lg:w-72">
               <div
                 className="
@@ -159,7 +160,7 @@ export default function HomePage() {
       {/* PRODUTOS EM DESTAQUE */}
       <section
         id="destaques"
-        className="bg-slate-50 dark:bg-transparent pb-12 pt-6 border-t border-slate-200/60 dark:border-white/5"
+        className="bg-slate-50 dark:bg-[#0b0b0c] pb-12 pt-6 border-t border-slate-200/60 dark:border-white/5"
       >
         <div className="max-w-6xl mx-auto px-4 space-y-4">
           <div className="flex items-center justify-between">
@@ -170,11 +171,11 @@ export default function HomePage() {
               href="#"
               className="text-sm text-slate-600 dark:text-gray-300 hover:text-black dark:hover:text-white underline-offset-2 hover:underline"
             >
-              Ver todas &rarr;
+              Ver todas →
             </Link>
           </div>
 
-          {/* GRID usando ProductCard real */}
+          {/* GRID com ProductCard REAL */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => {
               const price = parseBRLToNumber(product.price);
@@ -194,7 +195,7 @@ export default function HomePage() {
                     discount,
                     rating,
                     reviewCount: 200,
-                    images: ["/images/placeholder-product.jpg"], // coloque sua imagem aqui
+                    images: ["/images/placeholder-product.jpg"],
                     tags: [product.tag],
                     stock: 20,
                   }}
