@@ -1,156 +1,92 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
+/* ========================================================= */
+/*                 BASE DO SISTEMA DE CORES                  */
+/* ========================================================= */
 
 :root {
-   --background: #FFFFFF;
-  --foreground: #121212;
+  --background: #ffffff;            /* fundo do site */
+  --foreground: #0a0a0a;            /* texto preto elegante */
 
-  --primary: #58E1C8;
-  --primary-dark: #1DBF73;
+  --primary: #406945;               /* verde premium */
+  --primary-light: #4d7a53;
 
-  --secondary: #7ED4FF;
+  --border: #e5e7eb;                /* bordas suaves */
+  --card: #ffffff;                  /* cards brancos */
+  --card-border: #dcdcdc;
 
-  --gradient-start: #6AD7F5;
-  --gradient-end: #A0E6FF;
-
-  --accent-beige: #FBE9DB;
-
-  --card: #F6F6F6;
-  --card-foreground: #121212;
-
-  --text-main: #121212;
-  --text-secondary: #6F7073;
-
+  --muted-foreground: #6b7280;      /* texto cinza elegante */
+  --header-top: #000000;            /* faixa preta */
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-/* ============================= */
-/*  FUNDO REAL DO SITE (CORRETO) */
-/* ============================= */
-
-:root {
-  /* MODO CLARO */
-  --site-background: #ffffff;   /* Fundo branco */
-  --header-top-bg: #ffffff;     /* Header claro */
-}
-
-.dark {
-  /* MODO ESCURO */
-  --site-background: #0b0b0c;   /* Preto elegante */
-  --header-top-bg: #0b0b0c;     /* Header escuro */
-}
-
-/* Aplica o fundo correto SEM !important */
+/* Aplica fundo global */
 body {
-  background-color: var(--site-background);
+  background-color: var(--background);
   color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
-/* Header respeita a cor global */
+/* HEADER BRANCO */
 header {
-  background-color: var(--header-top-bg);
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #e5e5e5;
 }
+
+/* FAIXA PRETA ACIMA DO HEADER */
+.top-black-bar {
+  width: 100%;
+  height: 32px;
+  background-color: var(--header-top);
+}
+
+/* CARDS */
+.card-clean {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+}
+
+/* BOTÃO PRETO PREMIUM */
+.btn-black {
+  background: #000;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  transition: 0.2s;
+}
+
+.btn-black:hover {
+  background: #1a1a1a;
+}
+
+/* TÍTULOS COM VERDE PREMIUM */
+.title-green {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ========================================================= */
+/*                       FONTES CANELA                       */
+/* ========================================================= */
 
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_roman.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
 }
 
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_light.otf") format("opentype");
   font-weight: 300;
-  font-style: normal;
 }
 
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_bold.otf") format("opentype");
   font-weight: 700;
-  font-style: normal;
 }
