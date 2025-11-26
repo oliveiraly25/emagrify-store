@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { HOME_BANNERS } from '@/lib/constants';
-import Link from 'next/link';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { HOME_BANNERS } from "@/lib/constants";
+import Link from "next/link";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function HeroBanner() {
   return (
-    <div className="relative w-full h-[200px] sm:h-[260px] lg:h-[320px] rounded-2xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-[220px] sm:h-[280px] lg:h-[340px] rounded-3xl overflow-hidden bg-[#050607] border border-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.85)]">
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         spaceBetween={0}
@@ -23,7 +23,8 @@ export default function HeroBanner() {
         }}
         pagination={{
           clickable: true,
-          bulletActiveClass: 'swiper-pagination-bullet-active !bg-pink-500',
+          bulletActiveClass:
+            "swiper-pagination-bullet-active !bg-[#325436] !opacity-100",
         }}
         navigation
         loop
@@ -31,27 +32,44 @@ export default function HeroBanner() {
       >
         {HOME_BANNERS.map((banner) => (
           <SwiperSlide key={banner.id}>
-            <Link href={banner.link} className="relative block w-full h-full group">
+            <Link
+              href={banner.link}
+              className="relative block w-full h-full group"
+            >
               {/* Background Image */}
               <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                 style={{ backgroundImage: `url(${banner.image})` }}
               >
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+                {/* Overlay Dark + Verde Elegante */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/75 to-[#325436]/40" />
               </div>
 
               {/* Content */}
               <div className="relative h-full flex items-center">
                 <div className="container mx-auto px-4 sm:px-8">
-                  <div className="max-w-xl">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg">
+                  <div className="max-w-xl space-y-3">
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-emerald-200/80">
+                      Emagrify Store
+                    </p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-1 drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                       {banner.title}
                     </h2>
-                    <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 drop-shadow-md">
+                    <p className="text-sm sm:text-base text-white/90 mb-4 sm:mb-6 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
                       {banner.subtitle}
                     </p>
-                    <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-full hover:scale-105 transition-transform shadow-xl">
+                    <button
+                      className="
+                        inline-flex items-center justify-center
+                        px-6 sm:px-8 py-3 sm:py-3.5
+                        rounded-full
+                        bg-[#325436]
+                        text-white text-sm font-semibold
+                        shadow-[0_14px_40px_rgba(0,0,0,0.9)]
+                        transition-transform transition-shadow duration-200
+                        group-hover:-translate-y-[1px] group-hover:shadow-[0_18px_55px_rgba(0,0,0,0.95)]
+                      "
+                    >
                       {banner.cta}
                     </button>
                   </div>
@@ -66,21 +84,29 @@ export default function HeroBanner() {
       <style jsx global>{`
         .swiper-button-next,
         .swiper-button-prev {
-          color: white !important;
-          background: rgba(0, 0, 0, 0.5);
+          color: #f9fafb !important;
+          background: rgba(0, 0, 0, 0.7);
           width: 40px !important;
           height: 40px !important;
-          border-radius: 50%;
-          backdrop-filter: blur(4px);
+          border-radius: 9999px;
+          backdrop-filter: blur(6px);
+          border: 1px solid rgba(250, 250, 250, 0.08);
+          transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+          background: rgba(0, 0, 0, 0.9);
+          transform: translateY(-1px);
         }
 
         .swiper-button-next:after,
         .swiper-button-prev:after {
-          font-size: 20px !important;
+          font-size: 18px !important;
         }
 
         .swiper-pagination-bullet {
-          background: white !important;
+          background: rgba(248, 250, 252, 0.6) !important;
           opacity: 0.5;
         }
 
@@ -97,7 +123,7 @@ export default function HeroBanner() {
 
           .swiper-button-next:after,
           .swiper-button-prev:after {
-            font-size: 16px !important;
+            font-size: 14px !important;
           }
         }
       `}</style>
