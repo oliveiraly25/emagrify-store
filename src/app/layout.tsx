@@ -1,9 +1,7 @@
-// src/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import Header from "@/components/custom/header";
-import Footer from "@/components/custom/footer"; // ✔ CORRIGIDO
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import Footer from "@/components/custom/footer";
 
 export const metadata: Metadata = {
   title: "Emagrify Store",
@@ -12,24 +10,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body className="min-h-screen bg-white dark:bg-[#0e0e0e] transition-all">
+    <html lang="pt-BR">
+      <body className="min-h-screen bg-white text-black">
 
-        {/* PROVIDER DO TEMA */}
-        <ThemeProvider>
+        {/* FAIXA PRETA */}
+        <div className="top-black-bar"></div>
 
-          {/* HEADER EM TODAS AS PÁGINAS */}
-          <Header />
+        {/* HEADER */}
+        <Header />
 
-          {/* CONTEÚDO DAS PÁGINAS */}
-          <main className="min-h-screen">
-            {children}
-          </main>
+        {/* PÁGINAS */}
+        <main className="min-h-screen pt-4">{children}</main>
 
-          {/* FOOTER EM TODAS AS PÁGINAS */}
-          <Footer />
+        {/* FOOTER */}
+        <Footer />
 
-        </ThemeProvider>
       </body>
     </html>
   );
