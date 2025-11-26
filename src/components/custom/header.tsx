@@ -214,9 +214,12 @@ export default function Header() {
                         </p>
                       </div>
 
-                      <Link href="/admin" className="dropdown-item">
-                        Painel Admin <Bell size={18} />
-                      </Link>
+{profile?.role === "admin" && (
+  <Link href="/admin" className="dropdown-item">
+    Painel Admin <Bell size={18} />
+  </Link>
+)}
+
                       
                       <Link href="/pedidos" className="dropdown-item">
                         Meus pedidos <ShoppingCart size={18} />
