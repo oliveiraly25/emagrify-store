@@ -11,7 +11,7 @@ import {
   Truck,
   CreditCard,
   Headphones,
-  Bell
+  Bell,
 } from "lucide-react";
 
 export default function ProfileDashboard() {
@@ -36,125 +36,151 @@ export default function ProfileDashboard() {
   }, [router]);
 
   if (loading) {
-    return <p className="text-center mt-10 text-black dark:text-white">Carregando...</p>;
+    return (
+      <p className="text-center mt-10 text-black font-medium">
+        Carregando...
+      </p>
+    );
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-6 text-black dark:text-white">
+    <div className="max-w-3xl mx-auto p-6 mt-8 text-black">
 
-      <h1 className="text-3xl font-bold mb-2">Sua conta</h1>
+      <h1 className="text-3xl font-bold mb-1 tracking-tight">
+        Sua conta
+      </h1>
 
-      <p className="text-gray-600 dark:text-gray-300 mb-6">
+      <p className="text-gray-600 mb-6">
         Olá {user.email}. Aqui tem tudo o que você precisa.
       </p>
 
       {/* ============================= */}
-      {/*     PEDIDOS                  */}
+      {/*     SEÇÃO: PEDIDOS           */}
       {/* ============================= */}
-      <h2 className="text-lg font-semibold mb-3">Pedidos</h2>
+      <h2 className="text-lg font-semibold mb-3 tracking-tight">
+        Pedidos
+      </h2>
 
-      <div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
 
         <button
           onClick={() => router.push("/pedidos")}
-          className="w-full flex justify-between items-center p-4 border-b 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <ShoppingCart size={20} />
-            <span>Meus pedidos</span>
+            <ShoppingCart size={20} className="text-black" />
+            <span className="font-medium">Meus pedidos</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
         <button
           onClick={() => router.push("/favoritos")}
-          className="w-full flex justify-between items-center p-4 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <Heart size={20} />
-            <span>Favoritos</span>
+            <Heart size={20} className="text-black" />
+            <span className="font-medium">Favoritos</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
       </div>
 
       {/* ============================= */}
-      {/*     SEUS DADOS               */}
+      {/*     SEÇÃO: SEUS DADOS         */}
       {/* ============================= */}
-      <h2 className="text-lg font-semibold mt-8 mb-3">Seus Dados</h2>
+      <h2 className="text-lg font-semibold mt-8 mb-3 tracking-tight">
+        Seus Dados
+      </h2>
 
-      <div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
 
         <button
           onClick={() => router.push("/dados-pessoais")}
-          className="w-full flex justify-between items-center p-4 border-b 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <User size={20} />
-            <span>Dados pessoais</span>
+            <User size={20} className="text-black" />
+            <span className="font-medium">Dados pessoais</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
         <button
           onClick={() => router.push("/enderecos")}
-          className="w-full flex justify-between items-center p-4 border-b 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <Truck size={20} />
-            <span>Endereços de entrega</span>
+            <Truck size={20} className="text-black" />
+            <span className="font-medium">Endereços de entrega</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
         <button
           onClick={() => router.push("/pagamentos")}
-          className="w-full flex justify-between items-center p-4 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <CreditCard size={20} />
-            <span>Formas de pagamento</span>
+            <CreditCard size={20} className="text-black" />
+            <span className="font-medium">Formas de pagamento</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
       </div>
 
       {/* ============================= */}
-      {/*     COMUNICAÇÃO              */}
+      {/*     SEÇÃO: COMUNICAÇÃO       */}
       {/* ============================= */}
-      <h2 className="text-lg font-semibold mt-8 mb-3">Comunicação</h2>
+      <h2 className="text-lg font-semibold mt-8 mb-3 tracking-tight">
+        Comunicação
+      </h2>
 
-      <div className="bg-white dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
 
         <button
           onClick={() => router.push("/suporte")}
-          className="w-full flex justify-between items-center p-4 border-b 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <Headphones size={20} />
-            <span>Central de atendimento</span>
+            <Headphones size={20} className="text-black" />
+            <span className="font-medium">Central de atendimento</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
         <button
           onClick={() => router.push("/notificacoes")}
-          className="w-full flex justify-between items-center p-4 
-            hover:bg-gray-50 dark:hover:bg-[#222]"
+          className="
+            w-full flex justify-between items-center p-4
+            hover:bg-[#f9fafb] transition
+          "
         >
           <div className="flex items-center gap-3">
-            <Bell size={20} />
-            <span>Configuração de notificação</span>
+            <Bell size={20} className="text-black" />
+            <span className="font-medium">Configuração de notificação</span>
           </div>
-          <ChevronRight />
+          <ChevronRight className="text-black" />
         </button>
 
       </div>
