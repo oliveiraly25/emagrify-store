@@ -13,7 +13,6 @@ import {
 
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
   const [user, setUser] = useState<any>(null);
@@ -73,175 +72,174 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 shadow-sm">
-      <div className="w-full px-6 py-3 flex items-center justify-between">
+    <>
+      {/* ▬▬▬▬▬▬▬ FAIXA PRETA SUPERIOR ▬▬▬▬▬▬▬ */}
+      <div className="w-full bg-black text-white text-xs py-1 text-center tracking-wide">
+        FRETE GRÁTIS NAS COMPRAS ACIMA DE R$149
+      </div>
 
-        {/* ESQUERDA — BARRA DE PESQUISA */}
-        <div className="hidden md:flex flex-1 justify-start">
-          <div className="
-            relative w-[230px]
-            bg-white dark:bg-black
-            border border-black dark:border-white
-            rounded-full
-          ">
-            <input
-              type="text"
-              placeholder="Buscar..."
+      {/* ▬▬▬▬▬▬ HEADER PRINCIPAL (BRANCO, PREMIUM) ▬▬▬▬▬▬ */}
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+        <div className="w-full px-6 py-3 flex items-center justify-between">
+
+          {/* ESQUERDA — BARRA DE PESQUISA */}
+          <div className="hidden md:flex flex-1 justify-start">
+            <div
               className="
-                w-full px-4 py-1.5 pr-10 rounded-full
-                bg-white dark:bg-black
-                text-black dark:text-white
-                placeholder-gray-600 dark:placeholder-gray-300
-                text-sm
+                relative w-[230px]
+                bg-white border border-black/20 rounded-full
+                hover:border-black transition-all
               "
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black dark:text-white">
-              <Search size={16} />
-            </button>
+            >
+              <input
+                type="text"
+                placeholder="Buscar..."
+                className="
+                  w-full px-4 py-1.5 pr-10 rounded-full
+                  bg-white text-black placeholder-gray-500
+                  text-sm
+                "
+              />
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
+                <Search size={16} />
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* CENTRO — LOGO */}
-        <div className="flex-1 flex justify-center select-none">
-          <picture>
-            {/* LIGHT */}
+          {/* CENTRO — LOGO */}
+          <div className="flex-1 flex justify-center select-none">
             <Image
               src="/LOGOLIGHT.png"
               alt="Logo Emagrify"
-              width={350}
-              height={110}
-              className="object-contain pointer-events-none dark:hidden"
+              width={320}
+              height={90}
+              className="object-contain pointer-events-none"
             />
+          </div>
 
-            {/* DARK */}
-            <Image
-              src="/LOGODARK.png"
-              alt="Logo Emagrify Dark"
-              width={350}
-              height={110}
-              className="object-contain pointer-events-none hidden dark:block"
-            />
-          </picture>
-        </div>
-
-        {/* DIREITA — ÍCONES */}
-        <div className="flex-1 flex items-center justify-end gap-4 text-black dark:text-white">
-
-          {user && (
-            <>
-              <Heart className="hidden sm:block cursor-pointer hover:text-[#63783D]" />
-              <ShoppingCart className="hidden sm:block cursor-pointer hover:text-[#63783D]" />
-            </>
-          )}
-
-          <ThemeToggle />
-
-          <div className="relative" ref={menuRef}>
-
-            {!user && (
-              <Link
-                href="/login"
-                className="
-                  hidden sm:block px-4 py-1.5 rounded-full
-                  bg-black text-white
-                  dark:bg-white dark:text-black
-                  border border-black dark:border-white
-                  text-sm
-                "
-              >
-                Entrar / Registrar
-              </Link>
-            )}
+          {/* DIREITA — ÍCONES */}
+          <div className="flex-1 flex items-center justify-end gap-4 text-black">
 
             {user && (
+              <>
+                <Heart className="hidden sm:block cursor-pointer hover:text-[#406945]" />
+                <ShoppingCart className="hidden sm:block cursor-pointer hover:text-[#406945]" />
+              </>
+            )}
+
+            {/* BOTÃO MENU / PERFIL */}
+            <div className="relative" ref={menuRef}>
+
+              {/* SE NÃO LOGADO: botão login */}
+              {!user && (
+                <Link
+                  href="/login"
+                  className="
+                    hidden sm:block px-4 py-1.5 rounded-full
+                    bg-black text-white border border-black
+                    text-sm tracking-wide
+                    hover:bg-[#406945] hover:border-[#406945] transition
+                  "
+                >
+                  Entrar / Registrar
+                </Link>
+              )}
+
+              {/* SE LOGADO: avatar */}
+              {user && (
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="
+                    hidden sm:flex w-9 h-9 bg-black rounded-full 
+                    items-center justify-center hover:bg-[#406945] transition
+                  "
+                >
+                  <User className="text-white" />
+                </button>
+              )}
+
+              {/* MOBILE */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="hidden sm:flex w-9 h-9 bg-black dark:bg-white rounded-full items-center justify-center"
+                className="
+                  sm:hidden p-2 rounded-full 
+                  border border-black
+                  hover:bg-black/10 transition
+                "
               >
-                <User className="text-white dark:text-black" />
+                <MoreVertical className="w-5 h-5" />
               </button>
-            )}
 
-            {/* MOBILE */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="
-                sm:hidden p-2 rounded-full 
-                border border-black dark:border-white
-                hover:bg-black/10 dark:hover:bg-white/20
-              "
-            >
-              <MoreVertical className="w-5 h-5" />
-            </button>
-
-            {/* MENU DROPDOWN */}
-            {menuOpen && (
-              <div className="
-                absolute right-0 mt-3 w-64
-                bg-white dark:bg-black
-                text-black dark:text-white
-                shadow-xl rounded-2xl p-4
-                border border-gray-300 dark:border-gray-700
-              ">
-                {!user ? (
-                  <div className="flex flex-col gap-3">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Acesse sua conta para ver pedidos e dados pessoais.
-                    </p>
-                    <Link
-                      href="/login"
-                      className="w-full text-center py-2 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold"
-                    >
-                      Entrar / Registrar
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    <div className="mb-3">
-                      <p className="font-bold">Olá, {profile?.first_name}</p>
+              {/* DROPDOWN */}
+              {menuOpen && (
+                <div
+                  className="
+                    absolute right-0 mt-3 w-64
+                    bg-white text-black
+                    shadow-xl rounded-2xl p-4
+                    border border-gray-200
+                  "
+                >
+                  {!user ? (
+                    <div className="flex flex-col gap-3">
+                      <p className="text-sm text-gray-600">
+                        Acesse sua conta para ver pedidos e dados pessoais.
+                      </p>
+                      <Link
+                        href="/login"
+                        className="w-full text-center py-2 rounded-xl bg-black text-white font-semibold hover:bg-[#406945] transition"
+                      >
+                        Entrar / Registrar
+                      </Link>
                     </div>
+                  ) : (
+                    <>
+                      <div className="mb-3">
+                        <p className="font-bold">Olá, {profile?.first_name}</p>
+                      </div>
 
-                    <Link
-                      href="/pedidos"
-                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
-                    >
-                      Meus pedidos <ShoppingCart className="w-5 h-5" />
-                    </Link>
+                      <Link
+                        href="/pedidos"
+                        className="dropdown-item"
+                      >
+                        Meus pedidos <ShoppingCart className="w-5 h-5" />
+                      </Link>
 
-                    <Link
-                      href="/profile"
-                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
-                    >
-                      Dados pessoais <User className="w-5 h-5" />
-                    </Link>
+                      <Link
+                        href="/profile"
+                        className="dropdown-item"
+                      >
+                        Dados pessoais <User className="w-5 h-5" />
+                      </Link>
 
-                    <Link
-                      href="/notificacoes"
-                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
-                    >
-                      Notificações <Bell className="w-5 h-5" />
-                    </Link>
+                      <Link
+                        href="/notificacoes"
+                        className="dropdown-item"
+                      >
+                        Notificações <Bell className="w-5 h-5" />
+                      </Link>
 
-                    <Link
-                      href="/pontos"
-                      className="flex items-center justify-between py-2 border-b border-gray-300 dark:border-gray-700 hover:text-green-600"
-                    >
-                      Meus pontos <span>{profile?.points ?? 0}</span>
-                    </Link>
+                      <Link
+                        href="/pontos"
+                        className="dropdown-item"
+                      >
+                        Meus pontos <span>{profile?.points ?? 0}</span>
+                      </Link>
 
-                    <button
-                      onClick={handleLogout}
-                      className="mt-4 w-full py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold"
-                    >
-                      Sair
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+                      <button
+                        onClick={handleLogout}
+                        className="mt-4 w-full py-2 bg-black text-white rounded-xl font-semibold hover:bg-[#406945] transition"
+                      >
+                        Sair
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
