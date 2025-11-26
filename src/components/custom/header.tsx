@@ -19,7 +19,22 @@ export default function Header() {
   const [profile, setProfile] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 🔍 busca expansível
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Fechar busca ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Carregar usuário
   useEffect(() => {
@@ -74,7 +89,7 @@ export default function Header() {
 
   return (
     <>
-      {/* Faixa preta superior estilo Fenty Beauty */}
+      {/* Faixa preta superior */}
       <div className="w-full bg-black text-white text-xs py-1 text-center tracking-widest">
         FRETE GRÁTIS NAS COMPRAS ACIMA DE R$149
       </div>
@@ -83,33 +98,43 @@ export default function Header() {
       <header className="sticky top-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-6 py-4 flex items-center justify-between">
 
-          {/* CAMPO DE BUSCA — versão clean premium */}
+          {/* 🔍 BUSCA EXPANSÍVEL (moderninha) */}
           <div className="hidden md:flex flex-1 justify-start">
             <div
-              className="
-                relative w-[220px]
-                border border-black/20 bg-white
-                rounded-full px-3
-                hover:border-black transition-all duration-200
-              "
+              ref={searchRef}
+              className="relative flex items-center transition-all"
             >
-              <input
-                type="text"
-                placeholder="Buscar"
-                className="
-                  w-full py-1.5 pr-8 bg-white rounded-full
-                  text-sm text-black placeholder-gray-500
-                  outline-none
-                "
-              />
+              {!searchOpen && (
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className="p-2 text-black hover:text-[#406945] transition"
+                >
+                  <Search size={20} />
+                </button>
+              )}
 
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-[#406945] transition">
-                <Search size={17} />
-              </button>
+              {searchOpen && (
+                <div
+                  className="
+                    flex items-center bg-white border border-black/20
+                    rounded-full px-3 py-1 shadow-sm
+                    transition-all duration-300
+                    w-[210px] sm:w-[250px]
+                  "
+                >
+                  <Search size={17} className="mr-2 text-black" />
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    autoFocus
+                    className="flex-1 bg-transparent outline-none text-sm"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
-          {/* LOGO CENTRAL — estilo premium */}
+          {/* LOGO CENTRAL */}
           <div className="flex-1 flex justify-center select-none">
             <Image
               src="/LOGOLIGHT.png"
@@ -123,7 +148,7 @@ export default function Header() {
           {/* ÍCONES À DIREITA */}
           <div className="flex-1 flex items-center justify-end gap-5 text-black">
 
-            {/* Ícones somente logada */}
+            {/* Ícones logada */}
             {user && (
               <>
                 <Heart
@@ -137,10 +162,10 @@ export default function Header() {
               </>
             )}
 
-            {/* MENU DO USUÁRIO */}  
+            {/* MENU DO USUÁRIO */}
             <div className="relative" ref={menuRef}>
 
-              {/* BOTÃO LOGIN — versão clean premium */}
+              {/* BOTÃO LOGIN */}
               {!user && (
                 <Link
                   href="/login"
@@ -156,7 +181,7 @@ export default function Header() {
                 </Link>
               )}
 
-              {/* AVATAR (LOGADA) */}
+              {/* AVATAR */}
               {user && (
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
@@ -194,7 +219,7 @@ export default function Header() {
                   {!user ? (
                     <div className="flex flex-col gap-3">
                       <p className="text-sm text-gray-600">
-                        Entre para acessar seus pedidos e dados pessoais.
+                        Entre para acessar seus pedidos.
                       </p>
                       <Link
                         href="/login"
@@ -214,13 +239,13 @@ export default function Header() {
                         </p>
                       </div>
 
-{profile?.role === "admin" && (
-  <Link href="/admin" className="dropdown-item">
-    Painel Admin <Bell size={18} />
-  </Link>
-)}
+                      {/* 👑 ADMIN */}
+                      {profile?.role === "admin" && (
+                        <Link href="/admin" className="dropdown-item">
+                          Painel Admin <Bell size={18} />
+                        </Link>
+                      )}
 
-                      
                       <Link href="/pedidos" className="dropdown-item">
                         Meus pedidos <ShoppingCart size={18} />
                       </Link>
