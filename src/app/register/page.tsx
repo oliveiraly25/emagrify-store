@@ -20,23 +20,19 @@ const MONTHS = [
 ];
 
 function monthStringToIndex(m: string): number {
-  const idx = MONTHS.findIndex((item) => item.value === m);
-  return idx >= 0 ? idx : 0;
+  return MONTHS.findIndex((item) => item.value === m) || 0;
 }
 
 function calculateAgeFromDate(date: Date): number {
   const today = new Date();
   let age = today.getFullYear() - date.getFullYear();
   const m = today.getMonth() - date.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
-    age--;
-  }
+  if (m < 0 || (m === 0 && today.getDate() < date.getDate())) age--;
   return age;
 }
 
 function applyPhoneMask(value: string): string {
   let v = value.replace(/\D/g, "");
-
   if (v.length <= 10) {
     v = v.replace(/^(\d{2})(\d)/, "($1) $2");
     v = v.replace(/(\d{4})(\d)/, "$1-$2");
@@ -44,7 +40,6 @@ function applyPhoneMask(value: string): string {
     v = v.replace(/^(\d{2})(\d)/, "($1) $2");
     v = v.replace(/(\d{5})(\d)/, "$1-$2");
   }
-
   return v;
 }
 
@@ -110,7 +105,6 @@ export default function RegisterPage() {
     const dayNum = Number(birthDay);
     const yearNum = Number(birthYear);
     const monthIndex = monthStringToIndex(birthMonth);
-
     const birthDate = new Date(yearNum, monthIndex, dayNum);
 
     if (
@@ -138,22 +132,19 @@ export default function RegisterPage() {
 
     const phoneDigits = phone.replace(/\D/g, "");
     if (phoneDigits.length < 10 || phoneDigits.length > 11) {
-      setError("Telefone inválido. Verifique o número digitado.");
+      setError("Telefone inválido.");
       setLoading(false);
       return;
     }
 
-    // ================== SUPABASE AUTH ==================
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (authError) {
-      if (authError.message.toLowerCase().includes("already registered")) {
-        setError(
-          "Este email já está cadastrado. Faça login ou use a recuperação de senha."
-        );
+      if (authError.message.includes("already registered")) {
+        setError("Este email já está cadastrado.");
       } else {
         setError(authError.message);
       }
@@ -162,7 +153,6 @@ export default function RegisterPage() {
     }
 
     const userId = authData.user?.id;
-
     const birthIso = birthDate.toISOString().slice(0, 10);
 
     const { error: profileError } = await supabase.from("profiles").upsert({
@@ -187,12 +177,19 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-[#111] px-4">
+    <div className="min-h-screen flex justify-center items-center bg-[#F7F7F7] px-4">
       <form
         onSubmit={handleRegister}
-        className="bg-white dark:bg-[#1a1a1a] p-8 rounded-xl shadow-md w-full max-w-lg text-black dark:text-white"
+        className="
+          bg-white border border-[#E5E5E5]
+          p-8 rounded-2xl shadow-sm
+          w-full max-w-lg
+          text-black
+        "
       >
-        <h1 className="text-2xl font-bold mb-6 text-center">Criar Conta</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center tracking-tight">
+          Criar Conta
+        </h1>
 
         {/* Nome + Sobrenome */}
         <div className="flex gap-3">
@@ -201,7 +198,7 @@ export default function RegisterPage() {
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+              className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
@@ -212,7 +209,7 @@ export default function RegisterPage() {
             <input
               type="text"
               required
-              className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+              className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
@@ -226,18 +223,18 @@ export default function RegisterPage() {
         <div className="flex gap-3 mb-4">
           <input
             type="number"
-            placeholder="Dia"
             min={1}
             max={31}
+            placeholder="Dia"
             required
-            className="w-1/3 border px-3 py-2 rounded-lg bg-white dark:bg-[#222] text-black dark:text-white"
+            className="w-1/3 border border-[#D9D9D9] px-3 py-2 rounded-lg bg-white"
             value={birthDay}
             onChange={(e) => setBirthDay(e.target.value)}
           />
 
           <select
             required
-            className="w-1/3 border px-3 py-2 rounded-lg bg-white dark:bg-[#222] text-black dark:text-white"
+            className="w-1/3 border border-[#D9D9D9] px-3 py-2 rounded-lg bg-white"
             value={birthMonth}
             onChange={(e) => setBirthMonth(e.target.value)}
           >
@@ -253,7 +250,7 @@ export default function RegisterPage() {
             type="number"
             placeholder="Ano"
             required
-            className="w-1/3 border px-3 py-2 rounded-lg bg-white dark:bg-[#222] text-black dark:text-white"
+            className="w-1/3 border border-[#D9D9D9] px-3 py-2 rounded-lg bg-white"
             value={birthYear}
             onChange={(e) => setBirthYear(e.target.value)}
           />
@@ -263,7 +260,7 @@ export default function RegisterPage() {
         <label className="block text-sm font-medium mb-1">Gênero</label>
         <select
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
@@ -278,7 +275,7 @@ export default function RegisterPage() {
         <input
           type="text"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={phone}
           onChange={(e) => setPhone(applyPhoneMask(e.target.value))}
         />
@@ -288,7 +285,7 @@ export default function RegisterPage() {
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -300,7 +297,7 @@ export default function RegisterPage() {
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={confirmEmail}
           onChange={(e) => setConfirmEmail(e.target.value)}
         />
@@ -310,7 +307,7 @@ export default function RegisterPage() {
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -322,37 +319,33 @@ export default function RegisterPage() {
         <input
           type="password"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="w-full border border-[#D9D9D9] px-3 py-2 rounded-lg mb-4 bg-white"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        {/* MENSAGEM DE ERRO */}
+        {/* ERRO */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 dark:bg-red-900 dark:text-red-200">
+          <div className="bg-red-50 text-red-700 border border-red-300 px-4 py-2 rounded-lg mb-4">
             {error}
           </div>
         )}
 
-        {/* BOTÃO REGISTRAR */}
+        {/* BOTÃO */}
         <button
           type="submit"
           className="
             w-full py-3 rounded-lg font-semibold transition
-            bg-[#0d2417] text-white
-            dark:bg-[#CFE0BC] dark:text-black
+            bg-[#406945] text-white hover:bg-[#355536]
           "
           disabled={loading}
         >
           {loading ? "Criando conta..." : "Registrar"}
         </button>
 
-        <p className="text-center text-sm mt-4 text-black dark:text-white">
+        <p className="text-center text-sm mt-4">
           Já tem conta?{" "}
-          <a
-            href="/login"
-            className="text-green-700 dark:text-green-400 hover:underline"
-          >
+          <a href="/login" className="text-[#406945] font-medium hover:underline">
             Entrar
           </a>
         </p>
