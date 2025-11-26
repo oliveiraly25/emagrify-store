@@ -30,34 +30,53 @@ export default function RecuperarSenhaPage() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-[#111] px-4">
+    <div className="min-h-screen flex justify-center items-center px-4 bg-[#F7F7F7]">
       <form
         onSubmit={handleReset}
-        className="bg-white dark:bg-[#1a1a1a] p-8 rounded-xl shadow-md w-full max-w-lg"
+        className="w-full max-w-sm bg-white border border-[#E5E5E5] rounded-2xl shadow-sm p-7"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">
+        {/* TÍTULO */}
+        <h1 className="text-2xl font-bold text-center mb-6 text-black">
           Recuperar Senha
         </h1>
 
-        <label className="block text-sm font-medium mb-1 text-black dark:text-white">
+        {/* INPUT */}
+        <label className="block text-sm font-medium text-black mb-1">
           Email cadastrado
         </label>
         <input
           type="email"
           required
-          className="w-full border px-3 py-2 rounded-lg mb-4 bg-white dark:bg-[#222] text-black dark:text-white"
+          className="
+            w-full border border-[#D9D9D9]
+            rounded-lg p-3 mb-4
+            bg-white text-black
+            placeholder-gray-600
+          "
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-        {message && <p className="text-green-500 text-sm mb-3">{message}</p>}
+        {/* MENSAGENS */}
+        {error && (
+          <p className="text-red-500 text-sm mb-3">{error}</p>
+        )}
 
+        {message && (
+          <p className="text-green-600 text-sm mb-3">{message}</p>
+        )}
+
+        {/* BOTÃO */}
         <button
           type="submit"
-          className="w-full py-3 rounded-lg font-semibold bg-black text-white dark:bg-[#CFE0BC] dark:text-black"
+          disabled={loading}
+          className="
+            w-full py-3 rounded-lg font-semibold
+            bg-[#406945] text-white hover:bg-[#355536]
+            transition
+          "
         >
-          {loading ? "Enviando..." : "Enviar Link"}
+          {loading ? "Enviando..." : "Enviar link"}
         </button>
       </form>
     </div>
