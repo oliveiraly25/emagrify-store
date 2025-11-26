@@ -114,18 +114,18 @@
 
 :root {
   /* Cor da barra superior e botoes no modo CLARO */
-  --header-top-bg: #000000;
+  --header-top-bg: #CFE0BC;
 
   /* Cor do fundo geral do site no modo CLARO */
-  --site-background: #CFE0BC;
+  --site-background: #000000;
 }
 
 .dark {
   /* Cor da barra superior no modo ESCURO */
-  --header-top-bg: #ffffff;
+  --header-top-bg: #0d2417;
 
   /* Cor do fundo geral do site no modo ESCURO */
-  --site-background: #0d2417;
+  --site-background: #ffffff;
 }
 
 /* Aplica o fundo padrão do site */
