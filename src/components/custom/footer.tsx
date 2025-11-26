@@ -7,82 +7,109 @@ export default function Footer() {
     <footer
       className="
         w-full mt-20 
-        bg-[#0C1A12] text-white 
-        dark:bg-[#0a0a0a] dark:text-gray-200
-        border-t border-green-900/30 dark:border-gray-800
+        bg-[#050506] text-gray-200
+        border-t border-white/10
       "
     >
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         {/* COLUNA 1 - LOGO E DESCRIÇÃO */}
-        <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
+        <div className="space-y-3">
+          <h2 className="text-xl font-semibold tracking-[0.12em] uppercase">
             Emagrify Store
           </h2>
 
-          <p className="mt-3 text-sm text-gray-300 dark:text-gray-400 max-w-xs">
-            Sua loja online de confiança com os melhores produtos e preços
-            imbatíveis.
+          <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
+            Uma curadoria de produtos pensada para quem busca praticidade,
+            estilo e bem-estar em um único lugar.
           </p>
 
           {/* Redes sociais */}
-          <div className="flex mt-4 gap-4 text-xl text-gray-400 dark:text-gray-500">
-            <i className="fab fa-facebook hover:text-white cursor-pointer"></i>
-            <i className="fab fa-instagram hover:text-white cursor-pointer"></i>
-            <i className="fab fa-twitter hover:text-white cursor-pointer"></i>
-            <i className="fab fa-youtube hover:text-white cursor-pointer"></i>
+          <div className="flex mt-4 gap-4 text-lg text-gray-500">
+            <i className="fab fa-facebook hover:text-gray-100 cursor-pointer transition-colors" />
+            <i className="fab fa-instagram hover:text-gray-100 cursor-pointer transition-colors" />
+            <i className="fab fa-twitter hover:text-gray-100 cursor-pointer transition-colors" />
+            <i className="fab fa-youtube hover:text-gray-100 cursor-pointer transition-colors" />
           </div>
         </div>
 
         {/* COLUNA 2 - LINKS RÁPIDOS */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Links Rápidos</h3>
-          <ul className="text-gray-400 dark:text-gray-500 space-y-2 text-sm">
-            <li className="hover:text-white cursor-pointer">Sobre Nós</li>
-            <li className="hover:text-white cursor-pointer">Como Comprar</li>
-            <li className="hover:text-white cursor-pointer">Rastrear Pedido</li>
-            <li className="hover:text-white cursor-pointer">Trocas e Devoluções</li>
-            <li className="hover:text-white cursor-pointer">Perguntas Frequentes</li>
+          <h3 className="font-semibold text-sm uppercase tracking-[0.16em] text-gray-300 mb-3">
+            Links Rápidos
+          </h3>
+          <ul className="text-gray-500 space-y-2 text-sm">
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Sobre Nós
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Como Comprar
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Rastrear Pedido
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Trocas e Devoluções
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Perguntas Frequentes
+            </li>
           </ul>
         </div>
 
         {/* COLUNA 3 - ATENDIMENTO */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Atendimento</h3>
-          <ul className="text-gray-400 dark:text-gray-500 space-y-2 text-sm">
-            <li className="hover:text-white cursor-pointer">Central de Ajuda</li>
-            <li className="hover:text-white cursor-pointer">Fale Conosco</li>
-            <li className="hover:text-white cursor-pointer">Política de Privacidade</li>
-            <li className="hover:text-white cursor-pointer">Termos de Uso</li>
-            <li className="hover:text-white cursor-pointer">Programa de Pontos</li>
+          <h3 className="font-semibold text-sm uppercase tracking-[0.16em] text-gray-300 mb-3">
+            Atendimento
+          </h3>
+          <ul className="text-gray-500 space-y-2 text-sm">
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Central de Ajuda
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Fale Conosco
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Política de Privacidade
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Termos de Uso
+            </li>
+            <li className="hover:text-gray-100 cursor-pointer transition-colors">
+              Programa de Pontos
+            </li>
           </ul>
         </div>
 
         {/* COLUNA 4 - CONTATO */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Contato</h3>
+          <h3 className="font-semibold text-sm uppercase tracking-[0.16em] text-gray-300 mb-3">
+            Contato
+          </h3>
 
-          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
-            <Mail className="w-4 h-4" />
-            contato@emagrifystore.com
+          <div className="flex items-center gap-3 text-sm text-gray-500 py-1">
+            <Mail className="w-4 h-4 text-gray-400" />
+            <span>contato@emagrifystore.com</span>
           </div>
 
-          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
-            <Phone className="w-4 h-4" />
-            (11) 99999-9999
+          <div className="flex items-center gap-3 text-sm text-gray-500 py-1">
+            <Phone className="w-4 h-4 text-gray-400" />
+            <span>(99) 99999-9999</span>
           </div>
 
-          <div className="flex items-center gap-3 text-sm text-gray-400 dark:text-gray-500 py-1">
-            <MapPin className="w-4 h-4" />
-            São Paulo, SP – Brasil
+          <div className="flex items-center gap-3 text-sm text-gray-500 py-1">
+            <MapPin className="w-4 h-4 text-gray-400" />
+            <span>São Paulo, SP – Brasil</span>
           </div>
         </div>
-
       </div>
 
-      {/* COPY */}
-      <div className="py-4 text-center text-gray-500 text-sm border-t border-green-900/20 dark:border-gray-800">
-        © {new Date().getFullYear()} Emagrify Store — Todos os direitos reservados.
+      {/* LINHA INFERIOR */}
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-4 text-center text-gray-500 text-xs tracking-wide">
+          © {new Date().getFullYear()} Emagrify Store — Todos os direitos
+          reservados.
+        </div>
       </div>
     </footer>
   );
