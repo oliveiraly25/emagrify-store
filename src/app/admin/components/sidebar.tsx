@@ -31,22 +31,21 @@ interface SidebarProps {
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <aside className="w-64 bg-[#3b3b3b] text-black dark:bg-[#1b1b1b] dark:text-slate-50 border-r border-[#555] dark:border-[#333] flex flex-col">
-      {/* Logo / topo */}
-      <div className="px-6 py-5 border-b border-[#555] dark:border-[#333] flex items-center gap-3">
-        <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.65)]">
-          <span className="font-bold text-slate-950 text-lg">E</span>
+    <aside className="w-64 bg-white border-r border-[#E5E5E5] flex flex-col text-black">
+      {/* LOGO */}
+      <div className="px-6 py-6 border-b border-[#E5E5E5] flex items-center gap-3">
+        <div className="w-9 h-9 rounded-xl bg-[#406945] flex items-center justify-center shadow-md">
+          <span className="font-bold text-white text-lg">E</span>
         </div>
+
         <div className="flex flex-col">
           <span className="text-sm font-semibold">Emagrify Store</span>
-          <span className="text-[11px] text-black/70 dark:text-slate-400">
-            Painel administrativo
-          </span>
+          <span className="text-[11px] text-gray-500">Painel administrativo</span>
         </div>
       </div>
 
-      {/* Itens de navegação */}
-      <nav className="flex-1 py-4 space-y-1">
+      {/* NAVEGAÇÃO */}
+      <nav className="flex-1 py-4">
         <SidebarItem
           label="Dashboard"
           icon={<LayoutDashboard className="w-4 h-4" />}
@@ -95,16 +94,22 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
           active={activeSection === "settings"}
           onClick={() => onSectionChange("settings")}
         />
+
         <SidebarItem label="Segurança" icon={<Shield className="w-4 h-4" />} disabled />
         <SidebarItem label="Permissões" icon={<KeyRound className="w-4 h-4" />} disabled />
       </nav>
 
-      <div className="px-6 py-4 border-t border-[#555] dark:border-[#333] text-[11px] text-black/80 dark:text-slate-500">
-        Logada como <span className="font-medium">Admin</span>
+      {/* FOOTER */}
+      <div className="px-6 py-4 border-t border-[#E5E5E5] text-[12px] text-gray-500">
+        Logada como <span className="font-medium text-black">Admin</span>
       </div>
     </aside>
   );
 }
+
+/* ================================
+   ITEM DO SIDEBAR
+=================================*/
 
 interface SidebarItemProps {
   label: string;
@@ -114,33 +119,29 @@ interface SidebarItemProps {
   disabled?: boolean;
 }
 
-function SidebarItem({
-  label,
-  icon,
-  active,
-  onClick,
-  disabled,
-}: SidebarItemProps) {
+function SidebarItem({ label, icon, active, onClick, disabled }: SidebarItemProps) {
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`group relative w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-all
+      className={`
+        w-full flex items-center gap-3 px-5 py-2.5 text-sm transition-all rounded-lg
+        ${disabled ? "opacity-40 cursor-not-allowed" : ""}
         ${
           active
-            ? "text-emerald-300"
-            : "text-black dark:text-slate-300 hover:text-black dark:hover:text-slate-50"
+            ? "text-[#406945] font-medium bg-[#E9F3EC]"
+            : "text-gray-700 hover:bg-gray-100"
         }
-        ${disabled ? "opacity-40 cursor-not-allowed" : ""}
       `}
     >
-      <span>{icon}</span>
-      <span>{label}</span>
+      <span
+        className={active ? "text-[#406945]" : "text-gray-600 group-hover:text-black"}
+      >
+        {icon}
+      </span>
 
-      {active && (
-        <span className="absolute left-0 top-0 h-full w-[3px] bg-emerald-400 rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-      )}
+      <span>{label}</span>
     </button>
   );
 }
