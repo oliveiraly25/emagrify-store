@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import ProductCard from "@/components/custom/product-card";
 
+// Produtos em destaque (dados mockados só para exibir layout)
 const featuredProducts = [
   {
     id: 1,
@@ -45,12 +47,26 @@ const featuredProducts = [
   },
 ];
 
+// helpers para converter os textos em números para o ProductCard
+function parseBRLToNumber(value: string): number {
+  return Number(
+    value
+      .replace("R$", "")
+      .replace(/\./g, "")
+      .replace(",", ".")
+      .trim()
+  );
+}
+
+function parsePercentToNumber(value: string): number {
+  return Number(value.replace("%", "").replace("-", "").trim());
+}
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#0b2618] text-white">
-
+    <main className="min-h-screen bg-white text-slate-900 dark:bg-[#0b2618] dark:text-white transition-colors duration-300">
       {/* FAIXA DE BENEFÍCIOS */}
-      <section className="bg-[#0b2618] pt-6 pb-4">
+      <section className="bg-slate-50 dark:bg-[#0b2618] pt-6 pb-4 border-b border-slate-200/60 dark:border-white/5">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { title: "Compra Segura", desc: "Proteção total" },
@@ -62,20 +78,25 @@ export default function HomePage() {
               key={item.title}
               className="
                 rounded-2xl px-4 py-3 
-                bg-[#123021]/80 
-                border border-white/10
+                bg-white/90 dark:bg-[#123021]/80
+                border border-slate-200 dark:border-white/10
                 flex flex-col gap-1
+                shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.45)]
               "
             >
-              <span className="text-sm font-semibold">{item.title}</span>
-              <span className="text-xs text-gray-300">{item.desc}</span>
+              <span className="text-sm font-semibold tracking-wide">
+                {item.title}
+              </span>
+              <span className="text-xs text-slate-500 dark:text-gray-300">
+                {item.desc}
+              </span>
             </div>
           ))}
         </div>
       </section>
 
       {/* HERO PRINCIPAL */}
-      <section className="bg-transparent pb-8">
+      <section className="bg-white dark:bg-[#0b2618] pb-8 pt-4">
         <div className="max-w-6xl mx-auto px-4">
           <div
             className="
@@ -95,7 +116,8 @@ export default function HomePage() {
                 Até 70% OFF em produtos selecionados
               </h1>
               <p className="text-sm md:text-base max-w-md">
-                Descubra ofertas exclusivas em moda, beleza, acessórios e muito mais. Aproveite agora antes que acabe!
+                Descubra ofertas exclusivas em moda, beleza, acessórios e muito
+                mais. Aproveite agora antes que acabe!
               </p>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -117,7 +139,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* lado direito */}
+            {/* LADO DIREITO – ÁREA DE IMAGEM */}
             <div className="mt-6 md:mt-0 md:ml-6 w-full md:w-64 lg:w-72">
               <div
                 className="
@@ -135,72 +157,50 @@ export default function HomePage() {
       </section>
 
       {/* PRODUTOS EM DESTAQUE */}
-      <section id="destaques" className="bg-transparent pb-12 pt-4 border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-4">
-
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold">Produtos em Destaque</h2>
-            <Link href="#" className="text-sm text-gray-300 hover:text-white underline-offset-2 hover:underline">
-              Ver todas →
+      <section
+        id="destaques"
+        className="bg-slate-50 dark:bg-transparent pb-12 pt-6 border-t border-slate-200/60 dark:border-white/5"
+      >
+        <div className="max-w-6xl mx-auto px-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl md:text-2xl font-bold">
+              Produtos em Destaque
+            </h2>
+            <Link
+              href="#"
+              className="text-sm text-slate-600 dark:text-gray-300 hover:text-black dark:hover:text-white underline-offset-2 hover:underline"
+            >
+              Ver todas &rarr;
             </Link>
           </div>
 
-          {/* Cards sem fundo verde (corrigido) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredProducts.map((product) => (
-              <article
-                key={product.id}
-                className="
-                  rounded-3xl overflow-hidden 
-                  bg-white/5 hover:bg-white/10 
-                  border border-white/10
-                  flex flex-col
-                  transition-all duration-300
-                "
-              >
-                {/* “Imagem” */}
-                <div className="relative h-44 bg-gray-300/20 flex items-center justify-center">
-                  <span className="text-xs text-gray-200">Imagem do produto</span>
+          {/* GRID usando ProductCard real */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product) => {
+              const price = parseBRLToNumber(product.price);
+              const originalPrice = parseBRLToNumber(product.oldPrice);
+              const discount = parsePercentToNumber(product.discount);
+              const rating = Number(product.rating);
 
-                  {/* Tag */}
-                  <span className="absolute left-3 top-3 px-2 py-1 rounded-full bg-[#f2c94c] text-black text-[11px] font-semibold uppercase tracking-wide">
-                    {product.tag}
-                  </span>
-
-                  {/* Desconto */}
-                  <span className="absolute right-3 top-3 px-2 py-1 rounded-full bg-black/80 text-white text-[11px] font-semibold">
-                    {product.discount}
-                  </span>
-                </div>
-
-                {/* Conteúdo */}
-                <div className="p-4 flex flex-col gap-2">
-                  <span className="text-[11px] uppercase tracking-wide text-gray-300">{product.category}</span>
-                  <h3 className="text-sm font-semibold leading-snug">{product.name}</h3>
-
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-base font-bold">{product.price}</span>
-                    <span className="text-xs text-gray-400 line-through">{product.oldPrice}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-gray-300">⭐ {product.rating} • 200+ avaliações</span>
-
-                    <button
-                      type="button"
-                      className="
-                        text-xs px-3 py-1.5 rounded-full 
-                        bg-white text-black font-semibold
-                        hover:bg-[#f2c94c] hover:text-black
-                        transition
-                      "
-                    >
-                      Ver detalhes
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    category: product.category,
+                    price,
+                    originalPrice,
+                    discount,
+                    rating,
+                    reviewCount: 200,
+                    images: ["/images/placeholder-product.jpg"], // coloque sua imagem aqui
+                    tags: [product.tag],
+                    stock: 20,
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
