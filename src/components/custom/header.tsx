@@ -68,84 +68,95 @@ export default function Header() {
       }
     }
     if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
   return (
     <>
-      {/* ▬▬▬▬▬▬▬ FAIXA PRETA SUPERIOR ▬▬▬▬▬▬▬ */}
-      <div className="w-full bg-black text-white text-xs py-1 text-center tracking-wide">
+      {/* Faixa preta superior estilo Fenty Beauty */}
+      <div className="w-full bg-black text-white text-xs py-1 text-center tracking-widest">
         FRETE GRÁTIS NAS COMPRAS ACIMA DE R$149
       </div>
 
-      {/* ▬▬▬▬▬▬ HEADER PRINCIPAL (BRANCO, PREMIUM) ▬▬▬▬▬▬ */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <div className="w-full px-6 py-3 flex items-center justify-between">
+      {/* HEADER PRINCIPAL */}
+      <header className="sticky top-0 z-50 bg-white border-b border-black/10">
+        <div className="w-full px-6 py-4 flex items-center justify-between">
 
-          {/* ESQUERDA — BARRA DE PESQUISA */}
+          {/* CAMPO DE BUSCA — versão clean premium */}
           <div className="hidden md:flex flex-1 justify-start">
             <div
               className="
-                relative w-[230px]
-                bg-white border border-black/20 rounded-full
-                hover:border-black transition-all
+                relative w-[220px]
+                border border-black/20 bg-white
+                rounded-full px-3
+                hover:border-black transition-all duration-200
               "
             >
               <input
                 type="text"
-                placeholder="Buscar..."
+                placeholder="Buscar"
                 className="
-                  w-full px-4 py-1.5 pr-10 rounded-full
-                  bg-white text-black placeholder-gray-500
-                  text-sm
+                  w-full py-1.5 pr-8 bg-white rounded-full
+                  text-sm text-black placeholder-gray-500
+                  outline-none
                 "
               />
-              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
-                <Search size={16} />
+
+              <button className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-[#406945] transition">
+                <Search size={17} />
               </button>
             </div>
           </div>
 
-          {/* CENTRO — LOGO */}
+          {/* LOGO CENTRAL — estilo premium */}
           <div className="flex-1 flex justify-center select-none">
             <Image
               src="/LOGOLIGHT.png"
               alt="Logo Emagrify"
-              width={320}
-              height={90}
+              width={250}
+              height={60}
               className="object-contain pointer-events-none"
             />
           </div>
 
-          {/* DIREITA — ÍCONES */}
-          <div className="flex-1 flex items-center justify-end gap-4 text-black">
+          {/* ÍCONES À DIREITA */}
+          <div className="flex-1 flex items-center justify-end gap-5 text-black">
 
+            {/* Ícones somente logada */}
             {user && (
               <>
-                <Heart className="hidden sm:block cursor-pointer hover:text-[#406945]" />
-                <ShoppingCart className="hidden sm:block cursor-pointer hover:text-[#406945]" />
+                <Heart
+                  className="cursor-pointer hover:text-[#406945] transition"
+                  size={20}
+                />
+                <ShoppingCart
+                  className="cursor-pointer hover:text-[#406945] transition"
+                  size={20}
+                />
               </>
             )}
 
-            {/* BOTÃO MENU / PERFIL */}
+            {/* MENU DO USUÁRIO */}  
             <div className="relative" ref={menuRef}>
 
-              {/* SE NÃO LOGADO: botão login */}
+              {/* BOTÃO LOGIN — versão clean premium */}
               {!user && (
                 <Link
                   href="/login"
                   className="
-                    hidden sm:block px-4 py-1.5 rounded-full
-                    bg-black text-white border border-black
-                    text-sm tracking-wide
-                    hover:bg-[#406945] hover:border-[#406945] transition
+                    hidden sm:block
+                    px-5 py-1.5 rounded-full uppercase tracking-wide
+                    text-xs bg-black text-white border border-black
+                    hover:bg-[#406945] hover:border-[#406945] 
+                    transition duration-200
                   "
                 >
-                  Entrar / Registrar
+                  Entrar
                 </Link>
               )}
 
-              {/* SE LOGADO: avatar */}
+              {/* AVATAR (LOGADA) */}
               {user && (
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
@@ -154,11 +165,11 @@ export default function Header() {
                     items-center justify-center hover:bg-[#406945] transition
                   "
                 >
-                  <User className="text-white" />
+                  <User className="text-white" size={18} />
                 </button>
               )}
 
-              {/* MOBILE */}
+              {/* MOBILE BUTTON */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="
@@ -167,7 +178,7 @@ export default function Header() {
                   hover:bg-black/10 transition
                 "
               >
-                <MoreVertical className="w-5 h-5" />
+                <MoreVertical size={20} />
               </button>
 
               {/* DROPDOWN */}
@@ -176,18 +187,21 @@ export default function Header() {
                   className="
                     absolute right-0 mt-3 w-64
                     bg-white text-black
-                    shadow-xl rounded-2xl p-4
+                    rounded-2xl p-4 shadow-xl
                     border border-gray-200
                   "
                 >
                   {!user ? (
                     <div className="flex flex-col gap-3">
                       <p className="text-sm text-gray-600">
-                        Acesse sua conta para ver pedidos e dados pessoais.
+                        Entre para acessar seus pedidos e dados pessoais.
                       </p>
                       <Link
                         href="/login"
-                        className="w-full text-center py-2 rounded-xl bg-black text-white font-semibold hover:bg-[#406945] transition"
+                        className="
+                          w-full text-center py-2 rounded-xl bg-black text-white font-semibold
+                          hover:bg-[#406945] transition
+                        "
                       >
                         Entrar / Registrar
                       </Link>
@@ -195,40 +209,37 @@ export default function Header() {
                   ) : (
                     <>
                       <div className="mb-3">
-                        <p className="font-bold">Olá, {profile?.first_name}</p>
+                        <p className="font-bold text-sm">
+                          Olá, {profile?.first_name}
+                        </p>
                       </div>
 
-                      <Link
-                        href="/pedidos"
-                        className="dropdown-item"
-                      >
-                        Meus pedidos <ShoppingCart className="w-5 h-5" />
+                      <Link href="/admin" className="dropdown-item">
+                        Painel Admin <Bell size={18} />
+                      </Link>
+                      
+                      <Link href="/pedidos" className="dropdown-item">
+                        Meus pedidos <ShoppingCart size={18} />
                       </Link>
 
-                      <Link
-                        href="/profile"
-                        className="dropdown-item"
-                      >
-                        Dados pessoais <User className="w-5 h-5" />
+                      <Link href="/profile" className="dropdown-item">
+                        Dados pessoais <User size={18} />
                       </Link>
 
-                      <Link
-                        href="/notificacoes"
-                        className="dropdown-item"
-                      >
-                        Notificações <Bell className="w-5 h-5" />
+                      <Link href="/notificacoes" className="dropdown-item">
+                        Notificações <Bell size={18} />
                       </Link>
 
-                      <Link
-                        href="/pontos"
-                        className="dropdown-item"
-                      >
+                      <div className="dropdown-item">
                         Meus pontos <span>{profile?.points ?? 0}</span>
-                      </Link>
+                      </div>
 
                       <button
                         onClick={handleLogout}
-                        className="mt-4 w-full py-2 bg-black text-white rounded-xl font-semibold hover:bg-[#406945] transition"
+                        className="
+                          mt-4 w-full py-2 bg-black text-white rounded-xl
+                          font-semibold hover:bg-[#406945] transition
+                        "
                       >
                         Sair
                       </button>
