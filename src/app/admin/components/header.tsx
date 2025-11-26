@@ -13,48 +13,64 @@ export function Header({ title, subtitle }: HeaderProps) {
     <header
       className="
         sticky top-0 z-10 
-        border-b 
-        bg-[#444]/90 text-black
-        dark:bg-[#222]/90 dark:text-white
-        border-[#666] dark:border-[#333]
-        backdrop-blur
+        bg-white/90 text-gray-900
+        border-b border-[#E5E5E5]
+        backdrop-blur-xl
       "
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+
+        {/* TÍTULO + SUBTÍTULO */}
         <div>
-          <h1 className="text-xl font-semibold">{title}</h1>
+          <h1 className="text-xl font-semibold text-[#1F1F1F]">{title}</h1>
+
           {subtitle && (
-            <p className="text-xs opacity-70 mt-1">{subtitle}</p>
+            <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
           )}
         </div>
 
+        {/* NOTIFICAÇÕES + AVATAR */}
         <div className="flex items-center gap-4">
+
           {/* Botão de notificações */}
           <button
             className="
-              relative p-2 rounded-full 
-              border border-[#666] dark:border-[#333]
-              hover:border-emerald-500/60 
-              hover:bg-black/10 dark:hover:bg-white/10
+              relative p-2 rounded-full
+              border border-[#DADADA]
+              bg-white
+              hover:bg-[#F5F7F4]
+              hover:border-[#406945]/40
               transition-all
+              shadow-sm hover:shadow
             "
           >
-            <Bell className="w-4 h-4 text-black dark:text-slate-300" />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <Bell className="w-4 h-4 text-gray-700" />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500" />
           </button>
 
-          {/* Avatar / info da usuária */}
+          {/* Avatar */}
           <div className="flex items-center gap-2">
+
+            {/* Infos */}
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-medium">Admin Emagrify</p>
-              <p className="text-[11px] opacity-70">Esposa do Klaytison 💍</p>
+              <p className="text-xs font-semibold text-gray-800">Admin Emagrify</p>
+              <p className="text-[11px] text-gray-500">Esposa do Klaytison 💍</p>
             </div>
 
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-md shadow-emerald-500/40">
-              <User className="w-4 h-4 text-black dark:text-slate-950" />
+            {/* Avatar círculo */}
+            <div
+              className="
+                w-10 h-10 rounded-full
+                bg-gradient-to-br from-[#406945] to-[#8CC59B]
+                flex items-center justify-center
+                shadow-md shadow-emerald-300/40
+              "
+            >
+              <User className="w-4 h-4 text-white" />
             </div>
           </div>
         </div>
+
       </div>
     </header>
   );
