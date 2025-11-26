@@ -6,8 +6,6 @@ import supabase from "@/lib/supabaseClient";
 import { Sidebar } from "./components/sidebar";
 import { Header } from "./components/header";
 import { Card } from "./components/card";
-import { Table } from "./components/table";
-import { DeluxeButton } from "./components/button";
 
 type Section =
   | "dashboard"
@@ -92,6 +90,11 @@ const sectionConfig: Record<Section, { title: string; subtitle: string }> = {
   },
 };
 
+type FeedbackState = {
+  type: "success" | "error";
+  message: string;
+} | null;
+
 export default function AdminPage() {
   const [section, setSection] = useState<Section>("dashboard");
 
@@ -119,7 +122,7 @@ export default function AdminPage() {
   const [supportMessage, setSupportMessage] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<FeedbackState>(null);
 
   useEffect(() => {
     setFeedback(null);
@@ -135,6 +138,13 @@ export default function AdminPage() {
     if (section === "timeline") loadTimeline();
     if (section === "support") loadTickets();
   }, [section]);
+
+  // some feedback after alguns segundos
+  useEffect(() => {
+    if (!feedback) return;
+    const timer = setTimeout(() => setFeedback(null), 4000);
+    return () => clearTimeout(timer);
+  }, [feedback]);
 
   async function loadUsers() {
     const { data, error } = await supabase
@@ -181,6 +191,17 @@ export default function AdminPage() {
     if (!error && data) setTickets(data as Ticket[]);
   }
 
+  // helpers de estilo
+  const inputBase =
+    "px-3 py-2 rounded-lg border border-[#D9D9D9] text-sm outline-none " +
+    "bg-white text-black placeholder-gray-500 " +
+    "focus:border-[#406945] focus:ring-1 focus:ring-[#406945]/40 transition";
+
+  const buttonBase =
+    "inline-flex items-center justify-center px-3 py-2 rounded-lg border " +
+    "border-black bg-white text-black text-sm font-medium " +
+    "hover:bg-black hover:text-white transition disabled:opacity-60 disabled:cursor-not-allowed";
+
   // Criar usuário
   async function handleCreateUser(e: FormEvent) {
     e.preventDefault();
@@ -192,9 +213,16 @@ export default function AdminPage() {
       email: newUserEmail,
     });
 
-    if (error) setFeedback("Erro ao criar usuário.");
-    else {
-      setFeedback("Usuário criado com sucesso!");
+    if (error) {
+      setFeedback({
+        type: "error",
+        message: "Erro ao criar usuário.",
+      });
+    } else {
+      setFeedback({
+        type: "success",
+        message: "Usuário criado com sucesso!",
+      });
       setNewUserName("");
       setNewUserEmail("");
       loadUsers();
@@ -218,9 +246,16 @@ export default function AdminPage() {
       stock: stockNumber,
     });
 
-    if (error) setFeedback("Erro ao criar produto.");
-    else {
-      setFeedback("Produto criado com sucesso!");
+    if (error) {
+      setFeedback({
+        type: "error",
+        message: "Erro ao criar produto.",
+      });
+    } else {
+      setFeedback({
+        type: "success",
+        message: "Produto criado com sucesso!",
+      });
       setNewProductName("");
       setNewProductPrice("");
       setNewProductStock("");
@@ -245,7 +280,10 @@ export default function AdminPage() {
       .maybeSingle();
 
     if (userError || !userFound) {
-      setFeedback("Usuário não encontrado.");
+      setFeedback({
+        type: "error",
+        message: "Usuário não encontrado.",
+      });
       setLoading(false);
       return;
     }
@@ -264,7 +302,10 @@ export default function AdminPage() {
       .update({ points: currentPoints + pts })
       .eq("id", userId);
 
-    setFeedback("Pontos adicionados com sucesso!");
+    setFeedback({
+      type: "success",
+      message: "Pontos adicionados com sucesso!",
+    });
     setPointsAmount("");
     setPointsUserEmail("");
     setLoading(false);
@@ -282,9 +323,16 @@ export default function AdminPage() {
       content: timelineContent,
     });
 
-    if (error) setFeedback("Erro ao postar na timeline.");
-    else {
-      setFeedback("Post adicionado!");
+    if (error) {
+      setFeedback({
+        type: "error",
+        message: "Erro ao postar na timeline.",
+      });
+    } else {
+      setFeedback({
+        type: "success",
+        message: "Post adicionado!",
+      });
       setTimelineTitle("");
       setTimelineContent("");
       loadTimeline();
@@ -304,9 +352,16 @@ export default function AdminPage() {
       message: supportMessage,
     });
 
-    if (error) setFeedback("Erro ao criar ticket.");
-    else {
-      setFeedback("Ticket criado!");
+    if (error) {
+      setFeedback({
+        type: "error",
+        message: "Erro ao criar ticket.",
+      });
+    } else {
+      setFeedback({
+        type: "success",
+        message: "Ticket criado!",
+      });
       setSupportEmail("");
       setSupportSubject("");
       setSupportMessage("");
@@ -325,14 +380,8 @@ export default function AdminPage() {
     ),
   };
 
-  const inputBase =
-    "px-3 py-2 rounded-lg border text-sm outline-none transition-all " +
-    "bg-[#555] border-[#666] text-black placeholder-black/50 " +
-    "dark:bg-[#111] dark:border-[#333] dark:text-white dark:placeholder-slate-500 " +
-    "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/60";
-
   return (
-    <div className="min-h-screen flex bg-[#444] text-black dark:bg-[#222] dark:text-white">
+    <div className="min-h-screen flex bg-[#F7F7F7] text-black">
       <Sidebar activeSection={section} onSectionChange={setSection} />
 
       <div className="flex-1 flex flex-col">
@@ -344,8 +393,14 @@ export default function AdminPage() {
         <main className="flex-1">
           <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
             {feedback && (
-              <div className="rounded-xl bg-[#555] dark:bg-[#1b1b1b] border border-[#666] dark:border-[#333] px-4 py-2 text-sm">
-                {feedback}
+              <div
+                className={`rounded-xl px-4 py-3 text-sm border ${
+                  feedback.type === "success"
+                    ? "bg-[#E9F5EE] border-[#B6DEC8] text-[#234231]"
+                    : "bg-[#FCE8E8] border-[#F5B8B8] text-[#7B2525]"
+                }`}
+              >
+                {feedback.message}
               </div>
             )}
 
@@ -357,6 +412,7 @@ export default function AdminPage() {
                   <Card
                     title="Usuários"
                     description="Total de clientes registrados."
+                    className="bg-white border border-[#E5E5E5]"
                   >
                     <p className="text-3xl font-semibold">
                       {summary.totalUsers}
@@ -366,13 +422,18 @@ export default function AdminPage() {
                   <Card
                     title="Produtos"
                     description="Itens cadastrados na loja."
+                    className="bg-white border border-[#E5E5E5]"
                   >
                     <p className="text-3xl font-semibold">
                       {summary.totalProducts}
                     </p>
                   </Card>
 
-                  <Card title="Pedidos" description="Pedidos registrados.">
+                  <Card
+                    title="Pedidos"
+                    description="Pedidos registrados."
+                    className="bg-white border border-[#E5E5E5]"
+                  >
                     <p className="text-3xl font-semibold">
                       {summary.totalOrders}
                     </p>
@@ -381,8 +442,9 @@ export default function AdminPage() {
                   <Card
                     title="Faturamento total"
                     description="Soma de todos os pedidos."
+                    className="bg-white border border-[#E5E5E5]"
                   >
-                    <p className="text-2xl font-semibold">
+                    <p className="text-2xl font-semibold text-[#406945]">
                       R$ {summary.totalRevenue.toFixed(2)}
                     </p>
                   </Card>
@@ -393,7 +455,7 @@ export default function AdminPage() {
                   <Card
                     title="Atividade recente"
                     description="Exemplo visual ilustrativo."
-                    className="lg:col-span-2"
+                    className="lg:col-span-2 bg-white border border-[#E5E5E5]"
                   >
                     <div className="mt-3 flex items-end gap-2 h-32">
                       {[
@@ -409,13 +471,13 @@ export default function AdminPage() {
                           key={bar.label}
                           className="flex-1 flex flex-col items-center gap-1"
                         >
-                          <div className="relative w-full rounded-full bg-black/20 dark:bg-slate-900/80 h-24 flex items-end overflow-hidden">
+                          <div className="relative w-full rounded-full bg-[#ECECEC] h-24 flex items-end overflow-hidden">
                             <div
-                              className="w-full rounded-full bg-gradient-to-t from-emerald-500 to-emerald-300"
+                              className="w-full rounded-full bg-gradient-to-t from-[#406945] to-[#78b27a]"
                               style={{ height: `${bar.value}%` }}
                             />
                           </div>
-                          <span className="text-[10px] text-black/70 dark:text-slate-400">
+                          <span className="text-[10px] text-gray-600">
                             {bar.label}
                           </span>
                         </div>
@@ -426,8 +488,9 @@ export default function AdminPage() {
                   <Card
                     title="Bem-vinda ao painel da Emagrify Store"
                     description="Use o menu lateral para navegar."
+                    className="bg-white border border-[#E5E5E5]"
                   >
-                    <p className="text-sm text-black/80 dark:text-slate-300">
+                    <p className="text-sm text-gray-700">
                       Aqui você controla tudo da sua loja em um único lugar. 💅
                     </p>
                   </Card>
@@ -441,6 +504,7 @@ export default function AdminPage() {
                 <Card
                   title="Adicionar usuário"
                   description="Crie um novo usuário manualmente."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <form
                     onSubmit={handleCreateUser}
@@ -462,38 +526,39 @@ export default function AdminPage() {
                       className={inputBase}
                       required
                     />
-                    <DeluxeButton disabled={loading}>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={buttonBase + " w-full"}
+                    >
                       {loading ? "Salvando..." : "Adicionar usuário"}
-                    </DeluxeButton>
+                    </button>
                   </form>
                 </Card>
 
                 <Card
                   title="Lista de usuários"
                   description="Todos os usuários cadastrados."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <div className="mt-3 space-y-2">
                     {users.map((u) => (
                       <div
                         key={u.id}
-                        className="flex items-center justify-between bg-[#555] dark:bg-[#111] border border-[#666] dark:border-[#333] rounded-lg px-4 py-2 text-sm"
+                        className="flex items-center justify-between bg-white border border-[#E5E5E5] rounded-lg px-4 py-3 text-sm shadow-sm"
                       >
                         <div>
                           <p className="font-medium">{u.name}</p>
-                          <p className="text-xs text-black/70 dark:text-slate-400">
-                            {u.email}
-                          </p>
+                          <p className="text-xs text-gray-600">{u.email}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[11px] text-black/70 dark:text-slate-400">
-                            Pontos
-                          </p>
+                          <p className="text-[11px] text-gray-500">Pontos</p>
                           <p className="font-semibold">{u.points}</p>
                         </div>
                       </div>
                     ))}
                     {users.length === 0 && (
-                      <p className="text-sm text-black/70 dark:text-slate-400">
+                      <p className="text-sm text-gray-600">
                         Nenhum usuário cadastrado ainda.
                       </p>
                     )}
@@ -508,17 +573,18 @@ export default function AdminPage() {
                 <Card
                   title="Cadastrar produto"
                   description="Adicione um novo produto ao catálogo."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <form
                     onSubmit={handleCreateProduct}
-                    className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3"
+                    className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-3"
                   >
                     <input
                       type="text"
                       placeholder="Nome do produto"
                       value={newProductName}
                       onChange={(e) => setNewProductName(e.target.value)}
-                      className={inputBase}
+                      className={inputBase + " md:col-span-2"}
                       required
                     />
                     <input
@@ -536,38 +602,47 @@ export default function AdminPage() {
                       onChange={(e) => setNewProductStock(e.target.value)}
                       className={inputBase}
                     />
-                    <DeluxeButton
+                    <button
+                      type="submit"
                       disabled={loading}
-                      className="md:col-span-3 justify-center"
+                      className={buttonBase + " md:col-span-4 w-full"}
                     >
                       {loading ? "Salvando..." : "Adicionar produto"}
-                    </DeluxeButton>
+                    </button>
                   </form>
                 </Card>
 
                 <Card
                   title="Produtos cadastrados"
                   description="Lista de produtos na tabela."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <div className="mt-3 space-y-2">
                     {products.map((p) => (
                       <div
                         key={p.id}
-                        className="flex items-center justify-between bg-[#555] dark:bg-[#111] border border-[#666] dark:border-[#333] rounded-lg px-4 py-2 text-sm"
+                        className="flex items-center justify-between bg-white border border-[#E5E5E5] rounded-lg px-4 py-3 text-sm shadow-sm"
                       >
                         <div>
                           <p className="font-medium">{p.name}</p>
-                          <p className="text-xs text-black/70 dark:text-slate-400">
-                            R$ {Number(p.price).toFixed(2)} • Estoque: {p.stock}
+                          <p className="text-xs text-gray-600">
+                            R$ {Number(p.price).toFixed(2)} • Estoque:{" "}
+                            {p.stock}
                           </p>
                         </div>
-                        <span className="text-[11px] px-2 py-1 rounded-full bg-black/10 dark:bg-slate-800 text-black dark:text-slate-200">
+                        <span
+                          className={`text-[11px] px-2 py-1 rounded-full ${
+                            p.active
+                              ? "bg-[#E9F5EE] text-[#234231]"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
                           {p.active ? "Ativo" : "Inativo"}
                         </span>
                       </div>
                     ))}
                     {products.length === 0 && (
-                      <p className="text-sm text-black/70 dark:text-slate-400">
+                      <p className="text-sm text-gray-600">
                         Nenhum produto cadastrado ainda.
                       </p>
                     )}
@@ -576,37 +651,44 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* PEDIDOS */}
+            {/* PEDIDOS – estilo cartão */}
             {section === "orders" && (
               <div className="space-y-4">
-                <Card title="Pedidos" description="Pedidos registrados.">
+                <Card
+                  title="Pedidos"
+                  description="Pedidos registrados."
+                  className="bg-white border border-[#E5E5E5]"
+                >
                   {orders.length === 0 ? (
-                    <p className="text-sm text-black/70 dark:text-slate-400 mt-2">
+                    <p className="text-sm text-gray-600 mt-2">
                       Nenhum pedido registrado ainda.
                     </p>
                   ) : (
-                    <div className="mt-3">
-                      <Table headers={["Pedido", "Total", "Status", "Data"]}>
-                        {orders.map((o) => (
-                          <tr
-                            key={o.id}
-                            className="hover:bg-black/10 dark:hover:bg-slate-900/70"
-                          >
-                            <td className="px-4 py-2 text-sm">
-                              #{o.id.slice(0, 8)}
-                            </td>
-                            <td className="px-4 py-2 text-sm">
-                              R$ {Number(o.total).toFixed(2)}
-                            </td>
-                            <td className="px-4 py-2 text-sm">
-                              {o.status}
-                            </td>
-                            <td className="px-4 py-2 text-xs text-black/70 dark:text-slate-400">
+                    <div className="mt-3 space-y-3">
+                      {orders.map((o) => (
+                        <div
+                          key={o.id}
+                          className="bg-white border border-[#E5E5E5] rounded-lg px-4 py-3 text-sm shadow-sm flex flex-col gap-1"
+                        >
+                          <div className="flex items-center justify-between">
+                            <p className="font-semibold">
+                              Pedido #{o.id.slice(0, 8)}
+                            </p>
+                            <span className="text-xs text-gray-500">
                               {new Date(o.created_at).toLocaleString("pt-BR")}
-                            </td>
-                          </tr>
-                        ))}
-                      </Table>
+                            </span>
+                          </div>
+                          <p className="text-sm">
+                            Total:{" "}
+                            <span className="font-semibold text-[#406945]">
+                              R$ {Number(o.total).toFixed(2)}
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Status: <span>{o.status}</span>
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </Card>
@@ -619,6 +701,7 @@ export default function AdminPage() {
                 <Card
                   title="Adicionar pontos"
                   description="Ajuste manual de pontos para um usuário."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <form
                     onSubmit={handleAddPoints}
@@ -640,9 +723,13 @@ export default function AdminPage() {
                       className={inputBase}
                       required
                     />
-                    <DeluxeButton disabled={loading}>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={buttonBase + " w-full"}
+                    >
                       {loading ? "Salvando..." : "Adicionar pontos"}
-                    </DeluxeButton>
+                    </button>
                   </form>
                 </Card>
               </div>
@@ -654,6 +741,7 @@ export default function AdminPage() {
                 <Card
                   title="Novo post na timeline"
                   description="Registre observações internas."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <form
                     onSubmit={handleCreateTimeline}
@@ -671,41 +759,44 @@ export default function AdminPage() {
                       placeholder="Conteúdo (opcional)"
                       value={timelineContent}
                       onChange={(e) => setTimelineContent(e.target.value)}
-                      className={
-                        inputBase + " w-full min-h-[90px] resize-vertical"
-                      }
+                      className={inputBase + " w-full min-h-[90px] resize-vertical"}
                     />
-                    <DeluxeButton disabled={loading}>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={buttonBase}
+                    >
                       {loading ? "Salvando..." : "Postar"}
-                    </DeluxeButton>
+                    </button>
                   </form>
                 </Card>
 
                 <Card
                   title="Histórico da timeline"
                   description="Posts registrados."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <div className="mt-3 space-y-3">
                     {timeline.map((post) => (
                       <div
                         key={post.id}
-                        className="border border-[#666] dark:border-[#333] rounded-lg bg-[#555] dark:bg-[#111] px-4 py-3"
+                        className="border border-[#E5E5E5] rounded-lg bg-white px-4 py-3 shadow-sm"
                       >
                         <div className="flex items-center justify-between">
                           <p className="font-medium text-sm">{post.title}</p>
-                          <span className="text-[11px] text-black/70 dark:text-slate-500">
+                          <span className="text-[11px] text-gray-500">
                             {new Date(post.created_at).toLocaleString("pt-BR")}
                           </span>
                         </div>
                         {post.content && (
-                          <p className="mt-2 text-sm text-black/80 dark:text-slate-300">
+                          <p className="mt-2 text-sm text-gray-700">
                             {post.content}
                           </p>
                         )}
                       </div>
                     ))}
                     {timeline.length === 0 && (
-                      <p className="text-sm text-black/70 dark:text-slate-400">
+                      <p className="text-sm text-gray-600">
                         Nenhum post ainda.
                       </p>
                     )}
@@ -720,6 +811,7 @@ export default function AdminPage() {
                 <Card
                   title="Criar ticket manualmente"
                   description="Registre uma solicitação de suporte."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <form
                     onSubmit={handleCreateTicket}
@@ -750,43 +842,45 @@ export default function AdminPage() {
                       }
                       required
                     />
-                    <DeluxeButton
+                    <button
+                      type="submit"
                       disabled={loading}
-                      className="md:col-span-3 justify-center"
+                      className={buttonBase + " md:col-span-3 w-full"}
                     >
                       {loading ? "Salvando..." : "Criar ticket"}
-                    </DeluxeButton>
+                    </button>
                   </form>
                 </Card>
 
                 <Card
                   title="Tickets de suporte"
                   description="Lista dos tickets registrados."
+                  className="bg-white border border-[#E5E5E5]"
                 >
                   <div className="mt-3 space-y-3">
                     {tickets.map((t) => (
                       <div
                         key={t.id}
-                        className="border border-[#666] dark:border-[#333] rounded-lg bg-[#555] dark:bg-[#111] px-4 py-3 text-sm"
+                        className="border border-[#E5E5E5] rounded-lg bg-white px-4 py-3 text-sm shadow-sm"
                       >
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">{t.subject}</p>
-                            <p className="text-[11px] text-black/70 dark:text-slate-400">
+                            <p className="text-[11px] text-gray-600">
                               {t.user_email}
                             </p>
                           </div>
-                          <span className="text-[11px] text-black/70 dark:text-slate-500">
+                          <span className="text-[11px] text-gray-500">
                             {new Date(t.created_at).toLocaleString("pt-BR")}
                           </span>
                         </div>
-                        <p className="mt-1 text-xs text-black/70 dark:text-slate-400">
+                        <p className="mt-1 text-xs text-gray-600">
                           Status: {t.status}
                         </p>
                       </div>
                     ))}
                     {tickets.length === 0 && (
-                      <p className="text-sm text-black/70 dark:text-slate-400">
+                      <p className="text-sm text-gray-600">
                         Nenhum ticket registrado ainda.
                       </p>
                     )}
@@ -801,8 +895,9 @@ export default function AdminPage() {
                 <Card
                   title="Configurações do painel"
                   description="Área reservada para ajustes futuros."
+                  className="bg-white border border-[#E5E5E5]"
                 >
-                  <p className="text-sm text-black/80 dark:text-slate-300">
+                  <p className="text-sm text-gray-700">
                     Aqui você poderá configurar preferências avançadas do
                     painel. Ainda em desenvolvimento. 💚
                   </p>
