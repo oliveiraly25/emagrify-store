@@ -74,7 +74,7 @@ export default function HomePage() {
       </section>
 
       {/* HERO PRINCIPAL */}
-      <section className="bg-[#0b2618] pb-8">
+      <section className="bg-transparent pb-8">
         <div className="max-w-6xl mx-auto px-4">
           <div
             className="
@@ -136,7 +136,7 @@ export default function HomePage() {
       {/* PRODUTOS EM DESTAQUE */}
       <section
         id="destaques"
-        className="bg-[#0b2618] pb-12 pt-4 border-t border-white/5"
+        className="bg-transparent pb-12 pt-4 border-t border-white/5"
       >
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between mb-4">
