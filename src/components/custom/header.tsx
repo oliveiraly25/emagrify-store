@@ -134,14 +134,23 @@ export default function Header() {
             </div>
           </div>
 
-          {/* LOGO CENTRAL */}
-          <div className="flex-1 flex justify-center select-none">
-            <Image
-              src="/LOGOLIGHT.png"
-              alt="Logo Emagrify"
-              width={250}
-              height={60}
-              className="object-contain pointer-events-none"
+{/* LOGO CENTRAL — TEXTO COM FONTE TUSCA */}
+<div className="flex-1 flex justify-center select-none">
+  <h1
+    className="
+      font-tusca 
+      text-3xl 
+      tracking-wide 
+      font-semibold 
+      cursor-pointer 
+      select-none
+    "
+    onClick={() => (window.location.href = "/")}
+  >
+    emagrify store
+  </h1>
+</div>
+
             />
           </div>
 
