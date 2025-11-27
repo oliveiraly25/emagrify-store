@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import {
+import {
   ChevronRight,
   ShoppingCart,
   Heart,
@@ -12,6 +13,7 @@ import {
   CreditCard,
   Headphones,
   Bell,
+  Package,
 } from "lucide-react";
 
 export default function ProfileDashboard() {
