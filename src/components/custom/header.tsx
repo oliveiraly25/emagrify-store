@@ -149,18 +149,22 @@ export default function Header() {
           <div className="flex-1 flex items-center justify-end gap-5 text-black">
 
             {/* Ícones logada */}
-            {user && (
-              <>
-                <Heart
-                  className="cursor-pointer hover:text-[#406945] transition"
-                  size={20}
-                />
-                <ShoppingCart
-                  className="cursor-pointer hover:text-[#406945] transition"
-                  size={20}
-                />
-              </>
-            )}
+{user && (
+  <>
+    <Heart
+      onClick={() => (window.location.href = "/favoritos")}
+      className="cursor-pointer hover:text-[#406945] transition"
+      size={20}
+    />
+
+    <ShoppingCart
+      onClick={() => (window.location.href = "/carrinho")}
+      className="cursor-pointer hover:text-[#406945] transition"
+      size={20}
+    />
+  </>
+)}
+
 
             {/* MENU DO USUÁRIO */}
             <div className="relative" ref={menuRef}>
