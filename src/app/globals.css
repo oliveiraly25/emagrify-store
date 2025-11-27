@@ -77,16 +77,33 @@ header {
   font-family: "Canela";
   src: url("/fonts/canela_roman.otf") format("opentype");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_light.otf") format("opentype");
   font-weight: 300;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Canela";
   src: url("/fonts/canela_bold.otf") format("opentype");
   font-weight: 700;
+  font-display: swap;
+}
+
+/* ========================================================= */
+/*        FONTES TUSCA & FLAWLESS INTEGRADAS VIA NEXT        */
+/* ========================================================= */
+
+/* Flawless: títulos elegantes */
+.font-flawless {
+  font-family: var(--font-flawless), sans-serif;
+}
+
+/* Tusca: textos premium */
+.font-tusca {
+  font-family: var(--font-tusca), sans-serif;
 }
