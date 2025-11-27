@@ -107,3 +107,35 @@ header {
 .font-tusca {
   font-family: var(--font-tusca), sans-serif;
 }
+
+/* ========================================================= */
+/*                       FONTES LOVALINA                     */
+/* ========================================================= */
+@font-face {
+  font-family: "Lovalina";
+  src: url("/fonts/Lovalina.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Classe para aplicar */
+.font-lovalina {
+  font-family: "Lovalina", sans-serif;
+}
+
+
+
+/* ========================================================= */
+/*                       FONTES VOSTELA                      */
+/* ========================================================= */
+@font-face {
+  font-family: "Vostela";
+  src: url("/fonts/VOSTELA.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Classe para aplicar */
+.font-vostela {
+  font-family: "Vostela", sans-serif;
+}
