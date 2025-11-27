@@ -132,18 +132,20 @@ export default function ProfileDashboard() {
         </button>
 
         <button
-          onClick={() => router.push("/favoritos")}
-          className="
-            w-full flex justify-between items-center p-4
-            hover:bg-[#f9fafb] transition
-          "
-        >
-          <div className="flex items-center gap-3">
-            <Heart size={20} className="text-black" />
-            <span className="font-medium">Favoritos</span>
-          </div>
-          <ChevronRight className="text-black" />
-        </button>
+  onClick={() => router.push("/favoritos")}
+  className="
+    w-full flex justify-between items-center p-4
+    hover:bg-[#f9fafb] transition
+  "
+>
+  <div className="flex items-center gap-3">
+    <Heart size={20} className="text-black" />
+    <span className="font-medium">Favoritos</span>
+  </div>
+  <ChevronRight className="text-black" />
+</button>
+
+
 
       </div>
 
