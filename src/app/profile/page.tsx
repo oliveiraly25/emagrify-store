@@ -55,45 +55,6 @@ export default function ProfileDashboard() {
       </p>
 
       {/* ============================= */}
-      {/*     SEÇÃO: PEDIDOS           */}
-      {/* ============================= */}
-      <h2 className="text-lg font-semibold mb-3 tracking-tight">
-        Pedidos
-      </h2>
-
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-
-        <button
-          onClick={() => router.push("/pedidos")}
-          className="
-            w-full flex justify-between items-center p-4 border-b
-            hover:bg-[#f9fafb] transition
-          "
-        >
-          <div className="flex items-center gap-3">
-            <ShoppingCart size={20} className="text-black" />
-            <span className="font-medium">Meus pedidos</span>
-          </div>
-          <ChevronRight className="text-black" />
-        </button>
-
-        <button
-          onClick={() => router.push("/favoritos")}
-          className="
-            w-full flex justify-between items-center p-4
-            hover:bg-[#f9fafb] transition
-          "
-        >
-          <div className="flex items-center gap-3">
-            <Heart size={20} className="text-black" />
-            <span className="font-medium">Favoritos</span>
-          </div>
-          <ChevronRight className="text-black" />
-        </button>
-
-      </div>
-
-      {/* ============================= */}
       {/*     SEÇÃO: SEUS DADOS         */}
       {/* ============================= */}
       <h2 className="text-lg font-semibold mt-8 mb-3 tracking-tight">
@@ -140,6 +101,45 @@ export default function ProfileDashboard() {
           <div className="flex items-center gap-3">
             <CreditCard size={20} className="text-black" />
             <span className="font-medium">Formas de pagamento</span>
+          </div>
+          <ChevronRight className="text-black" />
+        </button>
+
+      </div>
+
+      {/* ============================= */}
+      {/*     SEÇÃO: PEDIDOS           */}
+      {/* ============================= */}
+      <h2 className="text-lg font-semibold mb-3 tracking-tight">
+        Pedidos
+      </h2>
+
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+
+        <button
+          onClick={() => router.push("/pedidos")}
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
+        >
+          <div className="flex items-center gap-3">
+            <ShoppingCart size={20} className="text-black" />
+            <span className="font-medium">Meus pedidos</span>
+          </div>
+          <ChevronRight className="text-black" />
+        </button>
+
+        <button
+          onClick={() => router.push("/favoritos")}
+          className="
+            w-full flex justify-between items-center p-4
+            hover:bg-[#f9fafb] transition
+          "
+        >
+          <div className="flex items-center gap-3">
+            <Heart size={20} className="text-black" />
+            <span className="font-medium">Favoritos</span>
           </div>
           <ChevronRight className="text-black" />
         </button>
