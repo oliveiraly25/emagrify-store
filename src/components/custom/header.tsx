@@ -243,28 +243,34 @@ export default function Header() {
                         </p>
                       </div>
 
-                      {/* 👑 ADMIN */}
-                      {profile?.role === "admin" && (
-                        <Link href="/admin" className="dropdown-item">
-                          Painel Admin <Bell size={18} />
-                        </Link>
-                      )}
+{/* 👑 ADMIN */}
+{profile?.role === "admin" && (
+  <Link href="/admin" className="dropdown-item flex items-center gap-2">
+    <Bell size={18} />
+    <span>Painel Admin</span>
+  </Link>
+)}
 
-                      <Link href="/pedidos" className="dropdown-item">
-                        Meus pedidos <ShoppingCart size={18} />
-                      </Link>
+<Link href="/pedidos" className="dropdown-item flex items-center gap-2">
+  <ShoppingCart size={18} />
+  <span>Meus pedidos</span>
+</Link>
 
-                      <Link href="/profile" className="dropdown-item">
-                        Dados pessoais <User size={18} />
-                      </Link>
+<Link href="/profile" className="dropdown-item flex items-center gap-2">
+  <User size={18} />
+  <span>Dados pessoais</span>
+</Link>
 
-                      <Link href="/notificacoes" className="dropdown-item">
-                        Notificações <Bell size={18} />
-                      </Link>
+<Link href="/notificacoes" className="dropdown-item flex items-center gap-2">
+  <Bell size={18} />
+  <span>Notificações</span>
+</Link>
 
-                      <div className="dropdown-item">
-                        Meus pontos <span>{profile?.points ?? 0}</span>
-                      </div>
+<div className="dropdown-item flex items-center gap-2">
+  <User size={18} />
+  <span>Meus pontos: {profile?.points ?? 0}</span>
+</div>
+
 
                       <button
                         onClick={handleLogout}
