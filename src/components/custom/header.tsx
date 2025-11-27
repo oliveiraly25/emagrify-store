@@ -138,7 +138,7 @@ export default function Header() {
 <div className="flex-1 flex justify-center select-none">
   <h1
     className="
-      font-lovalina 
+      font-BernyLoves 
       text-4xl 
       tracking-wide 
       font-semibold 
