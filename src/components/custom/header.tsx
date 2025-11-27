@@ -138,7 +138,7 @@ export default function Header() {
 <div className="flex-1 flex justify-center select-none">
   <h1
     className="
-      font-BernyLoves 
+      font-berny
       text-4xl 
       tracking-wide 
       font-semibold 
@@ -148,7 +148,7 @@ export default function Header() {
     "
     onClick={() => (window.location.href = "/")}
   >
-    emagrify store
+    EMAGRIFY STORE
   </h1>
 </div>
 
