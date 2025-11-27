@@ -139,7 +139,7 @@ export default function Header() {
   <h1
     className="
       font-lovalina 
-      text-3xl 
+      text-4xl 
       tracking-wide 
       font-semibold 
       cursor-pointer 
@@ -148,7 +148,7 @@ export default function Header() {
     "
     onClick={() => (window.location.href = "/")}
   >
-    Emagrify   Store
+    EMAGRIFY STORE
   </h1>
 </div>
 
