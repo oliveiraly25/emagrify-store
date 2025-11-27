@@ -1,0 +1,154 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
+import { Star, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import supabase from "@/lib/supabaseClient";
+
+interface Review {
+  id: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+  profiles: {
+    first_name: string | null;
+    last_name: string | null;
+  };
+}
+
+export default function ProdutoPage() {
+  const { id } = useParams();
+  const [product, setProduct] = useState<any>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [average, setAverage] = useState<number>(0);
+
+  // carregar produto + reviews
+  useEffect(() => {
+    async function loadProduct() {
+      // produto
+      const { data: prod } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+      setProduct(prod);
+
+      // reviews
+      const { data: rev } = await supabase
+        .from("reviews")
+        .select("*, profiles(first_name,last_name)")
+        .eq("product_id", id)
+        .order("created_at", { ascending: false });
+
+      if (rev) {
+        setReviews(rev);
+
+        const avg =
+          rev.reduce((sum, r) => sum + r.rating, 0) / (rev.length || 1);
+        setAverage(Number(avg.toFixed(1)));
+      }
+
+      setLoading(false);
+    }
+
+    loadProduct();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center mt-10">Carregando produto...</p>;
+  }
+
+  if (!product) {
+    return <p className="text-center mt-10">Produto não encontrado.</p>;
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto px-6 py-10">
+
+      {/* IMAGEM + INFO */}
+      <div className="flex flex-col md:flex-row gap-10">
+
+        {/* imagem */}
+        <div className="w-full md:w-1/2">
+          <Image
+            src={product.images?.[0]}
+            alt={product.name}
+            width={600}
+            height={600}
+            className="rounded-xl object-cover"
+          />
+        </div>
+
+        {/* infos */}
+        <div className="flex-1 space-y-4">
+          <h1 className="text-3xl font-bold">{product.name}</h1>
+
+          <p className="text-lg font-medium">R$ {product.price}</p>
+
+          {/* MÉDIA DE ESTRELAS */}
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-6 h-6 ${
+                  i < average ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                }`}
+              />
+            ))}
+            <span className="ml-2 text-gray-600 text-sm">
+              {average} de 5 ({reviews.length} avaliações)
+            </span>
+          </div>
+
+          {/* botão avaliar */}
+          <Link
+            href={`/produto/${id}/avaliar`}
+            className="px-5 py-2 bg-black text-white rounded-full inline-flex items-center gap-2 hover:bg-[#406945] transition"
+          >
+            <MessageSquare size={18} />
+            Avaliar produto
+          </Link>
+        </div>
+      </div>
+
+      {/* LISTA DE REVIEWS */}
+      <div className="mt-12">
+        <h2 className="text-xl font-semibold mb-4">Avaliações dos clientes</h2>
+
+        {reviews.length === 0 && (
+          <p className="text-gray-600">Nenhuma avaliação ainda.</p>
+        )}
+
+        <div className="space-y-6">
+          {reviews.map((r) => (
+            <div key={r.id} className="p-4 border rounded-xl">
+              <div className="flex items-center gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-5 h-5 ${
+                      i < r.rating
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <p className="mt-2 text-gray-800">{r.comment}</p>
+
+              <p className="mt-1 text-sm text-gray-500">
+                — {r.profiles?.first_name ?? "Usuário"}{" "}
+                {r.profiles?.last_name ?? ""}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
