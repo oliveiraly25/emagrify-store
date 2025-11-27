@@ -98,41 +98,69 @@ export default function Header() {
       <header className="sticky top-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-6 py-4 flex items-center justify-between">
 
-          {/* 🔍 BUSCA EXPANSÍVEL (moderninha) */}
-          <div className="hidden md:flex flex-1 justify-start">
-            <div
-              ref={searchRef}
-              className="relative flex items-center transition-all"
-            >
-              {!searchOpen && (
-                <button
-                  onClick={() => setSearchOpen(true)}
-                  className="p-2 text-black hover:text-[#406945] transition"
-                >
-                  <Search size={20} />
-                </button>
-              )}
+{/* 🔍 BUSCA EXPANSÍVEL (moderninha) */}
+<div className="hidden md:flex flex-1 justify-start">
+  <div ref={searchRef} className="relative flex items-center transition-all">
+    
+    {!searchOpen && (
+      <button
+        onClick={() => setSearchOpen(true)}
+        className="p-2 text-black hover:text-[#406945] transition"
+      >
+        <Search size={20} />
+      </button>
+    )}
 
-              {searchOpen && (
-                <div
-                  className="
-                    flex items-center bg-white border border-black/20
-                    rounded-full px-3 py-1 shadow-sm
-                    transition-all duration-300
-                    w-[210px] sm:w-[250px]
-                  "
-                >
-                  <Search size={17} className="mr-2 text-black" />
-                  <input
-                    type="text"
-                    placeholder="Buscar..."
-                    autoFocus
-                    className="flex-1 bg-transparent outline-none text-sm"
-                  />
-                </div>
-              )}
-            </div>
+    {searchOpen && (
+      <div
+        className="
+          flex flex-col bg-white border border-black/20
+          rounded-xl px-3 py-2 shadow-md
+          transition-all duration-300
+          w-[240px] sm:w-[280px]
+        "
+      >
+        {/* INPUT DE BUSCA */}
+        <div className="flex items-center">
+          <Search size={17} className="mr-2 text-black" />
+          <input
+            type="text"
+            placeholder="Buscar produtos..."
+            autoFocus
+            value={search}
+            onChange={handleSearch}
+            className="flex-1 bg-transparent outline-none text-sm"
+          />
+        </div>
+
+        {/* RESULTADOS */}
+        {results.length > 0 && (
+          <div className="mt-2 bg-white rounded-md border border-gray-200 shadow">
+            {results.map((product) => (
+              <div
+                key={product.id}
+                onClick={() => {
+                  window.location.href = `/produto/${product.id}`;
+                }}
+                className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
+              >
+                {product.name}
+              </div>
+            ))}
           </div>
+        )}
+
+        {/* NENHUM RESULTADO */}
+        {search.length > 0 && results.length === 0 && (
+          <div className="mt-2 text-gray-500 text-xs p-2">
+            Nenhum produto encontrado.
+          </div>
+        )}
+      </div>
+    )}
+
+  </div>
+</div>
 
 {/* LOGO CENTRAL — TEXTO COM FONTE TUSCA */}
 <div className="flex-1 flex justify-center select-none">
