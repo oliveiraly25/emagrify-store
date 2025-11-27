@@ -149,8 +149,7 @@ export default function Header() {
   >
     emagrify store
   </h1>
-</div>
-
+  
             />
           </div>
 
