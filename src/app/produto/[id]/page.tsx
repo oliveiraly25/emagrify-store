@@ -25,7 +25,6 @@ export default function ProdutoPage() {
   const [loading, setLoading] = useState(true);
   const [average, setAverage] = useState<number>(0);
 
-  // carregar produto + reviews
   useEffect(() => {
     async function loadProduct() {
       // produto
@@ -48,7 +47,9 @@ export default function ProdutoPage() {
         setReviews(rev);
 
         const avg =
-          rev.reduce((sum, r) => sum + r.rating, 0) / (rev.length || 1);
+          rev.reduce((sum, r) => sum + r.rating, 0) /
+          (rev.length === 0 ? 1 : rev.length);
+
         setAverage(Number(avg.toFixed(1)));
       }
 
@@ -68,22 +69,20 @@ export default function ProdutoPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
-
       {/* IMAGEM + INFO */}
       <div className="flex flex-col md:flex-row gap-10">
-
-        {/* imagem */}
+        {/* imagem principal */}
         <div className="w-full md:w-1/2">
           <Image
-            src={product.images?.[0]}
+            src={product.images?.[0] || "/placeholder.png"}
             alt={product.name}
             width={600}
             height={600}
-            className="rounded-xl object-cover"
+            className="rounded-xl object-cover border"
           />
         </div>
 
-        {/* infos */}
+        {/* detalhes */}
         <div className="flex-1 space-y-4">
           <h1 className="text-3xl font-bold">{product.name}</h1>
 
@@ -91,11 +90,13 @@ export default function ProdutoPage() {
 
           {/* MÉDIA DE ESTRELAS */}
           <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
+            {[1, 2, 3, 4, 5].map((n) => (
               <Star
-                key={i}
+                key={n}
                 className={`w-6 h-6 ${
-                  i < average ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                  n <= Math.round(average)
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
                 }`}
               />
             ))}
@@ -125,13 +126,14 @@ export default function ProdutoPage() {
 
         <div className="space-y-6">
           {reviews.map((r) => (
-            <div key={r.id} className="p-4 border rounded-xl">
+            <div key={r.id} className="p-4 border rounded-xl shadow-sm bg-white">
+              {/* estrelas individuais */}
               <div className="flex items-center gap-2">
-                {[...Array(5)].map((_, i) => (
+                {[1, 2, 3, 4, 5].map((n) => (
                   <Star
-                    key={i}
+                    key={n}
                     className={`w-5 h-5 ${
-                      i < r.rating
+                      n <= r.rating
                         ? "text-yellow-400 fill-yellow-400"
                         : "text-gray-300"
                     }`}
@@ -139,11 +141,18 @@ export default function ProdutoPage() {
                 ))}
               </div>
 
+              {/* texto */}
               <p className="mt-2 text-gray-800">{r.comment}</p>
 
+              {/* autor */}
               <p className="mt-1 text-sm text-gray-500">
-                — {r.profiles?.first_name ?? "Usuário"}{" "}
-                {r.profiles?.last_name ?? ""}
+                — {r.profiles?.first_name || "Usuário"}{" "}
+                {r.profiles?.last_name || ""}
+              </p>
+
+              {/* data */}
+              <p className="text-xs text-gray-400 mt-1">
+                {new Date(r.created_at).toLocaleDateString("pt-BR")}
               </p>
             </div>
           ))}
