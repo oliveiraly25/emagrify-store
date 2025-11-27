@@ -139,3 +139,60 @@ header {
 .font-vostela {
   font-family: "Vostela", sans-serif;
 }
+@font-face {
+  font-family: "BernyLoves";
+  src: url("/fonts/BERNY-LOVES.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "BernyLoves";
+  src: url("/fonts/BERNY-LOVES-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Classe */
+.font-berny {
+  font-family: "BernyLoves", sans-serif;
+}
+@font-face {
+  font-family: "Cronde";
+  src: url("/fonts/CRONDERegular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Cronde";
+  src: url("/fonts/CRONDEItalic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Cronde";
+  src: url("/fonts/CRONDE.otf") format("opentype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Cronde";
+  src: url("/fonts/CRONDE-Italic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Classe */
+.font-cronde {
+  font-family: "Cronde", sans-serif;
+}
+@font-face {
+  font-family: "TypeMonster";
+  src: url("/fonts/TypeMonster-FreeDemo.ttf") format("truetype");
+  font-weight: 400;
+}
+
+/* Classe */
+.font-monster {
+  font-family: "TypeMonster", sans-serif;
+}
