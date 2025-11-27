@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { Star } from "lucide-react";
+import supabase from "@/lib/supabaseClient";
 
 export default function AvaliarProduto() {
   const { id } = useParams();
@@ -10,21 +11,13 @@ export default function AvaliarProduto() {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = async () => {
-    if (rating === 0) {
-      alert("Escolha uma nota.");
-      return;
-    }
+  async function enviar() {
+    setSending(true);
 
-    setLoading(true);
-
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    const { data: user } = await supabase.auth.getUser();
+    if (!user?.user) {
       alert("Você precisa estar logado para avaliar.");
       router.push("/login");
       return;
@@ -32,57 +25,58 @@ export default function AvaliarProduto() {
 
     const { error } = await supabase.from("reviews").insert({
       product_id: id,
-      user_id: user.id,
+      user_id: user.user.id,
       rating,
       comment,
     });
 
     if (error) {
-      alert(error.message);
-      setLoading(false);
+      alert("Erro ao enviar avaliação.");
+      setSending(false);
       return;
     }
 
     alert("Avaliação enviada!");
     router.push(`/produto/${id}`);
-  };
+  }
 
   return (
-    <div className="max-w-xl mx-auto py-12 px-6 text-black">
+    <div className="max-w-xl mx-auto px-6 py-10">
+
       <h1 className="text-2xl font-bold mb-6">Avaliar Produto</h1>
 
-      {/* Estrelas */}
+      {/* estrelas */}
       <div className="flex gap-2 mb-4">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            onClick={() => setRating(star)}
-            className={`text-3xl ${
-              rating >= star ? "text-yellow-400" : "text-gray-400"
+        {[1, 2, 3, 4, 5].map((n) => (
+          <Star
+            key={n}
+            className={`w-8 h-8 cursor-pointer ${
+              n <= rating
+                ? "text-yellow-400 fill-yellow-400"
+                : "text-gray-400"
             }`}
-          >
-            ★
-          </button>
+            onClick={() => setRating(n)}
+          />
         ))}
       </div>
 
-      {/* Comentário */}
+      {/* comentário */}
       <textarea
-        className="w-full border p-3 rounded mb-4"
-        rows={5}
-        placeholder="Escreva um comentário (opcional)"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-      />
+        className="w-full border p-3 rounded-lg"
+        rows={4}
+        placeholder="Escreva sua opinião..."
+      ></textarea>
 
-      {/* Botão */}
       <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="btn-black w-full py-3 text-lg"
+        onClick={enviar}
+        disabled={sending}
+        className="mt-4 px-5 py-2 bg-black text-white rounded-full hover:bg-[#406945] transition"
       >
-        {loading ? "Enviando..." : "Enviar Avaliação"}
+        {sending ? "Enviando..." : "Enviar avaliação"}
       </button>
+
     </div>
   );
 }
