@@ -144,12 +144,14 @@ export default function Header() {
       font-semibold 
       cursor-pointer 
       select-none
+      whitespace-nowrap
     "
     onClick={() => (window.location.href = "/")}
   >
     emagrify store
   </h1>
-          </div>
+</div>
+
 
           {/* ÍCONES À DIREITA */}
           <div className="flex-1 flex items-center justify-end gap-5 text-black">
