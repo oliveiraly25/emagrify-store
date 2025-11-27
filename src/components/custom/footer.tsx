@@ -29,12 +29,16 @@ export default function Footer() {
           </h2>
 
                     <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
-            Comunicação clara sobre prazos, políticas e suporte em todas as
-                etapas da compra. Layout leve, navegação simples e foco total em uma jornada de
-                compra confortável.
+            1. A Emagrify Store nasceu para ser moderna, elegante e totalmente focada em você. 
+                      Nada de poluição visual, nada de excesso: apenas o essencial com muita beleza.
           </p>
-          
 
+                    <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
+            2.         Aqui você fala com gente de verdade. Atendimento rápido, gentil e sem enrolação. 
+                      Cada cliente é tratada como prioridade — do pedido à entrega.          
+          </p>
+
+          
           {/* Redes sociais */}
           <div className="flex mt-4 gap-4 text-lg text-gray-500">
             <i className="fab fa-facebook hover:text-gray-100 cursor-pointer transition-colors" />
