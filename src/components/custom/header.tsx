@@ -148,7 +148,7 @@ export default function Header() {
     "
     onClick={() => (window.location.href = "/")}
   >
-    EMAGRIFY STORE
+    Emagrify Store
   </h1>
 </div>
 
