@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { useEffect, useState, useRef } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import supabase from "@/lib/supabaseClient";
 
 export default function Header() {
   const [user, setUser] = useState<any>(null);
@@ -21,15 +21,39 @@ export default function Header() {
 
   // 🔍 busca expansível
   const [searchOpen, setSearchOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState<any[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
 
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Função real de busca
+  async function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (!value.trim()) {
+      setResults([]);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, name")
+      .ilike("name", `%${value}%`);
+
+    if (error) console.error(error);
+
+    setResults(data || []);
+  }
 
   // Fechar busca ao clicar fora
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setSearchOpen(false);
+        setSearch("");
+        setResults([]);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -98,114 +122,107 @@ export default function Header() {
       <header className="sticky top-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-6 py-4 flex items-center justify-between">
 
-{/* 🔍 BUSCA EXPANSÍVEL (moderninha) */}
-<div className="hidden md:flex flex-1 justify-start">
-  <div ref={searchRef} className="relative flex items-center transition-all">
-    
-    {!searchOpen && (
-      <button
-        onClick={() => setSearchOpen(true)}
-        className="p-2 text-black hover:text-[#406945] transition"
-      >
-        <Search size={20} />
-      </button>
-    )}
+          {/* 🔍 BUSCA EXPANSÍVEL */}
+          <div className="hidden md:flex flex-1 justify-start">
+            <div ref={searchRef} className="relative flex items-center transition-all">
+              
+              {!searchOpen && (
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className="p-2 text-black hover:text-[#406945] transition"
+                >
+                  <Search size={20} />
+                </button>
+              )}
 
-    {searchOpen && (
-      <div
-        className="
-          flex flex-col bg-white border border-black/20
-          rounded-xl px-3 py-2 shadow-md
-          transition-all duration-300
-          w-[240px] sm:w-[280px]
-        "
-      >
-        {/* INPUT DE BUSCA */}
-        <div className="flex items-center">
-          <Search size={17} className="mr-2 text-black" />
-          <input
-            type="text"
-            placeholder="Buscar produtos..."
-            autoFocus
-            value={search}
-            onChange={handleSearch}
-            className="flex-1 bg-transparent outline-none text-sm"
-          />
-        </div>
+              {searchOpen && (
+                <div
+                  className="
+                    flex flex-col bg-white border border-black/20
+                    rounded-xl px-3 py-2 shadow-md
+                    transition-all duration-300
+                    w-[240px] sm:w-[280px]
+                  "
+                >
+                  <div className="flex items-center">
+                    <Search size={17} className="mr-2 text-black" />
+                    <input
+                      type="text"
+                      placeholder="Buscar produtos..."
+                      autoFocus
+                      value={search}
+                      onChange={handleSearch}
+                      className="flex-1 bg-transparent outline-none text-sm"
+                    />
+                  </div>
 
-        {/* RESULTADOS */}
-        {results.length > 0 && (
-          <div className="mt-2 bg-white rounded-md border border-gray-200 shadow">
-            {results.map((product) => (
-              <div
-                key={product.id}
-                onClick={() => {
-                  window.location.href = `/produto/${product.id}`;
-                }}
-                className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
-              >
-                {product.name}
-              </div>
-            ))}
+                  {results.length > 0 && (
+                    <div className="mt-2 bg-white rounded-md border border-gray-200 shadow">
+                      {results.map((product) => (
+                        <div
+                          key={product.id}
+                          onClick={() => {
+                            window.location.href = `/produto/${product.id}`;
+                          }}
+                          className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
+                        >
+                          {product.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {search.length > 0 && results.length === 0 && (
+                    <div className="mt-2 text-gray-500 text-xs p-2">
+                      Nenhum produto encontrado.
+                    </div>
+                  )}
+                </div>
+              )}
+
+            </div>
           </div>
-        )}
 
-        {/* NENHUM RESULTADO */}
-        {search.length > 0 && results.length === 0 && (
-          <div className="mt-2 text-gray-500 text-xs p-2">
-            Nenhum produto encontrado.
+          {/* LOGO */}
+          <div className="flex-1 flex justify-center select-none">
+            <h1
+              className="
+                font-berny
+                text-4xl 
+                tracking-wide 
+                font-semibold 
+                cursor-pointer 
+                select-none
+                whitespace-nowrap
+              "
+              onClick={() => (window.location.href = "/")}
+            >
+              Emagrify Shop
+            </h1>
           </div>
-        )}
-      </div>
-    )}
 
-  </div>
-</div>
-
-{/* LOGO CENTRAL — TEXTO COM FONTE TUSCA */}
-<div className="flex-1 flex justify-center select-none">
-  <h1
-    className="
-      font-berny
-      text-4xl 
-      tracking-wide 
-      font-semibold 
-      cursor-pointer 
-      select-none
-      whitespace-nowrap
-    "
-    onClick={() => (window.location.href = "/")}
-  >
-    Emagrify Shop
-  </h1>
-</div>
-
-
-          {/* ÍCONES À DIREITA */}
+          {/* ÍCONES */}
           <div className="flex-1 flex items-center justify-end gap-5 text-black">
 
-            {/* Ícones logada */}
-{user && (
-  <>
-    <Heart
-      onClick={() => (window.location.href = "/favoritos")}
-      className="cursor-pointer hover:text-[#406945] transition"
-      size={20}
-    />
+            {user && (
+              <>
+                <Heart
+                  onClick={() => (window.location.href = "/favoritos")}
+                  className="cursor-pointer hover:text-[#406945] transition"
+                  size={20}
+                />
 
-    <ShoppingCart
-      onClick={() => (window.location.href = "/carrinho")}
-      className="cursor-pointer hover:text-[#406945] transition"
-      size={20}
-    />
-  </>
-)}
-
+                <ShoppingCart
+                  onClick={() => (window.location.href = "/carrinho")}
+                  className="cursor-pointer hover:text-[#406945] transition"
+                  size={20}
+                />
+              </>
+            )}
 
             {/* MENU DO USUÁRIO */}
             <div className="relative" ref={menuRef}>
 
-              {/* BOTÃO LOGIN */}
               {!user && (
                 <Link
                   href="/login"
@@ -221,7 +238,6 @@ export default function Header() {
                 </Link>
               )}
 
-              {/* AVATAR */}
               {user && (
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
@@ -234,7 +250,7 @@ export default function Header() {
                 </button>
               )}
 
-              {/* MOBILE BUTTON */}
+              {/* MOBILE */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="
@@ -279,34 +295,32 @@ export default function Header() {
                         </p>
                       </div>
 
-{/* 👑 ADMIN */}
-{profile?.role === "admin" && (
-  <Link href="/admin" className="dropdown-item flex items-center gap-2">
-    <Bell size={18} />
-    <span>Painel Admin</span>
-  </Link>
-)}
+                      {profile?.role === "admin" && (
+                        <Link href="/admin" className="dropdown-item flex items-center gap-2">
+                          <Bell size={18} />
+                          <span>Painel Admin</span>
+                        </Link>
+                      )}
 
-<Link href="/pedidos" className="dropdown-item flex items-center gap-2">
-  <ShoppingCart size={18} />
-  <span>Meus pedidos</span>
-</Link>
+                      <Link href="/pedidos" className="dropdown-item flex items-center gap-2">
+                        <ShoppingCart size={18} />
+                        <span>Meus pedidos</span>
+                      </Link>
 
-<Link href="/profile" className="dropdown-item flex items-center gap-2">
-  <User size={18} />
-  <span>Dados pessoais</span>
-</Link>
+                      <Link href="/profile" className="dropdown-item flex items-center gap-2">
+                        <User size={18} />
+                        <span>Dados pessoais</span>
+                      </Link>
 
-<Link href="/notificacoes" className="dropdown-item flex items-center gap-2">
-  <Bell size={18} />
-  <span>Notificações</span>
-</Link>
+                      <Link href="/notificacoes" className="dropdown-item flex items-center gap-2">
+                        <Bell size={18} />
+                        <span>Notificações</span>
+                      </Link>
 
-<div className="dropdown-item flex items-center gap-2">
-  <User size={18} />
-  <span>Meus pontos: {profile?.points ?? 0}</span>
-</div>
-
+                      <div className="dropdown-item flex items-center gap-2">
+                        <User size={18} />
+                        <span>Meus pontos: {profile?.points ?? 0}</span>
+                      </div>
 
                       <button
                         onClick={handleLogout}
@@ -322,6 +336,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </header>
