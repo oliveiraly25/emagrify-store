@@ -125,11 +125,25 @@ export default function ProfileDashboard() {
           "
         >
           <div className="flex items-center gap-3">
-            <ShoppingCart size={20} className="text-black" />
+            <box size={20} className="text-black" />
             <span className="font-medium">Meus pedidos</span>
           </div>
           <ChevronRight className="text-black" />
         </button>
+
+                  onClick={() => router.push("/carrinho")}
+          className="
+            w-full flex justify-between items-center p-4 border-b
+            hover:bg-[#f9fafb] transition
+          "
+        >
+          <div className="flex items-center gap-3">
+            <ShoppingCart size={20} className="text-black" />
+            <span className="font-medium">Carrinho</span>
+          </div>
+          <ChevronRight className="text-black" />
+        </button>
+
 
         <button
   onClick={() => router.push("/favoritos")}
