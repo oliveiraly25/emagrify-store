@@ -111,7 +111,7 @@ export default function ProfileDashboard() {
       {/* ============================= */}
       {/*     SEÇÃO: PEDIDOS           */}
       {/* ============================= */}
-      <h2 className="text-lg font-semibold mb-3 tracking-tight">
+      <h2 className="text-lg font-semibold mt-8 mb-3 tracking-tight">
         Pedidos
       </h2>
 
