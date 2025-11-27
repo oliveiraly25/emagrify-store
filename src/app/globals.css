@@ -6,28 +6,26 @@
 /* ========================================================= */
 
 :root {
-  --background: #ffffff;            /* fundo do site */
-  --foreground: #0a0a0a;            /* texto preto elegante */
+  --background: #ffffff;
+  --foreground: #0a0a0a;
 
-  --primary: #406945;               /* verde premium */
+  --primary: #406945;
   --primary-light: #4d7a53;
 
-  --border: #e5e7eb;                /* bordas suaves */
-  --card: #ffffff;                  /* cards brancos */
+  --border: #e5e7eb;
+  --card: #ffffff;
   --card-border: #dcdcdc;
 
-  --muted-foreground: #6b7280;      /* texto cinza elegante */
-  --header-top: #000000;            /* faixa preta */
+  --muted-foreground: #6b7280;
+  --header-top: #000000;
 }
 
-/* Aplica fundo global */
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }
 
-/* HEADER BRANCO */
 header {
   background-color: #ffffff;
   position: sticky;
@@ -36,21 +34,18 @@ header {
   border-bottom: 1px solid #e5e5e5;
 }
 
-/* FAIXA PRETA ACIMA DO HEADER */
 .top-black-bar {
   width: 100%;
   height: 32px;
   background-color: var(--header-top);
 }
 
-/* CARDS */
 .card-clean {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: 1rem;
 }
 
-/* BOTÃO PRETO PREMIUM */
 .btn-black {
   background: #000;
   color: #fff;
@@ -63,7 +58,6 @@ header {
   background: #1a1a1a;
 }
 
-/* TÍTULOS COM VERDE PREMIUM */
 .title-green {
   color: var(--primary);
   font-weight: 600;
@@ -98,12 +92,10 @@ header {
 /*        FONTES TUSCA & FLAWLESS INTEGRADAS VIA NEXT        */
 /* ========================================================= */
 
-/* Flawless: títulos elegantes */
 .font-flawless {
   font-family: var(--font-flawless), sans-serif;
 }
 
-/* Tusca: textos premium */
 .font-tusca {
   font-family: var(--font-tusca), sans-serif;
 }
@@ -111,34 +103,35 @@ header {
 /* ========================================================= */
 /*                       FONTES LOVALINA                     */
 /* ========================================================= */
+
 @font-face {
   font-family: "Lovalina";
   src: url("/fonts/Lovalina.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
 }
 
-/* Classe para aplicar */
 .font-lovalina {
   font-family: "Lovalina", sans-serif;
 }
 
-
-
 /* ========================================================= */
 /*                       FONTES VOSTELA                      */
 /* ========================================================= */
+
 @font-face {
   font-family: "Vostela";
   src: url("/fonts/VOSTELA.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
 }
 
-/* Classe para aplicar */
 .font-vostela {
   font-family: "Vostela", sans-serif;
 }
+
+/* ========================================================= */
+/*                       FONTES BERNY LOVES                  */
+/* ========================================================= */
+
 @font-face {
   font-family: "BernyLoves";
   src: url("/fonts/BERNY-LOVES.ttf") format("truetype");
@@ -152,10 +145,14 @@ header {
   font-style: italic;
 }
 
-/* Classe */
 .font-berny {
   font-family: "BernyLoves", sans-serif;
 }
+
+/* ========================================================= */
+/*                        FONTES CRONDE                      */
+/* ========================================================= */
+
 @font-face {
   font-family: "Cronde";
   src: url("/fonts/CRONDERegular.ttf") format("truetype");
@@ -182,17 +179,20 @@ header {
   font-style: italic;
 }
 
-/* Classe */
 .font-cronde {
   font-family: "Cronde", sans-serif;
 }
+
+/* ========================================================= */
+/*                     FONTES TYPE MONSTER                   */
+/* ========================================================= */
+
 @font-face {
   font-family: "TypeMonster";
   src: url("/fonts/TypeMonster-FreeDemo.ttf") format("truetype");
   font-weight: 400;
 }
 
-/* Classe */
 .font-monster {
   font-family: "TypeMonster", sans-serif;
 }
