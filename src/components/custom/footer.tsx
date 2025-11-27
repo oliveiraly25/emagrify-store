@@ -23,6 +23,17 @@ export default function Footer() {
             Uma curadoria de produtos pensada para quem busca praticidade,
             estilo e bem-estar em um único lugar.
           </p>
+          
+          <h2 className="text-xl font-semibold tracking-[0.12em] uppercase">
+            Por que escolher a Emagrify Store?
+          </h2>
+
+                    <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
+            Comunicação clara sobre prazos, políticas e suporte em todas as
+                etapas da compra. Layout leve, navegação simples e foco total em uma jornada de
+                compra confortável.
+          </p>
+          
 
           {/* Redes sociais */}
           <div className="flex mt-4 gap-4 text-lg text-gray-500">
