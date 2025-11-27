@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import Header from "@/components/custom/header";
 import Footer from "@/components/custom/footer";
 
+// 🔤 Importando as fontes
+import { Tusca, Flawless } from "./fonts";
+
 export const metadata: Metadata = {
   title: "Emagrify Store",
   description: "Loja oficial Emagrify",
@@ -10,7 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html
+      lang="pt-BR"
+      className={`${Tusca.variable} ${Flawless.variable}`} // <- ativa as duas fontes
+    >
       <body className="min-h-screen bg-white text-black">
 
         {/* FAIXA PRETA */}
